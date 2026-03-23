@@ -1,0 +1,455 @@
+﻿<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Všetky pneumatiky – PneuShop</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#646cfe',
+            'primary-dark': '#4A4ECC',
+          },
+          fontFamily: { sans: ['Inter', 'sans-serif'] }
+        }
+      }
+    }
+  </script>
+  <style>
+    .img-ph {
+      background: #e5e7eb;
+      position: relative;
+      overflow: hidden;
+    }
+    .img-ph::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to bottom right, transparent calc(50% - 0.5px), #9ca3af calc(50% - 0.5px), #9ca3af calc(50% + 0.5px), transparent calc(50% + 0.5px)),
+        linear-gradient(to top right, transparent calc(50% - 0.5px), #9ca3af calc(50% - 0.5px), #9ca3af calc(50% + 0.5px), transparent calc(50% + 0.5px));
+    }
+    #mob-menu { display: none; }
+    #mob-menu.open { display: block; }
+  </style>
+</head>
+<body class="font-sans bg-white text-gray-900 text-sm">
+
+  <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="flex items-center justify-between h-14">
+        <a href="index.html" class="flex-shrink-0">
+          <img src="images/logo2.jpg" alt="PneuShop logo" class="h-8 w-auto object-contain" />
+        </a>
+        <div class="hidden md:block w-full max-w-md mx-auto">
+          <div class="flex border border-gray-300 rounded-lg overflow-hidden">
+            <input type="text" placeholder="Sem napíšte hľadané slovo" class="flex-1 px-4 py-1.5 text-sm outline-none bg-white placeholder-gray-400" />
+            <button class="px-3 bg-white hover:bg-gray-50 border-l border-gray-300">
+              <img src="images/icons/search.png" alt="Hladat" class="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+        <div class="flex-1 md:hidden"></div>
+        <div class="flex items-center gap-4 flex-shrink-0">
+          <button class="md:hidden">
+            <img src="images/icons/search.png" alt="Hladat" class="w-5 h-5" />
+          </button>
+          <a href="login.html">
+            <img src="images/icons/login.png" alt="Prihlasenie" class="w-6 h-6 hover:opacity-80 transition-opacity" />
+          </a>
+          <a href="cart.html" class="relative">
+            <img src="images/icons/cart.png" alt="Kosik" class="w-6 h-6 hover:opacity-80 transition-opacity" />
+            <span class="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center leading-none font-medium">0</span>
+          </a>
+          <button class="lg:hidden" onclick="document.getElementById('mob-menu').classList.toggle('open')">
+            <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+    <nav class="max-w-6xl mx-auto px-6 mt-4 hidden lg:block">
+      <div class="bg-primary rounded-xl overflow-hidden shadow-sm">
+        <ul class="flex items-center justify-between px-8 py-3.5 text-white text-sm font-medium w-full">
+          <li><a href="index.html" class="hover:underline transition-colors">Domov</a></li>
+          <li><a href="products.html" class="hover:underline transition-colors">Všetky pneu</a></li>
+          <li><a href="products.html?cat=winter" class="hover:underline transition-colors">Zimné pneu</a></li>
+          <li><a href="products.html?cat=summer" class="hover:underline transition-colors">Letné pneu</a></li>
+          <li><a href="products.html?cat=moto" class="hover:underline transition-colors">Moto pneu</a></li>
+          <li><a href="products.html?cat=tractor" class="hover:underline transition-colors">Traktorové pneu</a></li>
+          <li><a href="products.html?cat=bicycle" class="hover:underline transition-colors">Cyklo pneu</a></li>
+        </ul>
+      </div>
+    </nav>
+    <div id="mob-menu" class="lg:hidden bg-primary text-white text-sm font-medium mt-2">
+      <ul>
+        <li><a href="index.html" class="block px-5 py-2.5 border-b border-blue-400 hover:bg-primary-dark">Domov</a></li>
+        <li><a href="products.html" class="block px-5 py-2.5 border-b border-blue-400 hover:bg-primary-dark">Všetky pneu</a></li>
+        <li><a href="products.html?cat=summer" class="block px-5 py-2.5 hover:bg-primary-dark">Letné pneu</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <div class="max-w-6xl mx-auto px-6 py-8">
+    <div class="flex gap-8">
+
+      <aside class="w-52 flex-shrink-0 hidden lg:block text-sm">
+        <div class="mb-8">
+          <p class="font-bold text-gray-900 mb-3 text-base">Cena za 1 ks</p>
+          <div class="flex items-center gap-6">
+            <div class="flex-1 border-b border-gray-400 flex items-baseline pb-1">
+              <span class="font-bold text-gray-900 mr-2">od</span>
+              <input type="number" value="22" class="w-full text-gray-500 outline-none bg-transparent" />
+            </div>
+            <div class="flex-1 border-b border-gray-400 flex items-baseline pb-1">
+              <span class="font-bold text-gray-900 mr-2">do</span>
+              <input type="number" value="270" class="w-full text-gray-500 outline-none bg-transparent" />
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-8">
+          <p class="font-bold text-gray-900 mb-3 text-base">Sezónnosť</p>
+          <label class="flex items-center gap-2 mb-2 cursor-pointer"><input type="checkbox" class="w-4 h-4 rounded border-gray-300" /><span class="text-gray-700 font-medium">celoročné</span></label>
+          <label class="flex items-center gap-2 mb-2 cursor-pointer"><input type="checkbox" checked class="w-4 h-4 rounded border-gray-300" /><span class="text-gray-700 font-medium">zimné</span></label>
+          <div class="pl-6 mb-2 space-y-2">
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" checked class="w-4 h-4 rounded border-gray-300" /><span class="text-gray-700 font-medium">s hrotmi</span></label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" class="w-4 h-4 rounded border-gray-300" /><span class="text-gray-700 font-medium">bez hrotov</span></label>
+          </div>
+          <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" class="w-4 h-4 rounded border-gray-300" /><span class="text-gray-700 font-medium">letné</span></label>
+        </div>
+
+        <div class="mb-8">
+          <p class="font-bold text-gray-900 mb-3 text-base">Šírka (mm)</p>
+          <div class="grid grid-cols-3 gap-y-2">
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" class="w-4 h-4 rounded border-gray-300" /><span class="text-gray-700 font-medium">195</span></label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" class="w-4 h-4 rounded border-gray-300" /><span class="text-gray-700 font-medium">225</span></label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" class="w-4 h-4 rounded border-gray-300" /><span class="text-gray-700 font-medium">255</span></label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" checked class="w-4 h-4 rounded border-gray-300" /><span class="text-gray-700 font-medium">205</span></label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" class="w-4 h-4 rounded border-gray-300" /><span class="text-gray-700 font-medium">235</span></label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" class="w-4 h-4 rounded border-gray-300" /><span class="text-gray-700 font-medium">265</span></label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" class="w-4 h-4 rounded border-gray-300" /><span class="text-gray-700 font-medium">215</span></label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" class="w-4 h-4 rounded border-gray-300" /><span class="text-gray-700 font-medium">245</span></label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" class="w-4 h-4 rounded border-gray-300" /><span class="text-gray-700 font-medium">275</span></label>
+          </div>
+          <button class="text-primary mt-3 font-medium text-xs hover:underline">Ukázať všetky</button>
+        </div>
+
+        <div class="mb-8">
+          <p class="font-bold text-gray-900 mb-3 text-base">Profil (%)</p>
+          <div class="grid grid-cols-3 gap-y-2">
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" class="w-4 h-4 rounded border-gray-300" /><span class="text-gray-700 font-medium">35</span></label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" class="w-4 h-4 rounded border-gray-300" /><span class="text-gray-700 font-medium">50</span></label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" class="w-4 h-4 rounded border-gray-300" /><span class="text-gray-700 font-medium">65</span></label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" class="w-4 h-4 rounded border-gray-300" /><span class="text-gray-700 font-medium">40</span></label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" checked class="w-4 h-4 rounded border-gray-300" /><span class="text-gray-700 font-medium">55</span></label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" class="w-4 h-4 rounded border-gray-300" /><span class="text-gray-700 font-medium">70</span></label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" class="w-4 h-4 rounded border-gray-300" /><span class="text-gray-700 font-medium">45</span></label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" class="w-4 h-4 rounded border-gray-300" /><span class="text-gray-700 font-medium">60</span></label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" class="w-4 h-4 rounded border-gray-300" /><span class="text-gray-700 font-medium">75</span></label>
+          </div>
+          <button class="text-primary mt-3 font-medium text-xs hover:underline">Ukázať všetky</button>
+        </div>
+
+        <div class="mb-8">
+          <p class="font-bold text-gray-900 mb-3 text-base">Priemer (")</p>
+          <div class="grid grid-cols-3 gap-y-2">
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" class="w-4 h-4 rounded border-gray-300" /><span class="text-gray-700 font-medium">R10</span></label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" class="w-4 h-4 rounded border-gray-300" /><span class="text-gray-700 font-medium">R15</span></label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" class="w-4 h-4 rounded border-gray-300" /><span class="text-gray-700 font-medium">R21</span></label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" class="w-4 h-4 rounded border-gray-300" /><span class="text-gray-700 font-medium">R10.5</span></label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" class="w-4 h-4 rounded border-gray-300" /><span class="text-gray-700 font-medium">R16</span></label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" checked class="w-4 h-4 rounded border-gray-300" /><span class="text-gray-700 font-medium">R22</span></label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" class="w-4 h-4 rounded border-gray-300" /><span class="text-gray-700 font-medium">R11</span></label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" class="w-4 h-4 rounded border-gray-300" /><span class="text-gray-700 font-medium">R17</span></label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" class="w-4 h-4 rounded border-gray-300" /><span class="text-gray-700 font-medium">R22.5</span></label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" class="w-4 h-4 rounded border-gray-300" /><span class="text-gray-700 font-medium">R11.5</span></label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" class="w-4 h-4 rounded border-gray-300" /><span class="text-gray-700 font-medium">R18</span></label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" class="w-4 h-4 rounded border-gray-300" /><span class="text-gray-700 font-medium">R23</span></label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" class="w-4 h-4 rounded border-gray-300" /><span class="text-gray-700 font-medium">R12</span></label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" class="w-4 h-4 rounded border-gray-300" /><span class="text-gray-700 font-medium">R19</span></label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" class="w-4 h-4 rounded border-gray-300" /><span class="text-gray-700 font-medium">R24</span></label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" class="w-4 h-4 rounded border-gray-300" /><span class="text-gray-700 font-medium">R12.5</span></label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" class="w-4 h-4 rounded border-gray-300" /><span class="text-gray-700 font-medium">R19.5</span></label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" class="w-4 h-4 rounded border-gray-300" /><span class="text-gray-700 font-medium">R26</span></label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" class="w-4 h-4 rounded border-gray-300" /><span class="text-gray-700 font-medium">R13</span></label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" class="w-4 h-4 rounded border-gray-300" /><span class="text-gray-700 font-medium">R20</span></label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" class="w-4 h-4 rounded border-gray-300" /><span class="text-gray-700 font-medium">R14</span></label>
+          </div>
+        </div>
+      </aside>
+
+      <div class="flex-1 min-w-0">
+        <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+          <div class="flex items-center gap-1">
+            <button class="w-8 h-8 flex items-center justify-center border border-gray-200 bg-white text-gray-300 rounded text-sm font-medium hover:bg-gray-50">&laquo;</button>
+            <button class="w-8 h-8 flex items-center justify-center border border-gray-200 bg-white text-gray-300 rounded text-sm font-medium hover:bg-gray-50">&lsaquo;</button>
+            <button class="w-8 h-8 flex items-center justify-center border border-gray-200 bg-white text-primary font-bold rounded text-sm">1</button>
+            <button class="w-8 h-8 flex items-center justify-center border border-gray-200 bg-white text-gray-400 rounded text-sm font-medium hover:bg-gray-50 hover:text-primary">2</button>
+            <button class="w-8 h-8 flex items-center justify-center border border-gray-200 bg-white text-gray-400 rounded text-sm font-medium hover:bg-gray-50 hover:text-primary">&rsaquo;</button>
+            <button class="w-8 h-8 flex items-center justify-center border border-gray-200 bg-white text-gray-400 rounded text-sm font-medium hover:bg-gray-50 hover:text-primary">&raquo;</button>
+          </div>
+          <div class="relative">
+            <select class="appearance-none border border-gray-200 rounded px-4 py-1.5 text-xs font-medium text-gray-800 pr-8 outline-none focus:border-primary bg-white cursor-pointer">
+              <option>Predvolené</option>
+              <option>Cena: od najnižšej</option>
+              <option>Cena: od najvyššej</option>
+              <option>Najnovšie</option>
+            </select>
+            <svg class="absolute right-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-6">
+          <div class="border border-gray-200 rounded flex flex-col bg-white overflow-hidden group">
+            <div class="img-ph w-full aspect-square relative border-b border-gray-200">
+              <img src="images/products/letne1.jpg" alt="Michelin Pilot Sport 4" class="absolute inset-0 w-full h-full object-cover" />
+              <span class="absolute top-1 right-1 z-10 text-yellow-500 text-6xl leading-none">☀</span>
+            </div>
+            <div class="p-4 flex flex-col flex-1 text-left">
+              <p class="font-bold text-sm mb-2 text-gray-900 group-hover:text-primary transition-colors">michelin Pilot Sport 4</p>
+              <div class="flex items-center gap-1 mb-4">
+                <span class="text-yellow-400 text-xl tracking-widest">★★★★<span class="text-gray-300">★</span></span>
+                <span class="text-sm text-primary font-medium ml-1">5 recenzií</span>
+              </div>
+              <div class="mt-auto mb-4 flex items-baseline gap-1">
+                <span class="text-gray-500 font-bold text-xs">od</span>
+                <span class="font-bold text-base text-gray-900">172 €</span>
+              </div>
+              <a href="product-detail.html" class="block w-full text-center bg-primary hover:bg-primary-dark text-white font-medium text-xs py-2.5 rounded transition-colors">
+                Viac informácií
+              </a>
+            </div>
+          </div>
+
+          <div class="border border-gray-200 rounded flex flex-col bg-white overflow-hidden group">
+            <div class="img-ph w-full aspect-square relative border-b border-gray-200">
+              <span class="absolute top-1 right-1 z-10 text-yellow-500 text-5xl leading-none">❄</span>
+              <img src="images/products/zimne2.jpg" alt="Michelin Pilot Sport 4" class="absolute inset-0 w-full h-full object-cover" />
+            </div>
+            <div class="p-4 flex flex-col flex-1 text-left">
+              <p class="font-bold text-sm mb-2 text-gray-900 group-hover:text-primary transition-colors">Michelin X-Ice Snow</p>
+              <div class="flex items-center gap-1 mb-4">
+                <span class="text-yellow-400 text-xl tracking-widest">★★★<span class="text-gray-300">★★</span></span>
+                <span class="text-sm text-primary font-medium ml-1">2 recenzií</span>
+              </div>
+              <div class="mt-auto mb-4 flex items-baseline gap-1">
+                <span class="text-gray-500 font-bold text-xs">od</span>
+                <span class="font-bold text-base text-gray-900">218 €</span>
+              </div>
+              <a href="product-detail.html" class="block w-full text-center bg-primary hover:bg-primary-dark text-white font-medium text-xs py-2.5 rounded transition-colors">
+                Viac informácií
+              </a>
+            </div>
+          </div>
+
+          <div class="border border-gray-200 rounded flex flex-col bg-white overflow-hidden group">
+            <div class="img-ph w-full aspect-square relative border-b border-gray-200">
+              <img src="images/products/letne4.jpg" alt="Michelin Pilot Sport 4" class="absolute inset-0 w-full h-full object-cover" />
+              <span class="absolute top-1 right-1 z-10 text-yellow-500 text-6xl leading-none">☀</span>
+            </div>
+            <div class="p-4 flex flex-col flex-1 text-left">
+              <p class="font-bold text-sm mb-2 text-gray-900 group-hover:text-primary transition-colors">Continental SportContact</p>
+              <div class="flex items-center gap-1 mb-4">
+                <span class="text-yellow-400 text-xl tracking-widest">★★★<span class="text-gray-300">★★</span></span>
+                <span class="text-sm text-primary font-medium ml-1">17 recenzií</span>
+              </div>
+              <div class="mt-auto mb-4 flex items-baseline gap-1">
+                <span class="text-gray-500 font-bold text-xs">od</span>
+                <span class="font-bold text-base text-gray-900">99 €</span>
+              </div>
+              <a href="product-detail.html" class="block w-full text-center bg-primary hover:bg-primary-dark text-white font-medium text-xs py-2.5 rounded transition-colors">
+                Viac informácií
+              </a>
+            </div>
+          </div>
+
+          <div class="border border-gray-200 rounded flex flex-col bg-white overflow-hidden group">
+            <div class="img-ph w-full aspect-square relative border-b border-gray-200">
+              <img src="images/products/letne2.jpg" alt="Michelin Pilot Sport 4" class="absolute inset-0 w-full h-full object-cover" />
+              <span class="absolute top-1 right-1 z-10 text-yellow-500 text-6xl leading-none">☀</span>
+            </div>
+            <div class="p-4 flex flex-col flex-1 text-left">
+              <p class="font-bold text-sm mb-2 text-gray-900 group-hover:text-primary transition-colors">michelin Pilot Sport 4</p>
+              <div class="flex items-center gap-1 mb-4">
+                <span class="text-yellow-400 text-xl tracking-widest">★★★★<span class="text-gray-300">★</span></span>
+                <span class="text-sm text-primary font-medium ml-1">5 recenzií</span>
+              </div>
+              <div class="mt-auto mb-4 flex items-baseline gap-1">
+                <span class="text-gray-500 font-bold text-xs">od</span>
+                <span class="font-bold text-base text-gray-900">172 €</span>
+              </div>
+              <a href="product-detail.html" class="block w-full text-center bg-primary hover:bg-primary-dark text-white font-medium text-xs py-2.5 rounded transition-colors">
+                Viac informácií
+              </a>
+            </div>
+          </div>
+
+          <div class="border border-gray-200 rounded flex flex-col bg-white overflow-hidden group">
+            <div class="img-ph w-full aspect-square relative border-b border-gray-200">
+              <img src="images/products/zimne1.jpg" alt="Michelin X-Ice Snow" class="absolute inset-0 w-full h-full object-cover" />
+              <span class="absolute top-1 right-1 z-10 text-yellow-500 text-5xl leading-none">❄</span>
+            </div>
+            <div class="p-4 flex flex-col flex-1 text-left">
+              <p class="font-bold text-sm mb-2 text-gray-900 group-hover:text-primary transition-colors">Michelin X-Ice Snow</p>
+              <div class="flex items-center gap-1 mb-4">
+                <span class="text-yellow-400 text-xl tracking-widest">★★★<span class="text-gray-300">★★</span></span>
+                <span class="text-sm text-primary font-medium ml-1">2 recenzií</span>
+              </div>
+              <div class="mt-auto mb-4 flex items-baseline gap-1">
+                <span class="text-gray-500 font-bold text-xs">od</span>
+                <span class="font-bold text-base text-gray-900">218 €</span>
+              </div>
+              <a href="product-detail.html" class="block w-full text-center bg-primary hover:bg-primary-dark text-white font-medium text-xs py-2.5 rounded transition-colors">
+                Viac informácií
+              </a>
+            </div>
+          </div>
+
+          <div class="border border-gray-200 rounded flex flex-col bg-white overflow-hidden group">
+            <div class="img-ph w-full aspect-square relative border-b border-gray-200">
+              <img src="images/products/letne5.jpg" alt="Michelin Pilot Sport 4" class="absolute inset-0 w-full h-full object-cover" />
+              <span class="absolute top-1 right-1 z-10 text-yellow-500 text-6xl leading-none">☀</span>
+            </div>
+            <div class="p-4 flex flex-col flex-1 text-left">
+              <p class="font-bold text-sm mb-2 text-gray-900 group-hover:text-primary transition-colors">Continental SportContact</p>
+              <div class="flex items-center gap-1 mb-4">
+                <span class="text-yellow-400 text-xl tracking-widest">★★★<span class="text-gray-300">★★</span></span>
+                <span class="text-sm text-primary font-medium ml-1">17 recenzií</span>
+              </div>
+              <div class="mt-auto mb-4 flex items-baseline gap-1">
+                <span class="text-gray-500 font-bold text-xs">od</span>
+                <span class="font-bold text-base text-gray-900">99 €</span>
+              </div>
+              <a href="product-detail.html" class="block w-full text-center bg-primary hover:bg-primary-dark text-white font-medium text-xs py-2.5 rounded transition-colors">
+                Viac informácií
+              </a>
+            </div>
+          </div>
+
+          <div class="border border-gray-200 rounded flex flex-col bg-white overflow-hidden group">
+            <div class="img-ph w-full aspect-square relative border-b border-gray-200">
+              <img src="images/products/letne3.jpg" alt="Michelin Pilot Sport 4" class="absolute inset-0 w-full h-full object-cover" />
+              <span class="absolute top-1 right-1 z-10 text-yellow-500 text-6xl leading-none">☀</span>
+            </div>
+            <div class="p-4 flex flex-col flex-1 text-left">
+              <p class="font-bold text-sm mb-2 text-gray-900 group-hover:text-primary transition-colors">michelin Pilot Sport 4</p>
+              <div class="flex items-center gap-1 mb-4">
+                <span class="text-yellow-400 text-xl tracking-widest">★★★★<span class="text-gray-300">★</span></span>
+                <span class="text-sm text-primary font-medium ml-1">5 recenzií</span>
+              </div>
+              <div class="mt-auto mb-4 flex items-baseline gap-1">
+                <span class="text-gray-500 font-bold text-xs">od</span>
+                <span class="font-bold text-base text-gray-900">172 €</span>
+              </div>
+              <a href="product-detail.html" class="block w-full text-center bg-primary hover:bg-primary-dark text-white font-medium text-xs py-2.5 rounded transition-colors">
+                Viac informácií
+              </a>
+            </div>
+          </div>
+
+          <div class="border border-gray-200 rounded flex flex-col bg-white overflow-hidden group">
+            <div class="img-ph w-full aspect-square relative border-b border-gray-200">
+              <img src="images/products/zimne3.jpg" alt="Michelin Pilot Sport 4" class="absolute inset-0 w-full h-full object-cover" />
+              <span class="absolute top-1 right-1 z-10 text-yellow-500 text-5xl leading-none">❄</span>
+            </div>
+            <div class="p-4 flex flex-col flex-1 text-left">
+              <p class="font-bold text-sm mb-2 text-gray-900 group-hover:text-primary transition-colors">Michelin X-Ice Snow</p>
+              <div class="flex items-center gap-1 mb-4">
+                <span class="text-yellow-400 text-xl tracking-widest">★★★<span class="text-gray-300">★★</span></span>
+                <span class="text-sm text-primary font-medium ml-1">2 recenzií</span>
+              </div>
+              <div class="mt-auto mb-4 flex items-baseline gap-1">
+                <span class="text-gray-500 font-bold text-xs">od</span>
+                <span class="font-bold text-base text-gray-900">218 €</span>
+              </div>
+              <a href="product-detail.html" class="block w-full text-center bg-primary hover:bg-primary-dark text-white font-medium text-xs py-2.5 rounded transition-colors">
+                Viac informácií
+              </a>
+            </div>
+          </div>
+
+          <div class="border border-gray-200 rounded flex flex-col bg-white overflow-hidden group">
+            <div class="img-ph w-full aspect-square relative border-b border-gray-200">
+              <img src="images/products/letne6.jpg" alt="Michelin Pilot Sport 4" class="absolute inset-0 w-full h-full object-cover" />
+              <span class="absolute top-1 right-1 z-10 text-yellow-500 text-6xl leading-none">☀</span>
+            </div>
+            <div class="p-4 flex flex-col flex-1 text-left">
+              <p class="font-bold text-sm mb-2 text-gray-900 group-hover:text-primary transition-colors">Continental SportContact</p>
+              <div class="flex items-center gap-1 mb-4">
+                <span class="text-yellow-400 text-xl tracking-widest">★★★<span class="text-gray-300">★★</span></span>
+                <span class="text-sm text-primary font-medium ml-1">17 recenzií</span>
+              </div>
+              <div class="mt-auto mb-4 flex items-baseline gap-1">
+                <span class="text-gray-500 font-bold text-xs">od</span>
+                <span class="font-bold text-base text-gray-900">99 €</span>
+              </div>
+              <a href="product-detail.html" class="block w-full text-center bg-primary hover:bg-primary-dark text-white font-medium text-xs py-2.5 rounded transition-colors">
+                Viac informácií
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-center gap-1 mt-10">
+          <button class="w-8 h-8 flex items-center justify-center border border-gray-200 bg-white text-gray-300 rounded text-sm font-medium hover:bg-gray-50">&laquo;</button>
+          <button class="w-8 h-8 flex items-center justify-center border border-gray-200 bg-white text-gray-300 rounded text-sm font-medium hover:bg-gray-50">&lsaquo;</button>
+          <button class="w-8 h-8 flex items-center justify-center border border-gray-200 bg-white text-primary font-bold rounded text-sm">1</button>
+          <button class="w-8 h-8 flex items-center justify-center border border-gray-200 bg-white text-gray-400 rounded text-sm font-medium hover:bg-gray-50 hover:text-primary">2</button>
+          <button class="w-8 h-8 flex items-center justify-center border border-gray-200 bg-white text-gray-400 rounded text-sm font-medium hover:bg-gray-50 hover:text-primary">&rsaquo;</button>
+          <button class="w-8 h-8 flex items-center justify-center border border-gray-200 bg-white text-gray-400 rounded text-sm font-medium hover:bg-gray-50 hover:text-primary">&raquo;</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="py-10"></div>
+
+  <footer class="bg-[#f4f5f7] border-t border-gray-200">
+  <div class="max-w-6xl mx-auto px-6 py-12">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      
+      <div class="md:border-r border-gray-300 pr-4 text-left">
+        <h3 class="font-bold text-gray-900 mb-4 text-base">Zákaznícka linka</h3>
+        <p class="text-gray-500 mb-2 text-sm">Telefonické poradenstvo na:</p>
+        <p class="font-bold text-gray-900 text-xl mb-4">+421 900 000 000</p>
+        <p class="font-bold text-gray-900 mb-1 text-sm">Pondelok – Piatok:</p>
+        <p class="text-gray-500 text-sm mb-0.5">08:00 – 12.00</p>
+        <p class="text-gray-500 text-sm">13:00 – 17:00</p>
+      </div>
+
+      <div class="md:border-r border-gray-300 md:px-8 text-left">
+        <h3 class="font-bold text-gray-900 mb-4 text-base">Zákaznícky servis</h3>
+        <ul class="space-y-3.5 text-[#4a5568] font-medium text-sm">
+          <li><a href="#" class="hover:text-primary transition-colors">VOP</a></li>
+          <li><a href="#" class="hover:text-primary transition-colors">Kontakt</a></li>
+          <li><a href="#" class="hover:text-primary transition-colors">Odstúpenie od zmluvy</a></li>
+          <li><a href="#" class="hover:text-primary transition-colors">O nás</a></li>
+        </ul>
+      </div>
+
+      <div class="md:pl-8 text-left">
+        <h3 class="font-bold text-gray-900 mb-4 text-base">Informácie</h3>
+        <ul class="space-y-3.5 text-[#4a5568] font-medium text-sm mb-6">
+          <li><a href="#" class="hover:text-primary transition-colors">O nás</a></li>
+          <li><a href="#" class="hover:text-primary transition-colors">Kontakt</a></li>
+          <li><a href="#" class="hover:text-primary transition-colors">Doprava</a></li>
+        </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="border-t border-gray-200 bg-gray-200">
+    <div class="max-w-6xl mx-auto px-6 py-2.5 flex flex-col sm:flex-row items-center justify-between gap-2">
+      <p class="text-xs text-gray-500 text-center">* Všetky ceny sú uvedené vrátane DPH, bez nákladov na doručenie a prípadných poplatkov za dobierku, ak nie je uvedené inak</p>
+      <img src="images/logo2.jpg" alt="PneuShop logo" class="h-6 w-auto object-contain" />
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
+
