@@ -84,11 +84,15 @@
         </ul>
       </div>
     </nav>
-    <div id="mob-menu" class="lg:hidden bg-primary text-white text-sm font-medium mt-2">
+    <div id="mob-menu" class="lg:hidden bg-primary text-white text-sm font-medium mt-2 pb-2">
       <ul>
         <li><a href="index.html" class="block px-5 py-2.5 border-b border-blue-400 hover:bg-primary-dark">Domov</a></li>
         <li><a href="products.html" class="block px-5 py-2.5 border-b border-blue-400 hover:bg-primary-dark">Všetky pneu</a></li>
-        <li><a href="products.html?cat=summer" class="block px-5 py-2.5 hover:bg-primary-dark">Letné pneu</a></li>
+        <li><a href="products.html?cat=winter" class="block px-5 py-2.5 border-b border-blue-400 hover:bg-primary-dark">Zimné pneu</a></li>
+        <li><a href="products.html?cat=summer" class="block px-5 py-2.5 border-b border-blue-400 hover:bg-primary-dark">Letné pneu</a></li>
+        <li><a href="products.html?cat=moto" class="block px-5 py-2.5 border-b border-blue-400 hover:bg-primary-dark">Moto pneu</a></li>
+        <li><a href="products.html?cat=tractor" class="block px-5 py-2.5 border-b border-blue-400 hover:bg-primary-dark">Traktorové pneu</a></li>
+        <li><a href="products.html?cat=bicycle" class="block px-5 py-2.5 hover:bg-primary-dark">Cyklo pneu</a></li>
       </ul>
     </div>
   </header>
@@ -96,7 +100,7 @@
   <section class="max-w-6xl mx-auto px-6 py-4">
     <div class="img-ph w-full" style="padding-bottom: 27%;">
       <div class="absolute inset-0 flex items-center justify-center">
-        <span class="text-gray-500 text-2xl font-semibold">veľký reklamný banner</span>
+        <img src="images/ad.png" alt="Reklamný banner" class="w-full h-full object-cover rounded" />
       </div>
     </div>
   </section>
@@ -117,24 +121,32 @@
 
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
       <a href="product-detail.html" class="group block text-center">
-        <img src="images/products/letne1.jpg" alt="Michelin Pilot Sport 4" class="w-full aspect-square mb-2.5 object-cover rounded" />
-        <p class="font-bold text-sm mb-3 group-hover:text-primary transition-colors">tire #1</p>
-        <div class="inline-block bg-gray-100 text-primary font-bold text-sm px-4 py-1.5 rounded-md border border-gray-200">17.09 €</div>
+        <div class="img-ph w-full aspect-square mb-2.5 relative rounded border border-gray-200">
+           <img src="images/products/letne1.jpg" alt="Matador MP47" class="w-full h-full object-cover" />
+        </div>
+        <p class="font-bold text-sm mb-3 group-hover:text-primary transition-colors">Matador MP47 Hectorra 3</p>
+        <div class="inline-block bg-gray-100 text-primary font-bold text-sm px-4 py-1.5 rounded-md border border-gray-200">54.90 €</div>
       </a>
       <a href="product-detail.html" class="group block text-center">
-        <img src="images/products/letne2.jpg" alt="Michelin Pilot Sport 4" class="w-full aspect-square mb-2.5 object-cover rounded" />
-        <p class="font-bold text-sm mb-3 group-hover:text-primary transition-colors">tire #2</p>
-        <div class="inline-block bg-gray-100 text-primary font-bold text-sm px-4 py-1.5 rounded-md border border-gray-200">17.09 €</div>
+        <div class="img-ph w-full aspect-square mb-2.5 relative rounded border border-gray-200">
+           <img src="images/products/letne2.jpg" alt="Continental PremiumContact" class="w-full h-full object-cover" />
+        </div>
+        <p class="font-bold text-sm mb-3 group-hover:text-primary transition-colors">Continental PremiumContact 6</p>
+        <div class="inline-block bg-gray-100 text-primary font-bold text-sm px-4 py-1.5 rounded-md border border-gray-200">112.50 €</div>
       </a>
       <a href="product-detail.html" class="group block text-center">
-        <img src="images/products/letne5.jpg" alt="Michelin Pilot Sport 4" class="w-full aspect-square mb-2.5 object-cover rounded" />
-        <p class="font-bold text-sm mb-3 group-hover:text-primary transition-colors">tire #3</p>
-        <div class="inline-block bg-gray-100 text-primary font-bold text-sm px-4 py-1.5 rounded-md border border-gray-200">17.09 €</div>
+        <div class="img-ph w-full aspect-square mb-2.5 relative rounded border border-gray-200">
+           <img src="images/products/zimne1.jpg" alt="Michelin Alpin 6" class="w-full h-full object-cover" />
+        </div>
+        <p class="font-bold text-sm mb-3 group-hover:text-primary transition-colors">Michelin Alpin 6 (Zimné)</p>
+        <div class="inline-block bg-gray-100 text-primary font-bold text-sm px-4 py-1.5 rounded-md border border-gray-200">135.00 €</div>
       </a>
       <a href="product-detail.html" class="group block text-center">
-        <img src="images/products/letne6.jpg" alt="Michelin Pilot Sport 4" class="w-full aspect-square mb-2.5 object-cover rounded" />
-        <p class="font-bold text-sm mb-3 group-hover:text-primary transition-colors">tire #4</p>
-        <div class="inline-block bg-gray-100 text-primary font-bold text-sm px-4 py-1.5 rounded-md border border-gray-200">17.09 €</div>
+        <div class="img-ph w-full aspect-square mb-2.5 relative rounded border border-gray-200">
+           <img src="images/products/letne3.jpg" alt="Hankook Ventus" class="w-full h-full object-cover" />
+        </div>
+        <p class="font-bold text-sm mb-3 group-hover:text-primary transition-colors">Hankook Ventus Prime 4</p>
+        <div class="inline-block bg-gray-100 text-primary font-bold text-sm px-4 py-1.5 rounded-md border border-gray-200">72.30 €</div>
       </a>
     </div>
   </section>
@@ -225,24 +237,32 @@
 
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
       <a href="product-detail.html" class="group block text-center">
-        <img src="images/products/letne7.jpg" alt="Michelin Pilot Sport 4" class="w-full aspect-square mb-2.5 object-cover rounded" />
-        <p class="font-bold text-sm mb-3 group-hover:text-primary transition-colors">tire #1</p>
-        <div class="inline-block bg-gray-100 text-primary font-bold text-sm px-4 py-1.5 rounded-md border border-gray-200">17.09 €</div>
+        <div class="img-ph w-full aspect-square mb-2.5 relative rounded border border-gray-200">
+           <img src="images/products/letne1.jpg" alt="Matador MP47" class="w-full h-full object-cover" />
+        </div>
+        <p class="font-bold text-sm mb-3 group-hover:text-primary transition-colors">Matador MP47 Hectorra 3</p>
+        <div class="inline-block bg-gray-100 text-primary font-bold text-sm px-4 py-1.5 rounded-md border border-gray-200">54.90 €</div>
       </a>
       <a href="product-detail.html" class="group block text-center">
-        <img src="images/products/letne8.jpg" alt="Michelin Pilot Sport 4" class="w-full aspect-square mb-2.5 object-cover rounded" />
-        <p class="font-bold text-sm mb-3 group-hover:text-primary transition-colors">tire #2</p>
-        <div class="inline-block bg-gray-100 text-primary font-bold text-sm px-4 py-1.5 rounded-md border border-gray-200">17.09 €</div>
+        <div class="img-ph w-full aspect-square mb-2.5 relative rounded border border-gray-200">
+           <img src="images/products/letne2.jpg" alt="Continental PremiumContact" class="w-full h-full object-cover" />
+        </div>
+        <p class="font-bold text-sm mb-3 group-hover:text-primary transition-colors">Continental PremiumContact 6</p>
+        <div class="inline-block bg-gray-100 text-primary font-bold text-sm px-4 py-1.5 rounded-md border border-gray-200">112.50 €</div>
       </a>
       <a href="product-detail.html" class="group block text-center">
-        <img src="images/products/letne9.jpg" alt="Michelin Pilot Sport 4" class="w-full aspect-square mb-2.5 object-cover rounded" />
-        <p class="font-bold text-sm mb-3 group-hover:text-primary transition-colors">tire #3</p>
-        <div class="inline-block bg-gray-100 text-primary font-bold text-sm px-4 py-1.5 rounded-md border border-gray-200">17.09 €</div>
+        <div class="img-ph w-full aspect-square mb-2.5 relative rounded border border-gray-200">
+           <img src="images/products/zimne1.jpg" alt="Michelin Alpin 6" class="w-full h-full object-cover" />
+        </div>
+        <p class="font-bold text-sm mb-3 group-hover:text-primary transition-colors">Michelin Alpin 6 (Zimné)</p>
+        <div class="inline-block bg-gray-100 text-primary font-bold text-sm px-4 py-1.5 rounded-md border border-gray-200">135.00 €</div>
       </a>
       <a href="product-detail.html" class="group block text-center">
-        <img src="images/products/letne10.jpg" alt="Michelin Pilot Sport 4" class="w-full aspect-square mb-2.5 object-cover rounded" />
-        <p class="font-bold text-sm mb-3 group-hover:text-primary transition-colors">tire #4</p>
-        <div class="inline-block bg-gray-100 text-primary font-bold text-sm px-4 py-1.5 rounded-md border border-gray-200">17.09 €</div>
+        <div class="img-ph w-full aspect-square mb-2.5 relative rounded border border-gray-200">
+           <img src="images/products/letne3.jpg" alt="Hankook Ventus" class="w-full h-full object-cover" />
+        </div>
+        <p class="font-bold text-sm mb-3 group-hover:text-primary transition-colors">Hankook Ventus Prime 4</p>
+        <div class="inline-block bg-gray-100 text-primary font-bold text-sm px-4 py-1.5 rounded-md border border-gray-200">72.30 €</div>
       </a>
     </div>
   </section>
