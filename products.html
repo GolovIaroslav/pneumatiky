@@ -99,7 +99,10 @@
 
   <div class="max-w-6xl mx-auto px-6 py-8">
     <div class="flex flex-col lg:flex-row gap-8">
-
+      <button onclick="document.getElementById('mobile-filters').classList.toggle('hidden')" class="w-full mb-6 lg:hidden bg-white border border-gray-300 text-gray-800 font-bold py-2.5 rounded flex items-center justify-center gap-2 shadow-sm">
+        <img src="images/icons/filter.png" alt="Filter" class="w-4 h-4 opacity-70" />
+        Filtrovať produkty
+      </button>
       <aside id="mobile-filters" class="w-full lg:w-52 flex-shrink-0 hidden lg:block text-sm mb-6 lg:mb-0">
         <div class="mb-8">
           <p class="font-bold text-gray-900 mb-3 text-base">Cena za 1 ks</p>
@@ -193,11 +196,6 @@
       </aside>
 
       <div class="flex-1 min-w-0">
-        <button onclick="document.getElementById('mobile-filters').classList.toggle('hidden')" class="w-full mb-6 lg:hidden bg-white border border-gray-300 text-gray-800 font-bold py-2.5 rounded flex items-center justify-center gap-2 shadow-sm">
-          <img src="images/icons/filter.png" alt="Filter" class="w-4 h-4 opacity-70" />
-          Filtrovať produkty
-        </button>
-
         <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
           <div class="flex items-center gap-1">
             <button class="w-8 h-8 flex items-center justify-center border border-gray-200 bg-white text-gray-300 rounded text-sm font-medium hover:bg-gray-50">&laquo;</button>
