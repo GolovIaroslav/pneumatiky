@@ -66,7 +66,7 @@
             <span class="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center leading-none font-medium">0</span>
           </a>
           <button class="lg:hidden" onclick="document.getElementById('mob-menu').classList.toggle('open')">
-            <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"/></svg>
+            <img src="images/icons/menu.png" alt="Menu" class="w-6 h-6" />
           </button>
         </div>
       </div>
@@ -184,6 +184,12 @@
             <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" class="w-4 h-4 rounded border-gray-300" /><span class="text-gray-700 font-medium">R14</span></label>
           </div>
         </div>
+        <button onclick="document.getElementById('mobile-filters').classList.add('hidden')" class="lg:hidden w-full bg-primary text-white font-bold py-3 rounded-lg mt-4">
+        Zobraziť výsledky
+        </button>
+        <button class="hidden lg:block w-full bg-primary hover:bg-primary-dark text-white font-bold py-3 rounded-lg transition-colors">
+            Filtrovať
+          </button>
       </aside>
 
       <div class="flex-1 min-w-0">
@@ -208,7 +214,7 @@
               <option>Cena: od najvyššej</option>
               <option>Najnovšie</option>
             </select>
-            <svg class="absolute right-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            <img src="images/icons/chevron-down.png" alt="Šípka dole" class="absolute right-2 top-1/2 -translate-y-1/2 w-3 h-3 pointer-events-none opacity-50" />
           </div>
         </div>
 
