@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PneuShop – Súhrn objednávky</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#646cfe',
+            'primary-dark': '#4A4ECC',
+          },
+          fontFamily: { sans: ['Inter', 'sans-serif'] }
+        }
+      }
+    }
+  </script>
+  <style>
+    #mob-menu { display: none; }
+    #mob-menu.open { display: block; }
+  </style>
+</head>
+<body class="font-sans bg-white text-gray-900 text-sm">
+
+  <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="flex items-center justify-between h-14">
+        <a href="index.html" class="flex-shrink-0">
+          <img src="images/logo2.jpg" alt="PneuShop logo" class="h-8 w-auto object-contain" />
+        </a>
+        <div class="hidden md:block w-full max-w-md mx-auto">
+          <div class="flex border border-gray-300 rounded-lg overflow-hidden">
+            <input type="text" placeholder="Sem napíšte hľadané slovo" class="flex-1 px-4 py-1.5 text-sm outline-none bg-white placeholder-gray-400" />
+            <button class="px-3 bg-white hover:bg-gray-50 border-l border-gray-300">
+              <img src="images/icons/search.png" alt="Hladat" class="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+        <div class="flex-1 md:hidden"></div>
+        <div class="flex items-center gap-4 flex-shrink-0">
+          <button class="md:hidden">
+            <img src="images/icons/search.png" alt="Hladat" class="w-5 h-5" />
+          </button>
+          <div class="relative">
+            <button type="button" class="header-login-toggle" aria-label="Účet" onclick="toggleHeaderLoginMenu(this)">
+              <img src="images/icons/login.png" alt="Prihlasenie" class="w-6 h-6 hover:opacity-80 transition-opacity" />
+            </button>
+            <div class="header-login-menu hidden absolute right-0 mt-2 w-36 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+              <a href="login.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-t-lg">Prihlásenie</a>
+              <a href="register.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-b-lg">Registrácia</a>
+            </div>
+          </div>
+          <a href="cart.html" class="relative">
+            <img src="images/icons/cart.png" alt="Kosik" class="w-6 h-6 hover:opacity-80 transition-opacity" />
+            <span class="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center leading-none font-medium">0</span>
+          </a>
+          <button class="lg:hidden" onclick="document.getElementById('mob-menu').classList.toggle('open')">
+            <img src="images/icons/menu.png" alt="Menu" class="w-6 h-6" />
+          </button>
+        </div>
+      </div>
+    </div>
+    <nav class="max-w-6xl mx-auto px-6 mt-4 hidden lg:block">
+      <div class="bg-primary rounded-xl overflow-hidden shadow-sm">
+        <ul class="flex items-center justify-between px-8 py-3.5 text-white text-sm font-medium w-full">
+          <li><a href="index.html" class="hover:underline transition-colors">Domov</a></li>
+          <li><a href="products.html" class="hover:underline transition-colors">Všetky pneu</a></li>
+          <li><a href="products.html?cat=winter" class="hover:underline transition-colors">Zimné pneu</a></li>
+          <li><a href="products.html?cat=summer" class="hover:underline transition-colors">Letné pneu</a></li>
+          <li><a href="products.html?cat=moto" class="hover:underline transition-colors">Moto pneu</a></li>
+          <li><a href="products.html?cat=tractor" class="hover:underline transition-colors">Traktorové pneu</a></li>
+          <li><a href="products.html?cat=bicycle" class="hover:underline transition-colors">Cyklo pneu</a></li>
+        </ul>
+      </div>
+    </nav>
+    <div id="mob-menu" class="lg:hidden bg-primary text-white text-sm font-medium mt-2 pb-2">
+      <ul>
+        <li><a href="index.html" class="block px-5 py-2.5 border-b border-blue-400 hover:bg-primary-dark">Domov</a></li>
+        <li><a href="products.html" class="block px-5 py-2.5 border-b border-blue-400 hover:bg-primary-dark">Všetky pneu</a></li>
+        <li><a href="products.html?cat=winter" class="block px-5 py-2.5 border-b border-blue-400 hover:bg-primary-dark">Zimné pneu</a></li>
+        <li><a href="products.html?cat=summer" class="block px-5 py-2.5 border-b border-blue-400 hover:bg-primary-dark">Letné pneu</a></li>
+        <li><a href="products.html?cat=moto" class="block px-5 py-2.5 border-b border-blue-400 hover:bg-primary-dark">Moto pneu</a></li>
+        <li><a href="products.html?cat=tractor" class="block px-5 py-2.5 border-b border-blue-400 hover:bg-primary-dark">Traktorové pneu</a></li>
+        <li><a href="products.html?cat=bicycle" class="block px-5 py-2.5 hover:bg-primary-dark">Cyklo pneu</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-6 py-10 min-h-[60vh]">
+
+    <div class="flex flex-wrap items-center justify-center gap-4 mb-10 text-center text-lg">
+        <a href="cart.html">
+            <span class="text-gray-400">Košík</span>
+        </a>
+        <span class="text-gray-400 font-bold">&#8594;</span>
+        <a href="transport.html">
+            <span class="text-gray-400">Doprava a spôsob platby</span>
+        </a>
+        <span class="text-gray-400 font-bold">&#8594;</span>
+        <a href="delivery.html">
+            <span class="text-gray-400">Dodacie údaje</span>
+        </a>
+        <span class="text-gray-400 font-bold">&#8594;</span>
+        <span class="text-gray-900 font-bold">Súhrn objednávky</span>
+    </div>
+
+    <div class="max-w-4xl mx-auto space-y-6">
+      <section class="border border-gray-300 rounded-lg overflow-hidden">
+        <div class="px-5 py-3 bg-gray-50 border-b border-gray-200">
+          <h1 class="text-lg font-bold">Súhrn produktov</h1>
+        </div>
+
+        <div class="hidden md:grid grid-cols-12 gap-3 px-5 py-3 text-xs uppercase tracking-wide text-gray-500 border-b border-gray-200">
+          <span class="col-span-5">Produkt</span>
+          <span class="col-span-2 text-right">Množstvo</span>
+          <span class="col-span-2 text-right">Cena/ks</span>
+          <span class="col-span-3 text-right">Medzisúčet</span>
+        </div>
+
+        <div class="divide-y divide-gray-200">
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-3 px-5 py-4 items-center">
+            <div class="md:col-span-5 flex items-center gap-3">
+              <img src="images/products/letne1.jpg" alt="Matador MP47 Hectorra 3" class="w-14 h-14 rounded object-cover flex-shrink-0" />
+              <span class="font-medium">Matador MP47 Hectorra 3</span>
+            </div>
+            <span class="md:col-span-2 md:text-right text-gray-700">2 ks</span>
+            <span class="md:col-span-2 md:text-right text-gray-700">99,99 €</span>
+            <span class="md:col-span-3 md:text-right font-medium">199,98 €</span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-3 px-5 py-4 items-center">
+            <div class="md:col-span-5 flex items-center gap-3">
+              <img src="images/products/letne2.jpg" alt="Continental PremiumContact 6" class="w-14 h-14 rounded object-cover flex-shrink-0" />
+              <span class="font-medium">Continental PremiumContact 6</span>
+            </div>
+            <span class="md:col-span-2 md:text-right text-gray-700">2 ks</span>
+            <span class="md:col-span-2 md:text-right text-gray-700">99,99 €</span>
+            <span class="md:col-span-3 md:text-right font-medium">199,98 €</span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-3 px-5 py-4 items-center">
+            <div class="md:col-span-5 flex items-center gap-3">
+              <img src="images/products/letne3.jpg" alt="Hankook Ventus Prime 4" class="w-14 h-14 rounded object-cover flex-shrink-0" />
+              <span class="font-medium">Hankook Ventus Prime 4</span>
+            </div>
+            <span class="md:col-span-2 md:text-right text-gray-700">1 ks</span>
+            <span class="md:col-span-2 md:text-right text-gray-700">99,99 €</span>
+            <span class="md:col-span-3 md:text-right font-medium">99,99 €</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="border border-gray-300 rounded-lg overflow-hidden">
+        <div class="px-5 py-3 bg-gray-50 border-b border-gray-200">
+          <h2 class="text-lg font-bold">Doprava a platba</h2>
+        </div>
+        <div class="px-5 py-4 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-gray-700">Doprava: Packeta</span>
+            <span class="font-medium">+ 1,29 €</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-gray-700">Platba: Kartou online</span>
+            <span class="font-medium">zadarmo</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="border border-gray-300 rounded-lg p-5 bg-gray-50">
+        <div class="space-y-2 text-right">
+          <p class="text-gray-700">Cena produktov: <span class="font-medium">499,95 €</span></p>
+          <p class="text-gray-700">Doprava a platba: <span class="font-medium">1,29 €</span></p>
+          <p class="text-2xl font-bold">Celkom na úhradu: 501,24 €</p>
+        </div>
+      </section>
+
+      <div class="flex items-center justify-between gap-4 pt-2">
+        <a href="delivery.html" class="px-8 py-3 bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium rounded-full transition-colors">Späť</a>
+        <a href="confirmation.html" class="px-8 py-3 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-full transition-colors">Potvrdiť objednávku</a>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="bg-[#f4f5f7] border-t border-gray-200">
+    <div class="max-w-6xl mx-auto px-6 py-12">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+        <div class="md:border-r border-gray-300 pr-4 text-left">
+          <h3 class="font-bold text-gray-900 mb-4 text-base">Zákaznícka linka</h3>
+          <p class="text-gray-500 mb-2 text-sm">Telefonické poradenstvo na:</p>
+          <p class="font-bold text-gray-900 text-xl mb-4">+421 900 000 000</p>
+          <p class="font-bold text-gray-900 mb-1 text-sm">Pondelok – Piatok:</p>
+          <p class="text-gray-500 text-sm mb-0.5">08:00 – 12.00</p>
+          <p class="text-gray-500 text-sm">13:00 – 17:00</p>
+        </div>
+
+        <div class="md:border-r border-gray-300 md:px-8 text-left">
+          <h3 class="font-bold text-gray-900 mb-4 text-base">Zákaznícky servis</h3>
+          <ul class="space-y-3.5 text-[#4a5568] font-medium text-sm">
+            <li><a href="#" class="hover:text-primary transition-colors">VOP</a></li>
+            <li><a href="#" class="hover:text-primary transition-colors">Kontakt</a></li>
+            <li><a href="#" class="hover:text-primary transition-colors">Odstúpenie od zmluvy</a></li>
+            <li><a href="#" class="hover:text-primary transition-colors">O nás</a></li>
+          </ul>
+        </div>
+
+        <div class="md:pl-8 text-left">
+          <h3 class="font-bold text-gray-900 mb-4 text-base">Informácie</h3>
+          <ul class="space-y-3.5 text-[#4a5568] font-medium text-sm mb-6">
+            <li><a href="#" class="hover:text-primary transition-colors">O nás</a></li>
+            <li><a href="#" class="hover:text-primary transition-colors">Kontakt</a></li>
+            <li><a href="#" class="hover:text-primary transition-colors">Doprava</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+    <div class="border-t border-gray-200 bg-gray-200">
+      <div class="max-w-6xl mx-auto px-6 py-2.5 flex flex-col sm:flex-row items-center justify-between gap-2">
+        <p class="text-xs text-gray-500 text-center">* Všetky ceny sú uvedené vrátane DPH, bez nákladov na doručenie a prípadných poplatkov za dobierku, ak nie je uvedené inak</p>
+        <img src="images/logo2.jpg" alt="PneuShop logo" class="h-6 w-auto object-contain" />
+      </div>
+    </div>
+  </footer>
+
+<script>
+  function toggleHeaderLoginMenu(button) {
+    const menu = button.nextElementSibling;
+    if (!menu) return;
+
+    menu.classList.toggle('hidden');
+  }
+
+  document.addEventListener('click', function (event) {
+    document.querySelectorAll('.header-login-menu').forEach(function (menu) {
+      const toggle = menu.previousElementSibling;
+      if (!menu.contains(event.target) && (!toggle || !toggle.contains(event.target))) {
+        menu.classList.add('hidden');
+      }
+    });
+  });
+</script>
+</body>
+</html>
