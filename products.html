@@ -58,9 +58,15 @@
           <button class="md:hidden">
             <img src="images/icons/search.png" alt="Hladat" class="w-5 h-5" />
           </button>
-          <a href="login.html">
-            <img src="images/icons/login.png" alt="Prihlasenie" class="w-6 h-6 hover:opacity-80 transition-opacity" />
-          </a>
+          <div class="relative">
+            <button type="button" class="header-login-toggle" aria-label="Účet" onclick="toggleHeaderLoginMenu(this)">
+              <img src="images/icons/login.png" alt="Prihlasenie" class="w-6 h-6 hover:opacity-80 transition-opacity" />
+            </button>
+            <div class="header-login-menu hidden absolute right-0 mt-2 w-36 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+              <a href="login.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-t-lg">Prihlásenie</a>
+              <a href="register.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-b-lg">Registrácia</a>
+            </div>
+          </div>
           <a href="cart.html" class="relative">
             <img src="images/icons/cart.png" alt="Kosik" class="w-6 h-6 hover:opacity-80 transition-opacity" />
             <span class="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center leading-none font-medium">0</span>
@@ -463,6 +469,24 @@
   </div>
 </footer>
 
+<script>
+  function toggleHeaderLoginMenu(button) {
+    const menu = button.nextElementSibling;
+    if (!menu) return;
+
+    menu.classList.toggle('hidden');
+  }
+
+  document.addEventListener('click', function (event) {
+    document.querySelectorAll('.header-login-menu').forEach(function (menu) {
+      const toggle = menu.previousElementSibling;
+      if (!menu.contains(event.target) && (!toggle || !toggle.contains(event.target))) {
+        menu.classList.add('hidden');
+      }
+    });
+  });
+</script>
 </body>
 </html>
+
 
