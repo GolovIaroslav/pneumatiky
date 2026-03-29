@@ -2,7 +2,7 @@
 
 **Tím:** 
 - Golov Iaroslav, AIS ID: 136176
-- Ječim Branislav, AIS ID: cislo
+- Ječim Branislav, AIS ID: 133730
 
 **Odkaz na GitHub repozitár:** https://github.com/GolovIaroslav/pneumatiky
 
