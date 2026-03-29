@@ -7,4 +7,5 @@
 **Odkaz na GitHub repozitár:** https://github.com/GolovIaroslav/pneumatiky
 
 **Popis:**
-Odovzdávame responzívne HTML šablóny pre klientskú aj administrátorskú časť. Súčasťou sú aj skice z nástroja Figma (v priečinku /sketches) a UML diagram fyzického dátového modelu UML_Model.png
+Odovzdávame responzívne HTML šablóny pre klientskú aj administrátorskú časť. Súčasťou sú aj skice z nástroja Figma (v priečinku /sketches) a UML diagram fyzického dátového modelu UML_Model.png.
+Dokumentácia je v súbore docs_jecim_golov_pneushop.pdf.
