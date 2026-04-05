@@ -1,101 +1,10 @@
-<!DOCTYPE html>
-<html lang="sk">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PneuShop – Pneumatiky pre každé auto</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            primary: '#646cfe',
-            'primary-dark': '#4A4ECC',
-          },
-          fontFamily: { sans: ['Inter', 'sans-serif'] }
-        }
-      }
-    }
-  </script>
-  <style>
-    #mob-menu { display: none; }
-    #mob-menu.open { display: block; }
-  </style>
-</head>
-<body class="font-sans bg-white text-gray-900 text-sm">
+@extends('layouts.app')
 
-  <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
-    <div class="max-w-6xl mx-auto px-6">
-      <div class="flex items-center justify-between h-14">
-        <a href="{{ route('home') }}" class="flex-shrink-0">
-          <img src="{{ asset('images/logo2.jpg') }}" alt="PneuShop logo" class="h-8 w-auto object-contain" />
-        </a>
-        <div class="hidden md:block w-full max-w-md mx-auto">
-          <div class="flex border border-gray-300 rounded-lg overflow-hidden">
-            <input type="text" placeholder="Sem napíšte hľadané slovo" class="flex-1 px-4 py-1.5 text-sm outline-none bg-white placeholder-gray-400" />
-            <button class="px-3 bg-white hover:bg-gray-50 border-l border-gray-300">
-              <img src="{{ asset('images/icons/search.png') }}" alt="Hladat" class="w-4 h-4" />
-            </button>
-          </div>
-        </div>
-        <div class="flex-1 md:hidden"></div>
-        <div class="flex items-center gap-4 flex-shrink-0">
-          <button class="md:hidden">
-            <img src="{{ asset('images/icons/search.png') }}" alt="Hladat" class="w-5 h-5" />
-          </button>
-          <a href="{{ route('login') }}">
-            <img src="{{ asset('images/icons/login.png') }}" alt="Prihlasenie" class="w-6 h-6 hover:opacity-80 transition-opacity" />
-          </a>
-          <a href="{{ route('cart') }}" class="relative">
-            <img src="{{ asset('images/icons/cart.png') }}" alt="Kosik" class="w-6 h-6 hover:opacity-80 transition-opacity" />
-            <span class="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center leading-none font-medium">0</span>
-          </a>
-          <button class="lg:hidden" onclick="document.getElementById('mob-menu').classList.toggle('open')">
-            <img src="{{ asset('images/icons/menu.png') }}" alt="Menu" class="w-6 h-6" />
-          </button>
-        </div>
-      </div>
-      <div class="md:hidden pb-3">
-        <div class="flex border border-gray-300 rounded-lg overflow-hidden bg-gray-50">
-          <input type="text" placeholder="Hľadať produkty..." class="flex-1 px-4 py-2 text-sm outline-none bg-transparent placeholder-gray-400" />
-          <button class="px-3 bg-white border-l border-gray-300">
-            <img src="{{ asset('images/icons/search.png') }}" alt="Hladat" class="w-4 h-4 opacity-60" />
-          </button>
-        </div>
-      </div>
-    </div>
-    <nav class="max-w-6xl mx-auto px-6 mt-4 hidden lg:block">
-      <div class="bg-primary rounded-xl overflow-hidden shadow-sm">
-        <ul class="flex items-center justify-between px-8 py-3.5 text-white text-sm font-medium w-full">
-          <li><a href="{{ route('home') }}" class="hover:underline transition-colors">Domov</a></li>
-          <li><a href="{{ route('products') }}" class="hover:underline transition-colors">Všetky pneu</a></li>
-          <li><a href="{{ route('products', ['cat' => 'winter']) }}" class="hover:underline transition-colors">Zimné pneu</a></li>
-          <li><a href="{{ route('products', ['cat' => 'summer']) }}" class="hover:underline transition-colors">Letné pneu</a></li>
-          <li><a href="{{ route('products', ['cat' => 'moto']) }}" class="hover:underline transition-colors">Moto pneu</a></li>
-          <li><a href="{{ route('products', ['cat' => 'tractor']) }}" class="hover:underline transition-colors">Traktorové pneu</a></li>
-          <li><a href="{{ route('products', ['cat' => 'bicycle']) }}" class="hover:underline transition-colors">Cyklo pneu</a></li>
-        </ul>
-      </div>
-    </nav>
-    <div id="mob-menu" class="lg:hidden bg-primary text-white text-sm font-medium mt-2 pb-2">
-      <ul>
-        <li><a href="{{ route('home') }}" class="block px-5 py-2.5 border-b border-blue-400 hover:bg-primary-dark">Domov</a></li>
-        <li><a href="{{ route('products') }}" class="block px-5 py-2.5 border-b border-blue-400 hover:bg-primary-dark">Všetky pneu</a></li>
-        <li><a href="{{ route('products', ['cat' => 'winter']) }}" class="block px-5 py-2.5 border-b border-blue-400 hover:bg-primary-dark">Zimné pneu</a></li>
-        <li><a href="{{ route('products', ['cat' => 'summer']) }}" class="block px-5 py-2.5 border-b border-blue-400 hover:bg-primary-dark">Letné pneu</a></li>
-        <li><a href="{{ route('products', ['cat' => 'moto']) }}" class="block px-5 py-2.5 border-b border-blue-400 hover:bg-primary-dark">Moto pneu</a></li>
-        <li><a href="{{ route('products', ['cat' => 'tractor']) }}" class="block px-5 py-2.5 border-b border-blue-400 hover:bg-primary-dark">Traktorové pneu</a></li>
-        <li><a href="{{ route('products', ['cat' => 'bicycle']) }}" class="block px-5 py-2.5 hover:bg-primary-dark">Cyklo pneu</a></li>
-      </ul>
-    </div>
-  </header>
-
-  <section class="max-w-6xl mx-auto px-6 py-4">
-    <div class="w-full rounded pb-[37%] md:pb-[25%] relative">
+@section('content')
+<section class="max-w-6xl mx-auto px-6 py-4">
+    <div class="img-ph w-full rounded pb-[37%] md:pb-[25%] relative">
       <div class="absolute inset-0 flex items-center justify-center">
-        <img src="{{ asset('images/ad.png') }}" alt="Reklamný banner" class="w-full h-full object-cover rounded" />
+        <img src="{{ asset(\'images/ad.png\') }}" alt="Reklamný banner" class="w-full h-full object-cover rounded" />
       </div>
     </div>
   </section>
@@ -106,39 +15,39 @@
       <div class="flex-1 h-px bg-gray-200"></div>
       <div class="flex gap-1.5">
         <button class="w-7 h-7 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-50">
-          <img src="{{ asset('images/icons/arrow-left.png') }}" alt="Späť" class="w-3 h-3 opacity-60" />
+          <img src="{{ asset(\'images/icons/arrow-left.png\') }}" alt="Späť" class="w-3 h-3 opacity-60" />
         </button>
         <button class="w-7 h-7 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-50">
-          <img src="{{ asset('images/icons/arrow-right.png') }}" alt="Ďalej" class="w-3 h-3 opacity-60" />
+          <img src="{{ asset(\'images/icons/arrow-right.png\') }}" alt="Ďalej" class="w-3 h-3 opacity-60" />
         </button>
       </div>
     </div>
 
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
       <a href="{{ route('product.detail') }}" class="group block text-center">
-        <div class="w-full aspect-square mb-2.5 relative rounded border border-gray-200">
-           <img src="{{ asset('images/products/letne1.jpg') }}" alt="Matador MP47" class="w-full h-full object-cover" />
+        <div class="img-ph w-full aspect-square mb-2.5 relative rounded border border-gray-200">
+           <img src="{{ asset(\'images/products/letne1.jpg\') }}" alt="Matador MP47" class="w-full h-full object-cover" />
         </div>
         <p class="font-bold text-sm mb-3 group-hover:text-primary transition-colors">Matador MP47 Hectorra 3</p>
         <div class="inline-block bg-gray-100 text-primary font-bold text-sm px-4 py-1.5 rounded-md border border-gray-200">54.90 €</div>
       </a>
       <a href="{{ route('product.detail') }}" class="group block text-center">
-        <div class="w-full aspect-square mb-2.5 relative rounded border border-gray-200">
-           <img src="{{ asset('images/products/letne2.jpg') }}" alt="Continental PremiumContact" class="w-full h-full object-cover" />
+        <div class="img-ph w-full aspect-square mb-2.5 relative rounded border border-gray-200">
+           <img src="{{ asset(\'images/products/letne2.jpg\') }}" alt="Continental PremiumContact" class="w-full h-full object-cover" />
         </div>
         <p class="font-bold text-sm mb-3 group-hover:text-primary transition-colors">Continental PremiumContact 6</p>
         <div class="inline-block bg-gray-100 text-primary font-bold text-sm px-4 py-1.5 rounded-md border border-gray-200">112.50 €</div>
       </a>
       <a href="{{ route('product.detail') }}" class="group block text-center">
-        <div class="w-full aspect-square mb-2.5 relative rounded border border-gray-200">
-           <img src="{{ asset('images/products/zimne1.jpg') }}" alt="Michelin Alpin 6" class="w-full h-full object-cover" />
+        <div class="img-ph w-full aspect-square mb-2.5 relative rounded border border-gray-200">
+           <img src="{{ asset(\'images/products/zimne1.jpg\') }}" alt="Michelin Alpin 6" class="w-full h-full object-cover" />
         </div>
         <p class="font-bold text-sm mb-3 group-hover:text-primary transition-colors">Michelin Alpin 6 (Zimné)</p>
         <div class="inline-block bg-gray-100 text-primary font-bold text-sm px-4 py-1.5 rounded-md border border-gray-200">135.00 €</div>
       </a>
       <a href="{{ route('product.detail') }}" class="group block text-center">
-        <div class="w-full aspect-square mb-2.5 relative rounded border border-gray-200">
-           <img src="{{ asset('images/products/letne3.jpg') }}" alt="Hankook Ventus" class="w-full h-full object-cover" />
+        <div class="img-ph w-full aspect-square mb-2.5 relative rounded border border-gray-200">
+           <img src="{{ asset(\'images/products/letne3.jpg\') }}" alt="Hankook Ventus" class="w-full h-full object-cover" />
         </div>
         <p class="font-bold text-sm mb-3 group-hover:text-primary transition-colors">Hankook Ventus Prime 4</p>
         <div class="inline-block bg-gray-100 text-primary font-bold text-sm px-4 py-1.5 rounded-md border border-gray-200">72.30 €</div>
@@ -152,39 +61,39 @@
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-x-8 gap-y-2.5 text-sm">
         <div class="space-y-2.5">
           <div class="flex items-center gap-2.5">
-            <img src="{{ asset('images/icons/check-white.png') }}" alt="Výhoda" class="w-4 h-4 flex-shrink-0" />
+            <img src="{{ asset(\'images/icons/check-white.png\') }}" alt="Výhoda" class="w-4 h-4 flex-shrink-0" />
             <span>Produkty vyrobené v USA</span>
           </div>
           <div class="flex items-center gap-2.5">
-            <img src="{{ asset('images/icons/check-white.png') }}" alt="Výhoda" class="w-4 h-4 flex-shrink-0" />
+            <img src="{{ asset(\'images/icons/check-white.png\') }}" alt="Výhoda" class="w-4 h-4 flex-shrink-0" />
             <span>Vlastná výroba</span>
           </div>
           <div class="flex items-center gap-2.5">
-            <img src="{{ asset('images/icons/check-white.png') }}" alt="Výhoda" class="w-4 h-4 flex-shrink-0" />
+            <img src="{{ asset(\'images/icons/check-white.png\') }}" alt="Výhoda" class="w-4 h-4 flex-shrink-0" />
             <span>Výroba a doprava priamo u nás</span>
           </div>
         </div>
         <div class="space-y-2.5">
           <div class="flex items-center gap-2.5">
-            <img src="{{ asset('images/icons/check-white.png') }}" alt="Výhoda" class="w-4 h-4 flex-shrink-0" />
+            <img src="{{ asset(\'images/icons/check-white.png\') }}" alt="Výhoda" class="w-4 h-4 flex-shrink-0" />
             <span>Neustále sa rozširujúci sortiment</span>
           </div>
           <div class="flex items-center gap-2.5">
-            <img src="{{ asset('images/icons/check-white.png') }}" alt="Výhoda" class="w-4 h-4 flex-shrink-0" />
+            <img src="{{ asset(\'images/icons/check-white.png\') }}" alt="Výhoda" class="w-4 h-4 flex-shrink-0" />
             <span>Krátka dodacia lehota</span>
           </div>
           <div class="flex items-center gap-2.5">
-            <img src="{{ asset('images/icons/check-white.png') }}" alt="Výhoda" class="w-4 h-4 flex-shrink-0" />
+            <img src="{{ asset(\'images/icons/check-white.png\') }}" alt="Výhoda" class="w-4 h-4 flex-shrink-0" />
             <span>Odborné poradenstvo na najvyššej úrovni</span>
           </div>
         </div>
         <div class="space-y-2.5">
           <div class="flex items-center gap-2.5">
-            <img src="{{ asset('images/icons/check-white.png') }}" alt="Výhoda" class="w-4 h-4 flex-shrink-0" />
+            <img src="{{ asset(\'images/icons/check-white.png\') }}" alt="Výhoda" class="w-4 h-4 flex-shrink-0" />
             <span>Veľké množstvá za nízke ceny</span>
           </div>
           <div class="flex items-center gap-2.5">
-            <img src="{{ asset('images/icons/check-white.png') }}" alt="Výhoda" class="w-4 h-4 flex-shrink-0" />
+            <img src="{{ asset(\'images/icons/check-white.png\') }}" alt="Výhoda" class="w-4 h-4 flex-shrink-0" />
             <span>Produkty na mieru aj pri malých množstvách</span>
           </div>
         </div>
@@ -198,39 +107,39 @@
       <div class="flex-1 h-px bg-gray-200"></div>
       <div class="flex gap-1.5">
         <button class="w-7 h-7 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-50">
-          <img src="{{ asset('images/icons/arrow-left.png') }}" alt="Späť" class="w-3 h-3 opacity-60" />
+          <img src="{{ asset(\'images/icons/arrow-left.png\') }}" alt="Späť" class="w-3 h-3 opacity-60" />
         </button>
         <button class="w-7 h-7 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-50">
-          <img src="{{ asset('images/icons/arrow-right.png') }}" alt="Ďalej" class="w-3 h-3 opacity-60" />
+          <img src="{{ asset(\'images/icons/arrow-right.png\') }}" alt="Ďalej" class="w-3 h-3 opacity-60" />
         </button>
       </div>
     </div>
 
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
       <a href="{{ route('product.detail') }}" class="group block text-center">
-        <div class="w-full aspect-square mb-2.5 relative rounded border border-gray-200">
-           <img src="{{ asset('images/products/letne1.jpg') }}" alt="Matador MP47" class="w-full h-full object-cover" />
+        <div class="img-ph w-full aspect-square mb-2.5 relative rounded border border-gray-200">
+           <img src="{{ asset(\'images/products/letne1.jpg\') }}" alt="Matador MP47" class="w-full h-full object-cover" />
         </div>
         <p class="font-bold text-sm mb-3 group-hover:text-primary transition-colors">Matador MP47 Hectorra 3</p>
         <div class="inline-block bg-gray-100 text-primary font-bold text-sm px-4 py-1.5 rounded-md border border-gray-200">54.90 €</div>
       </a>
       <a href="{{ route('product.detail') }}" class="group block text-center">
-        <div class="w-full aspect-square mb-2.5 relative rounded border border-gray-200">
-           <img src="{{ asset('images/products/letne2.jpg') }}" alt="Continental PremiumContact" class="w-full h-full object-cover" />
+        <div class="img-ph w-full aspect-square mb-2.5 relative rounded border border-gray-200">
+           <img src="{{ asset(\'images/products/letne2.jpg\') }}" alt="Continental PremiumContact" class="w-full h-full object-cover" />
         </div>
         <p class="font-bold text-sm mb-3 group-hover:text-primary transition-colors">Continental PremiumContact 6</p>
         <div class="inline-block bg-gray-100 text-primary font-bold text-sm px-4 py-1.5 rounded-md border border-gray-200">112.50 €</div>
       </a>
       <a href="{{ route('product.detail') }}" class="group block text-center">
-        <div class="w-full aspect-square mb-2.5 relative rounded border border-gray-200">
-           <img src="{{ asset('images/products/zimne1.jpg') }}" alt="Michelin Alpin 6" class="w-full h-full object-cover" />
+        <div class="img-ph w-full aspect-square mb-2.5 relative rounded border border-gray-200">
+           <img src="{{ asset(\'images/products/zimne1.jpg\') }}" alt="Michelin Alpin 6" class="w-full h-full object-cover" />
         </div>
         <p class="font-bold text-sm mb-3 group-hover:text-primary transition-colors">Michelin Alpin 6 (Zimné)</p>
         <div class="inline-block bg-gray-100 text-primary font-bold text-sm px-4 py-1.5 rounded-md border border-gray-200">135.00 €</div>
       </a>
       <a href="{{ route('product.detail') }}" class="group block text-center">
-        <div class="w-full aspect-square mb-2.5 relative rounded border border-gray-200">
-           <img src="{{ asset('images/products/letne3.jpg') }}" alt="Hankook Ventus" class="w-full h-full object-cover" />
+        <div class="img-ph w-full aspect-square mb-2.5 relative rounded border border-gray-200">
+           <img src="{{ asset(\'images/products/letne3.jpg\') }}" alt="Hankook Ventus" class="w-full h-full object-cover" />
         </div>
         <p class="font-bold text-sm mb-3 group-hover:text-primary transition-colors">Hankook Ventus Prime 4</p>
         <div class="inline-block bg-gray-100 text-primary font-bold text-sm px-4 py-1.5 rounded-md border border-gray-200">72.30 €</div>
@@ -239,49 +148,24 @@
   </section>
 
   <div class="py-10"></div>
+@endsection
 
-  <footer class="bg-[#f4f5f7] border-t border-gray-200">
-  <div class="max-w-6xl mx-auto px-6 py-12">
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-      
-      <div class="md:border-r border-gray-300 pr-4 text-left">
-        <h3 class="font-bold text-gray-900 mb-4 text-base">Zákaznícka linka</h3>
-        <p class="text-gray-500 mb-2 text-sm">Telefonické poradenstvo na:</p>
-        <p class="font-bold text-gray-900 text-xl mb-4">+421 900 000 000</p>
-        <p class="font-bold text-gray-900 mb-1 text-sm">Pondelok – Piatok:</p>
-        <p class="text-gray-500 text-sm mb-0.5">08:00 – 12.00</p>
-        <p class="text-gray-500 text-sm">13:00 – 17:00</p>
-      </div>
+@push('scripts')
+<script>
+  function toggleHeaderLoginMenu(button) {
+    const menu = button.nextElementSibling;
+    if (!menu) return;
 
-      <div class="md:border-r border-gray-300 md:px-8 text-left">
-        <h3 class="font-bold text-gray-900 mb-4 text-base">Zákaznícky servis</h3>
-        <ul class="space-y-3.5 text-[#4a5568] font-medium text-sm">
-          <li><a href="#" class="hover:text-primary transition-colors">VOP</a></li>
-          <li><a href="#" class="hover:text-primary transition-colors">Kontakt</a></li>
-          <li><a href="#" class="hover:text-primary transition-colors">Odstúpenie od zmluvy</a></li>
-          <li><a href="#" class="hover:text-primary transition-colors">O nás</a></li>
-        </ul>
-      </div>
+    menu.classList.toggle('hidden');
+  }
 
-      <div class="md:pl-8 text-left">
-        <h3 class="font-bold text-gray-900 mb-4 text-base">Informácie</h3>
-        <ul class="space-y-3.5 text-[#4a5568] font-medium text-sm mb-6">
-          <li><a href="#" class="hover:text-primary transition-colors">O nás</a></li>
-          <li><a href="#" class="hover:text-primary transition-colors">Kontakt</a></li>
-          <li><a href="#" class="hover:text-primary transition-colors">Doprava</a></li>
-        </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="border-t border-gray-200 bg-gray-200">
-    <div class="max-w-6xl mx-auto px-6 py-2.5 flex flex-col sm:flex-row items-center justify-between gap-2">
-      <p class="text-xs text-gray-500 text-center">* Všetky ceny sú uvedené vrátane DPH, bez nákladov na doručenie a prípadných poplatkov za dobierku, ak nie je uvedené inak</p>
-      <img src="{{ asset('images/logo2.jpg') }}" alt="PneuShop logo" class="h-6 w-auto object-contain" />
-    </div>
-  </div>
-</footer>
-
-</body>
-</html>
-
+  document.addEventListener('click', function (event) {
+    document.querySelectorAll('.header-login-menu').forEach(function (menu) {
+      const toggle = menu.previousElementSibling;
+      if (!menu.contains(event.target) && (!toggle || !toggle.contains(event.target))) {
+        menu.classList.add('hidden');
+      }
+    });
+  });
+</script>
+@endpush

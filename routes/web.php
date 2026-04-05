@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 
 Route::get('/', function () {
     return view('index');
@@ -37,3 +38,20 @@ Route::get('/delivery', function () {
 Route::get('/confirmation', function () {
     return view('confirmation');
 })->name('confirmation');
+
+Route::get('/admin-form', function () {
+    return view('admin-form');
+})->name('admin.form');
+
+Route::get('/admin-products', function () {
+    return view('admin-products');
+})->name('admin.products');
+
+Route::get('/summary', function () {
+    return view('summary');
+})->name('summary');
+
+Route::post('/login', [AuthController::class, 'login'])->name('login.post');
+Route::post('/register', [AuthController::class, 'register'])->name('register.post');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
