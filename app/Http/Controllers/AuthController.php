@@ -12,13 +12,19 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'username' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8',
+            'repeatpassword' => 'required|same:password',
+        ], [
+            'username.required' => 'Meno je povinné.',
+            'email.unique' => 'Tento e-mail už existuje.',
+            'password.min' => 'Heslo musí mať aspoň 8 znakov.',
+            'repeatpassword.same' => 'Heslá sa nezhodujú.',
         ]);
 
         $user = User::create([
-            'name' => $validated['name'],
+            'name' => $validated['username'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
         ]);
@@ -31,19 +37,21 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->validate([
-            'email' => ['required', 'email'],
+            'username' => ['required'],
             'password' => ['required'],
         ]);
 
-        if (Auth::attempt($credentials)) {
+        $loginField = filter_var($credentials['username'], FILTER_VALIDATE_EMAIL) ? 'email' : 'name';
+
+        if (Auth::attempt([$loginField => $credentials['username'], 'password' => $credentials['password']])) {
             $request->session()->regenerate();
 
             return redirect()->intended('/')->with('success', 'Boli ste úspešne prihlásený.');
         }
 
         return back()->withErrors([
-            'email' => 'Zadané údaje nie sú správne.',
-        ])->onlyInput('email');
+            'username' => 'Zadané údaje nie sú správne.',
+        ])->onlyInput('username');
     }
 
     public function logout(Request $request)
