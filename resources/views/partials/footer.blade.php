@@ -35,7 +35,7 @@
   <div class="border-t border-gray-200 bg-gray-200">
     <div class="max-w-6xl mx-auto px-6 py-2.5 flex flex-col sm:flex-row items-center justify-between gap-2">
       <p class="text-xs text-gray-500 text-center">* Všetky ceny sú uvedené vrátane DPH, bez nákladov na doručenie a prípadných poplatkov za dobierku, ak nie je uvedené inak</p>
-      <img src="{{ asset(\'images/logo2.jpg\') }}" alt="PneuShop logo" class="h-6 w-auto object-contain" />
+      <img src="{{ asset('images/logo2.jpg') }}" alt="PneuShop logo" class="h-6 w-auto object-contain" />
     </div>
   </div>
 </footer>

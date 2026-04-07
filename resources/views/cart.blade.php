@@ -25,7 +25,7 @@
 
       <div class="grid grid-cols-1 md:grid-cols-12 gap-3 p-4 items-center">
         <div class="md:col-span-5 flex items-center gap-3">
-          <img src="{{ asset(\'images/products/letne1.jpg\') }}" alt="Názov produktu 1" class="w-16 h-16 flex-shrink-0 object-cover rounded" />
+          <img src="{{ asset('images/products/letne1.jpg') }}" alt="Názov produktu 1" class="w-16 h-16 flex-shrink-0 object-cover rounded" />
           <span class="font-medium">Matador MP47 Hectorra 3</span>
         </div>
         <div class="md:col-span-2 flex items-center justify-between md:justify-end gap-3 text-gray-700">
@@ -47,13 +47,13 @@
           <span>199,96 €</span>
         </div>
         <button class="md:col-span-1 justify-self-end text-gray-400 hover:text-red-500">
-          <img src="{{ asset(\'images/icons/trash.png\') }}" alt="Odstrániť" class="w-5 h-5 opacity-50 hover:opacity-100 transition-opacity" />
+          <img src="{{ asset('images/icons/trash.png') }}" alt="Odstrániť" class="w-5 h-5 opacity-50 hover:opacity-100 transition-opacity" />
         </button>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-12 gap-3 p-4 items-center">
         <div class="md:col-span-5 flex items-center gap-3">
-          <img src="{{ asset(\'images/products/letne2.jpg\') }}" alt="Názov produktu 2" class="w-16 h-16 flex-shrink-0 object-cover rounded" />
+          <img src="{{ asset('images/products/letne2.jpg') }}" alt="Názov produktu 2" class="w-16 h-16 flex-shrink-0 object-cover rounded" />
           <span class="font-medium">Continental PremiumContact 6</span>
         </div>
         <div class="md:col-span-2 flex items-center justify-between md:justify-end gap-3 text-gray-700">
@@ -75,13 +75,13 @@
           <span>199,96 €</span>
         </div>
         <button class="md:col-span-1 justify-self-end text-gray-400 hover:text-red-500">
-          <img src="{{ asset(\'images/icons/trash.png\') }}" alt="Odstrániť" class="w-5 h-5 opacity-50 hover:opacity-100 transition-opacity" />
+          <img src="{{ asset('images/icons/trash.png') }}" alt="Odstrániť" class="w-5 h-5 opacity-50 hover:opacity-100 transition-opacity" />
         </button>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-12 gap-3 p-4 items-center">
         <div class="md:col-span-5 flex items-center gap-3">
-          <img src="{{ asset(\'images/products/letne3.jpg\') }}" alt="Názov produktu 3" class="w-16 h-16 flex-shrink-0 object-cover rounded" />
+          <img src="{{ asset('images/products/letne3.jpg') }}" alt="Názov produktu 3" class="w-16 h-16 flex-shrink-0 object-cover rounded" />
           <span class="font-medium">Hankook Ventus Prime 4</span>
         </div>
         <div class="md:col-span-2 flex items-center justify-between md:justify-end gap-3 text-gray-700">
@@ -103,7 +103,7 @@
           <span>99,98 €</span>
         </div>
         <button class="md:col-span-1 justify-self-end text-gray-400 hover:text-red-500">
-          <img src="{{ asset(\'images/icons/trash.png\') }}" alt="Odstrániť" class="w-5 h-5 opacity-50 hover:opacity-100 transition-opacity" />
+          <img src="{{ asset('images/icons/trash.png') }}" alt="Odstrániť" class="w-5 h-5 opacity-50 hover:opacity-100 transition-opacity" />
         </button>
       </div>
 
@@ -118,23 +118,3 @@
 
   </main>
 @endsection
-
-@push('scripts')
-<script>
-  function toggleHeaderLoginMenu(button) {
-    const menu = button.nextElementSibling;
-    if (!menu) return;
-
-    menu.classList.toggle('hidden');
-  }
-
-  document.addEventListener('click', function (event) {
-    document.querySelectorAll('.header-login-menu').forEach(function (menu) {
-      const toggle = menu.previousElementSibling;
-      if (!menu.contains(event.target) && (!toggle || !toggle.contains(event.target))) {
-        menu.classList.add('hidden');
-      }
-    });
-  });
-</script>
-@endpush

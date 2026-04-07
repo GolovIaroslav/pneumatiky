@@ -2,39 +2,58 @@
     <div class="max-w-6xl mx-auto px-6">
       <div class="flex items-center justify-between h-14">
         <a href="{{ route('home') }}" class="flex-shrink-0">
-          <img src="{{ asset(\'images/logo2.jpg\') }}" alt="PneuShop logo" class="h-8 w-auto object-contain" />
+          <img src="{{ asset('images/logo2.jpg') }}" alt="PneuShop logo" class="h-8 w-auto object-contain" />
         </a>
         <div class="hidden md:block w-full max-w-md mx-auto">
           <div class="flex border border-gray-300 rounded-lg overflow-hidden">
             <input type="text" placeholder="Sem napíšte hľadané slovo" class="flex-1 px-4 py-1.5 text-sm outline-none bg-white placeholder-gray-400" />
             <button class="px-3 bg-white hover:bg-gray-50 border-l border-gray-300">
-              <img src="{{ asset(\'images/icons/search.png\') }}" alt="Hladat" class="w-4 h-4" />
+              <img src="{{ asset('images/icons/search.png') }}" alt="Hladat" class="w-4 h-4" />
             </button>
           </div>
         </div>
         <div class="flex-1 md:hidden"></div>
         <div class="flex items-center gap-4 flex-shrink-0">
-          <button class="md:hidden">
-            <img src="{{ asset(\'images/icons/search.png\') }}" alt="Hladat" class="w-5 h-5" />
+          <button class="md:hidden" onclick="document.getElementById('mob-search').classList.toggle('hidden')">
+            <img src="{{ asset('images/icons/search.png') }}" alt="Hladat" class="w-5 h-5" />
           </button>
           <div class="relative">
             <button type="button" class="header-login-toggle" aria-label="Účet" onclick="toggleHeaderLoginMenu(this)">
-              <img src="{{ asset(\'images/icons/login.png\') }}" alt="Prihlasenie" class="w-6 h-6 hover:opacity-80 transition-opacity" />
+              <img src="{{ asset('images/icons/login.png') }}" alt="Prihlasenie" class="w-6 h-6 hover:opacity-80 transition-opacity" />
             </button>
             <div class="header-login-menu hidden absolute right-0 mt-2 w-36 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+              @guest
               <a href="{{ route('login') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-t-lg">Prihlásenie</a>
               <a href="{{ route('register') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-b-lg">Registrácia</a>
+              @endguest
+              @auth
+              <div class="px-4 py-2 text-sm font-semibold text-gray-900 border-b border-gray-100 truncate rounded-t-lg">
+                {{ Auth::user()->name }}
+              </div>
+              <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit" class="w-full text-left block px-4 py-2 text-sm text-red-600 hover:bg-gray-50 rounded-b-lg">Odhlásiť sa</button>
+              </form>
+              @endauth
             </div>
           </div>
           <a href="{{ route('cart') }}" class="relative">
-            <img src="{{ asset(\'images/icons/cart.png\') }}" alt="Kosik" class="w-6 h-6 hover:opacity-80 transition-opacity" />
+            <img src="{{ asset('images/icons/cart.png') }}" alt="Kosik" class="w-6 h-6 hover:opacity-80 transition-opacity" />
             <span class="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center leading-none font-medium">0</span>
           </a>
           <button class="lg:hidden" onclick="document.getElementById('mob-menu').classList.toggle('open')">
-            <img src="{{ asset(\'images/icons/menu.png\') }}" alt="Menu" class="w-6 h-6" />
+            <img src="{{ asset('images/icons/menu.png') }}" alt="Menu" class="w-6 h-6" />
           </button>
         </div>
       </div>
+    </div>
+    <div id="mob-search" class="md:hidden px-6 mt-3 hidden">
+       <div class="flex border border-gray-300 rounded-lg overflow-hidden">
+         <input type="text" placeholder="Sem napíšte hľadané slovo" class="flex-1 px-4 py-1.5 text-sm outline-none bg-white placeholder-gray-400" />
+         <button class="px-3 bg-white hover:bg-gray-50 border-l border-gray-300">
+           <img src="{{ asset('images/icons/search.png') }}" alt="Hladat" class="w-4 h-4" />
+         </button>
+       </div>
     </div>
     <nav class="max-w-6xl mx-auto px-6 mt-4 hidden lg:block">
       <div class="bg-primary rounded-xl overflow-hidden shadow-sm">

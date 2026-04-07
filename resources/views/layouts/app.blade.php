@@ -20,19 +20,6 @@
     }
   </script>
   <style>
-    .img-ph {
-      background: #e5e7eb;
-      position: relative;
-      overflow: hidden;
-    }
-    .img-ph::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background:
-        linear-gradient(to bottom right, transparent calc(50% - 0.5px), #9ca3af calc(50% - 0.5px), #9ca3af calc(50% + 0.5px), transparent calc(50% + 0.5px)),
-        linear-gradient(to top right, transparent calc(50% - 0.5px), #9ca3af calc(50% - 0.5px), #9ca3af calc(50% + 0.5px), transparent calc(50% + 0.5px));
-    }
     #mob-menu { display: none; }
     #mob-menu.open { display: block; }
   </style>
@@ -44,6 +31,23 @@
     @yield('content')
 
     @include('partials.footer')
+    
+    <script>
+      function toggleHeaderLoginMenu(button) {
+        const menu = button.nextElementSibling;
+        if (!menu) return;
+        menu.classList.toggle('hidden');
+      }
+
+      document.addEventListener('click', function (event) {
+        document.querySelectorAll('.header-login-menu').forEach(function (menu) {
+          const toggle = menu.previousElementSibling;
+          if (!menu.contains(event.target) && (!toggle || !toggle.contains(event.target))) {
+            menu.classList.add('hidden');
+          }
+        });
+      });
+    </script>
 
     @stack('scripts')
 </body>

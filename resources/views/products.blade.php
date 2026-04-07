@@ -4,7 +4,7 @@
 <div class="max-w-6xl mx-auto px-6 py-8">
     <div class="flex flex-col lg:flex-row gap-8">
       <button onclick="document.getElementById('mobile-filters').classList.toggle('hidden')" class="w-full mb-6 lg:hidden bg-white border border-gray-300 text-gray-800 font-bold py-2.5 rounded flex items-center justify-center gap-2 shadow-sm">
-        <img src="{{ asset(\'images/icons/filter.png\') }}" alt="Filter" class="w-4 h-4 opacity-70" />
+        <img src="{{ asset('images/icons/filter.png') }}" alt="Filter" class="w-4 h-4 opacity-70" />
         Filtrovať produkty
       </button>
       <aside id="mobile-filters" class="w-full lg:w-52 flex-shrink-0 hidden lg:block text-sm mb-6 lg:mb-0">
@@ -116,14 +116,14 @@
               <option>Cena: od najvyššej</option>
               <option>Najnovšie</option>
             </select>
-            <img src="{{ asset(\'images/icons/chevron-down.png\') }}" alt="Šípka dole" class="absolute right-2 top-1/2 -translate-y-1/2 w-3 h-3 pointer-events-none opacity-50" />
+            <img src="{{ asset('images/icons/chevron-down.png') }}" alt="Šípka dole" class="absolute right-2 top-1/2 -translate-y-1/2 w-3 h-3 pointer-events-none opacity-50" />
           </div>
         </div>
 
         <div class="grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-6">
           <div class="border border-gray-200 rounded flex flex-col bg-white overflow-hidden group">
-            <div class="img-ph w-full aspect-square relative border-b border-gray-200">
-              <img src="{{ asset(\'images/products/letne1.jpg\') }}" alt="Michelin Pilot Sport 4" class="absolute inset-0 w-full h-full object-cover" />
+            <div class="w-full aspect-square relative border-b border-gray-200">
+              <img src="{{ asset('images/products/letne1.jpg') }}" alt="Michelin Pilot Sport 4" class="absolute inset-0 w-full h-full object-cover" />
               <span class="absolute top-1 right-1 z-10 text-yellow-500 text-6xl leading-none">☀</span>
             </div>
             <div class="p-4 flex flex-col flex-1 text-left">
@@ -143,9 +143,9 @@
           </div>
 
           <div class="border border-gray-200 rounded flex flex-col bg-white overflow-hidden group">
-            <div class="img-ph w-full aspect-square relative border-b border-gray-200">
+            <div class="w-full aspect-square relative border-b border-gray-200">
               <span class="absolute top-1 right-1 z-10 text-yellow-500 text-5xl leading-none">❄</span>
-              <img src="{{ asset(\'images/products/zimne2.jpg\') }}" alt="Michelin Pilot Sport 4" class="absolute inset-0 w-full h-full object-cover" />
+              <img src="{{ asset('images/products/zimne2.jpg') }}" alt="Michelin Pilot Sport 4" class="absolute inset-0 w-full h-full object-cover" />
             </div>
             <div class="p-4 flex flex-col flex-1 text-left">
               <p class="font-bold text-sm mb-2 text-gray-900 group-hover:text-primary transition-colors">Michelin X-Ice Snow</p>
@@ -164,8 +164,8 @@
           </div>
 
           <div class="border border-gray-200 rounded flex flex-col bg-white overflow-hidden group">
-            <div class="img-ph w-full aspect-square relative border-b border-gray-200">
-              <img src="{{ asset(\'images/products/letne4.jpg\') }}" alt="Michelin Pilot Sport 4" class="absolute inset-0 w-full h-full object-cover" />
+            <div class="w-full aspect-square relative border-b border-gray-200">
+              <img src="{{ asset('images/products/letne4.jpg') }}" alt="Michelin Pilot Sport 4" class="absolute inset-0 w-full h-full object-cover" />
               <span class="absolute top-1 right-1 z-10 text-yellow-500 text-6xl leading-none">☀</span>
             </div>
             <div class="p-4 flex flex-col flex-1 text-left">
@@ -185,8 +185,8 @@
           </div>
 
           <div class="border border-gray-200 rounded flex flex-col bg-white overflow-hidden group">
-            <div class="img-ph w-full aspect-square relative border-b border-gray-200">
-              <img src="{{ asset(\'images/products/letne2.jpg\') }}" alt="Michelin Pilot Sport 4" class="absolute inset-0 w-full h-full object-cover" />
+            <div class="w-full aspect-square relative border-b border-gray-200">
+              <img src="{{ asset('images/products/letne2.jpg') }}" alt="Michelin Pilot Sport 4" class="absolute inset-0 w-full h-full object-cover" />
               <span class="absolute top-1 right-1 z-10 text-yellow-500 text-6xl leading-none">☀</span>
             </div>
             <div class="p-4 flex flex-col flex-1 text-left">
@@ -206,8 +206,8 @@
           </div>
 
           <div class="border border-gray-200 rounded flex flex-col bg-white overflow-hidden group">
-            <div class="img-ph w-full aspect-square relative border-b border-gray-200">
-              <img src="{{ asset(\'images/products/zimne1.jpg\') }}" alt="Michelin X-Ice Snow" class="absolute inset-0 w-full h-full object-cover" />
+            <div class="w-full aspect-square relative border-b border-gray-200">
+              <img src="{{ asset('images/products/zimne1.jpg') }}" alt="Michelin X-Ice Snow" class="absolute inset-0 w-full h-full object-cover" />
               <span class="absolute top-1 right-1 z-10 text-yellow-500 text-5xl leading-none">❄</span>
             </div>
             <div class="p-4 flex flex-col flex-1 text-left">
@@ -227,8 +227,8 @@
           </div>
 
           <div class="border border-gray-200 rounded flex flex-col bg-white overflow-hidden group">
-            <div class="img-ph w-full aspect-square relative border-b border-gray-200">
-              <img src="{{ asset(\'images/products/letne5.jpg\') }}" alt="Michelin Pilot Sport 4" class="absolute inset-0 w-full h-full object-cover" />
+            <div class="w-full aspect-square relative border-b border-gray-200">
+              <img src="{{ asset('images/products/letne5.jpg') }}" alt="Michelin Pilot Sport 4" class="absolute inset-0 w-full h-full object-cover" />
               <span class="absolute top-1 right-1 z-10 text-yellow-500 text-6xl leading-none">☀</span>
             </div>
             <div class="p-4 flex flex-col flex-1 text-left">
@@ -248,8 +248,8 @@
           </div>
 
           <div class="border border-gray-200 rounded flex flex-col bg-white overflow-hidden group">
-            <div class="img-ph w-full aspect-square relative border-b border-gray-200">
-              <img src="{{ asset(\'images/products/letne3.jpg\') }}" alt="Michelin Pilot Sport 4" class="absolute inset-0 w-full h-full object-cover" />
+            <div class="w-full aspect-square relative border-b border-gray-200">
+              <img src="{{ asset('images/products/letne3.jpg') }}" alt="Michelin Pilot Sport 4" class="absolute inset-0 w-full h-full object-cover" />
               <span class="absolute top-1 right-1 z-10 text-yellow-500 text-6xl leading-none">☀</span>
             </div>
             <div class="p-4 flex flex-col flex-1 text-left">
@@ -269,8 +269,8 @@
           </div>
 
           <div class="border border-gray-200 rounded flex flex-col bg-white overflow-hidden group">
-            <div class="img-ph w-full aspect-square relative border-b border-gray-200">
-              <img src="{{ asset(\'images/products/zimne3.jpg\') }}" alt="Michelin Pilot Sport 4" class="absolute inset-0 w-full h-full object-cover" />
+            <div class="w-full aspect-square relative border-b border-gray-200">
+              <img src="{{ asset('images/products/zimne3.jpg') }}" alt="Michelin Pilot Sport 4" class="absolute inset-0 w-full h-full object-cover" />
               <span class="absolute top-1 right-1 z-10 text-yellow-500 text-5xl leading-none">❄</span>
             </div>
             <div class="p-4 flex flex-col flex-1 text-left">
@@ -290,8 +290,8 @@
           </div>
 
           <div class="border border-gray-200 rounded flex flex-col bg-white overflow-hidden group">
-            <div class="img-ph w-full aspect-square relative border-b border-gray-200">
-              <img src="{{ asset(\'images/products/letne6.jpg\') }}" alt="Michelin Pilot Sport 4" class="absolute inset-0 w-full h-full object-cover" />
+            <div class="w-full aspect-square relative border-b border-gray-200">
+              <img src="{{ asset('images/products/letne6.jpg') }}" alt="Michelin Pilot Sport 4" class="absolute inset-0 w-full h-full object-cover" />
               <span class="absolute top-1 right-1 z-10 text-yellow-500 text-6xl leading-none">☀</span>
             </div>
             <div class="p-4 flex flex-col flex-1 text-left">

@@ -35,7 +35,7 @@
         <div class="divide-y divide-gray-200">
           <div class="grid grid-cols-1 md:grid-cols-12 gap-3 px-5 py-4 items-center">
             <div class="md:col-span-5 flex items-center gap-3">
-              <img src="{{ asset(\'images/products/letne1.jpg\') }}" alt="Matador MP47 Hectorra 3" class="w-14 h-14 rounded object-cover flex-shrink-0" />
+              <img src="{{ asset('images/products/letne1.jpg') }}" alt="Matador MP47 Hectorra 3" class="w-14 h-14 rounded object-cover flex-shrink-0" />
               <span class="font-medium">Matador MP47 Hectorra 3</span>
             </div>
             <span class="md:col-span-2 md:text-right text-gray-700">4 ks</span>
@@ -45,7 +45,7 @@
 
           <div class="grid grid-cols-1 md:grid-cols-12 gap-3 px-5 py-4 items-center">
             <div class="md:col-span-5 flex items-center gap-3">
-              <img src="{{ asset(\'images/products/letne2.jpg\') }}" alt="Continental PremiumContact 6" class="w-14 h-14 rounded object-cover flex-shrink-0" />
+              <img src="{{ asset('images/products/letne2.jpg') }}" alt="Continental PremiumContact 6" class="w-14 h-14 rounded object-cover flex-shrink-0" />
               <span class="font-medium">Continental PremiumContact 6</span>
             </div>
             <span class="md:col-span-2 md:text-right text-gray-700">4 ks</span>
@@ -55,7 +55,7 @@
 
           <div class="grid grid-cols-1 md:grid-cols-12 gap-3 px-5 py-4 items-center">
             <div class="md:col-span-5 flex items-center gap-3">
-              <img src="{{ asset(\'images/products/letne3.jpg\') }}" alt="Hankook Ventus Prime 4" class="w-14 h-14 rounded object-cover flex-shrink-0" />
+              <img src="{{ asset('images/products/letne3.jpg') }}" alt="Hankook Ventus Prime 4" class="w-14 h-14 rounded object-cover flex-shrink-0" />
               <span class="font-medium">Hankook Ventus Prime 4</span>
             </div>
             <span class="md:col-span-2 md:text-right text-gray-700">2 ks</span>
@@ -91,29 +91,9 @@
 
       <div class="flex items-center justify-between gap-4 pt-2">
         <a href="{{ route('delivery') }}" class="px-8 py-3 bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium rounded-full transition-colors">Späť</a>
-        <a href="{{ route('confirmation') }}" class="px-8 py-3 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-full transition-colors">Potvrdiť objednávku</a>
+        <a href="confirmation.html" class="px-8 py-3 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-full transition-colors">Potvrdiť objednávku</a>
       </div>
     </div>
 
   </main>
 @endsection
-
-@push('scripts')
-<script>
-  function toggleHeaderLoginMenu(button) {
-    const menu = button.nextElementSibling;
-    if (!menu) return;
-
-    menu.classList.toggle('hidden');
-  }
-
-  document.addEventListener('click', function (event) {
-    document.querySelectorAll('.header-login-menu').forEach(function (menu) {
-      const toggle = menu.previousElementSibling;
-      if (!menu.contains(event.target) && (!toggle || !toggle.contains(event.target))) {
-        menu.classList.add('hidden');
-      }
-    });
-  });
-</script>
-@endpush

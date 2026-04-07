@@ -6,12 +6,12 @@
     <div class="flex flex-col lg:flex-row gap-12 mb-16">
 
       <div class="lg:w-96 flex-shrink-0">
-        <img src="{{ asset(\'images/products/letne7.jpg\') }}" alt="Michelin Pilot Sport 4" class="w-full aspect-square mb-3 object-cover rounded" />
+        <img src="{{ asset('images/products/letne7.jpg') }}" alt="Michelin Pilot Sport 4" class="w-full aspect-square mb-3 object-cover rounded" />
         <div class="grid grid-cols-4 gap-2">
-          <img src="{{ asset(\'images/products/letne13.jpg\') }}" alt="Michelin Pilot Sport 4" class="w-full aspect-square object-cover rounded" />
-          <img src="{{ asset(\'images/products/letne14.jpg\') }}" alt="Michelin Pilot Sport 4" class="w-full aspect-square object-cover rounded" />
-          <img src="{{ asset(\'images/products/letne15.jpg\') }}" alt="Michelin Pilot Sport 4" class="w-full aspect-square object-cover rounded" />
-          <img src="{{ asset(\'images/products/letne16.jpg\') }}" alt="Michelin Pilot Sport 4" class="w-full aspect-square object-cover rounded" />
+          <img src="{{ asset('images/products/letne13.jpg') }}" alt="Michelin Pilot Sport 4" class="w-full aspect-square object-cover rounded" />
+          <img src="{{ asset('images/products/letne14.jpg') }}" alt="Michelin Pilot Sport 4" class="w-full aspect-square object-cover rounded" />
+          <img src="{{ asset('images/products/letne15.jpg') }}" alt="Michelin Pilot Sport 4" class="w-full aspect-square object-cover rounded" />
+          <img src="{{ asset('images/products/letne16.jpg') }}" alt="Michelin Pilot Sport 4" class="w-full aspect-square object-cover rounded" />
 
         </div>
       </div>
@@ -35,10 +35,10 @@
             <div id="qty" class="flex-1 flex items-center justify-center font-bold text-black text-base">4</div>
             <div class="flex flex-col border-l border-gray-300 w-6">
               <button onclick="changeQty(1)" class="qty-btn flex-1 flex items-center justify-center hover:bg-gray-100 text-primary border-b border-gray-300">
-                <img src="{{ asset(\'images/icons/caret-up.png\') }}" alt="Pridať" class="w-2.5 h-2.5 opacity-70" />
+                <img src="{{ asset('images/icons/caret-up.png') }}" alt="Pridať" class="w-2.5 h-2.5 opacity-70" />
               </button>
               <button onclick="changeQty(-1)" class="qty-btn flex-1 flex items-center justify-center hover:bg-gray-100 text-primary">
-                <img src="{{ asset(\'images/icons/caret-down.png\') }}" alt="Odobrať" class="w-2.5 h-2.5 opacity-70" />
+                <img src="{{ asset('images/icons/caret-down.png') }}" alt="Odobrať" class="w-2.5 h-2.5 opacity-70" />
               </button>
             </div>
           </div>
@@ -46,27 +46,27 @@
 
         <ul class="space-y-3.5 text-sm">
           <li class="flex items-center gap-3">
-            <img src="{{ asset(\'images/icons/check-green.png\') }}" alt="Check" class="w-5 h-5 flex-shrink-0" />
+            <img src="{{ asset('images/icons/check-green.png') }}" alt="Check" class="w-5 h-5 flex-shrink-0" />
             <span class="text-green-500 font-medium">Rýchle spracovanie objednávky (do 20 min.)</span>
           </li>
           <li class="flex items-center gap-3">
-            <img src="{{ asset(\'images/icons/stock.png\') }}" alt="Skladom" class="w-5 h-5 flex-shrink-0" />
+            <img src="{{ asset('images/icons/stock.png') }}" alt="Skladom" class="w-5 h-5 flex-shrink-0" />
             <span class="text-gray-700 font-medium">Skladom: 5 ks</span>
           </li>
           <li class="flex items-center gap-3">
-            <img src="{{ asset(\'images/icons/pin.png\') }}" alt="Miesto" class="w-5 h-5 flex-shrink-0 opacity-60" />
+            <img src="{{ asset('images/icons/pin.png') }}" alt="Miesto" class="w-5 h-5 flex-shrink-0 opacity-60" />
             <span class="text-gray-700 font-medium">Bezplatný osobný odber na 2 odberných miestach</span>
           </li>
           <li class="flex items-center gap-3">
-            <img src="{{ asset(\'images/icons/truck.png\') }}" alt="Kuriér" class="w-5 h-5 flex-shrink-0 opacity-60" />
+            <img src="{{ asset('images/icons/truck.png') }}" alt="Kuriér" class="w-5 h-5 flex-shrink-0 opacity-60" />
             <span class="text-gray-700 font-medium">Bezplatné doručenie kuriérom</span>
           </li>
           <li class="flex items-center gap-3">
-            <img src="{{ asset(\'images/icons/card.png\') }}" alt="Platba" class="w-5 h-5 flex-shrink-0 opacity-60" />
+            <img src="{{ asset('images/icons/card.png') }}" alt="Platba" class="w-5 h-5 flex-shrink-0 opacity-60" />
             <span class="text-gray-700 font-medium">Kartou online, v hotovosti, prevodom na účet</span>
           </li>
           <li class="flex items-center gap-3">
-            <img src="{{ asset(\'images/icons/box.png\') }}" alt="Doprava" class="w-5 h-5 flex-shrink-0 opacity-60" />
+            <img src="{{ asset('images/icons/box.png') }}" alt="Doprava" class="w-5 h-5 flex-shrink-0 opacity-60" />
             <span class="text-gray-700 font-medium">Doprava 0 €</span>
           </li>
         </ul>
@@ -79,38 +79,38 @@
         <div class="flex-1 h-px bg-gray-200"></div>
         <div class="flex gap-2">
           <button class="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-50">
-            <img src="{{ asset(\'images/icons/arrow-left.png\') }}" alt="Späť" class="w-3 h-3 opacity-60" />
+            <img src="{{ asset('images/icons/arrow-left.png') }}" alt="Späť" class="w-3 h-3 opacity-60" />
           </button>
           <button class="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-50">
-            <img src="{{ asset(\'images/icons/arrow-right.png\') }}" alt="Ďalej" class="w-3 h-3 opacity-60" />
+            <img src="{{ asset('images/icons/arrow-right.png') }}" alt="Ďalej" class="w-3 h-3 opacity-60" />
           </button>
         </div>
       </div>
       <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
       <a href="{{ route('product.detail') }}" class="group block text-center">
-        <div class="img-ph w-full aspect-square mb-2.5 relative rounded border border-gray-200">
-           <img src="{{ asset(\'images/products/letne1.jpg\') }}" alt="Matador MP47" class="w-full h-full object-cover" />
+        <div class="w-full aspect-square mb-2.5 relative rounded border border-gray-200">
+           <img src="{{ asset('images/products/letne1.jpg') }}" alt="Matador MP47" class="w-full h-full object-cover" />
         </div>
         <p class="font-bold text-sm mb-3 group-hover:text-primary transition-colors">Matador MP47 Hectorra 3</p>
         <div class="inline-block bg-gray-100 text-primary font-bold text-sm px-4 py-1.5 rounded-md border border-gray-200">54.90 €</div>
       </a>
       <a href="{{ route('product.detail') }}" class="group block text-center">
-        <div class="img-ph w-full aspect-square mb-2.5 relative rounded border border-gray-200">
-           <img src="{{ asset(\'images/products/letne2.jpg\') }}" alt="Continental PremiumContact" class="w-full h-full object-cover" />
+        <div class="w-full aspect-square mb-2.5 relative rounded border border-gray-200">
+           <img src="{{ asset('images/products/letne2.jpg') }}" alt="Continental PremiumContact" class="w-full h-full object-cover" />
         </div>
         <p class="font-bold text-sm mb-3 group-hover:text-primary transition-colors">Continental PremiumContact 6</p>
         <div class="inline-block bg-gray-100 text-primary font-bold text-sm px-4 py-1.5 rounded-md border border-gray-200">112.50 €</div>
       </a>
       <a href="{{ route('product.detail') }}" class="group block text-center">
-        <div class="img-ph w-full aspect-square mb-2.5 relative rounded border border-gray-200">
-           <img src="{{ asset(\'images/products/zimne1.jpg\') }}" alt="Michelin Alpin 6" class="w-full h-full object-cover" />
+        <div class="w-full aspect-square mb-2.5 relative rounded border border-gray-200">
+           <img src="{{ asset('images/products/zimne1.jpg') }}" alt="Michelin Alpin 6" class="w-full h-full object-cover" />
         </div>
         <p class="font-bold text-sm mb-3 group-hover:text-primary transition-colors">Michelin Alpin 6 (Zimné)</p>
         <div class="inline-block bg-gray-100 text-primary font-bold text-sm px-4 py-1.5 rounded-md border border-gray-200">135.00 €</div>
       </a>
       <a href="{{ route('product.detail') }}" class="group block text-center">
-        <div class="img-ph w-full aspect-square mb-2.5 relative rounded border border-gray-200">
-           <img src="{{ asset(\'images/products/letne3.jpg\') }}" alt="Hankook Ventus" class="w-full h-full object-cover" />
+        <div class="w-full aspect-square mb-2.5 relative rounded border border-gray-200">
+           <img src="{{ asset('images/products/letne3.jpg') }}" alt="Hankook Ventus" class="w-full h-full object-cover" />
         </div>
         <p class="font-bold text-sm mb-3 group-hover:text-primary transition-colors">Hankook Ventus Prime 4</p>
         <div class="inline-block bg-gray-100 text-primary font-bold text-sm px-4 py-1.5 rounded-md border border-gray-200">72.30 €</div>
@@ -209,22 +209,4 @@
       }
     }
   </script>
-
-<script>
-  function toggleHeaderLoginMenu(button) {
-    const menu = button.nextElementSibling;
-    if (!menu) return;
-
-    menu.classList.toggle('hidden');
-  }
-
-  document.addEventListener('click', function (event) {
-    document.querySelectorAll('.header-login-menu').forEach(function (menu) {
-      const toggle = menu.previousElementSibling;
-      if (!menu.contains(event.target) && (!toggle || !toggle.contains(event.target))) {
-        menu.classList.add('hidden');
-      }
-    });
-  });
-</script>
 @endpush
