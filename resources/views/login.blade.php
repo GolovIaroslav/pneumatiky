@@ -24,7 +24,7 @@
           <label for="password" class="block text-center text-sm font-medium text-gray-700 mb-2">Heslo</label>
           <div class="relative">
             <input type="password" id="password" name="password" class="w-full border border-gray-400 rounded-md px-4 py-2.5 pr-10 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary" />
-            <button type="button" class="absolute inset-y-0 right-0 px-3 flex items-center text-gray-400 hover:text-gray-600">
+            <button type="button" class="password-toggle absolute inset-y-0 right-0 px-3 flex items-center text-gray-400 hover:text-gray-600">
               <img src="{{ asset('images/icons/eye.png') }}" alt="Zobraziť heslo" class="w-5 h-5 opacity-50 hover:opacity-80 transition-opacity" />
             </button>
           </div>

@@ -40,12 +40,23 @@
       }
 
       document.addEventListener('click', function (event) {
+        // Clear login menu
         document.querySelectorAll('.header-login-menu').forEach(function (menu) {
           const toggle = menu.previousElementSibling;
           if (!menu.contains(event.target) && (!toggle || !toggle.contains(event.target))) {
             menu.classList.add('hidden');
           }
         });
+
+        // Password visibility toggle
+        const toggleBtn = event.target.closest('.password-toggle');
+        if (toggleBtn) {
+          const input = toggleBtn.previousElementSibling;
+          if (input && (input.tagName === 'INPUT')) {
+            const isPassword = input.type === 'password';
+            input.type = isPassword ? 'text' : 'password';
+          }
+        }
       });
     </script>
 
