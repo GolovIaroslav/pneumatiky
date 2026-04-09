@@ -16,7 +16,7 @@
         @endif
 
         <div>
-          <label for="username" class="block text-center text-sm font-medium text-gray-700 mb-2">Prihlasovacie meno</label>
+          <label for="username" class="block text-center text-sm font-medium text-gray-700 mb-2">Prihlasovacie meno alebo e-mail</label>
           <input type="text" id="username" name="username" class="w-full border border-gray-400 rounded-md px-4 py-2.5 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary" />
         </div>
 
