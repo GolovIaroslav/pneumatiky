@@ -39,7 +39,12 @@
           </div>
           <a href="{{ route('cart') }}" class="relative">
             <img src="{{ asset('images/icons/cart.png') }}" alt="Kosik" class="w-6 h-6 hover:opacity-80 transition-opacity" />
-            <span class="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center leading-none font-medium">0</span>
+            @php
+              $cartCount = collect(session('cart', []))->sum('qty');
+            @endphp
+            <span class="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center leading-none font-medium">
+              {{ $cartCount > 0 ? $cartCount : 0 }}
+            </span>
           </a>
           <button class="lg:hidden" onclick="document.getElementById('mob-menu').classList.toggle('open')">
             <img src="{{ asset('images/icons/menu.png') }}" alt="Menu" class="w-6 h-6" />
