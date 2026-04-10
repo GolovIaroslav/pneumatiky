@@ -5,12 +5,12 @@
           <img src="{{ asset('images/logo2.jpg') }}" alt="PneuShop logo" class="h-8 w-auto object-contain" />
         </a>
         <div class="hidden md:block w-full max-w-md mx-auto">
-          <div class="flex border border-gray-300 rounded-lg overflow-hidden">
-            <input type="text" placeholder="Sem napíšte hľadané slovo" class="flex-1 px-4 py-1.5 text-sm outline-none bg-white placeholder-gray-400" />
-            <button class="px-3 bg-white hover:bg-gray-50 border-l border-gray-300">
+          <form method="GET" action="{{ route('products') }}" class="flex border border-gray-300 rounded-lg overflow-hidden">
+            <input type="text" name="q" value="{{ request('q', '') }}" placeholder="Sem napíšte hľadané slovo" class="flex-1 px-4 py-1.5 text-sm outline-none bg-white placeholder-gray-400" />
+            <button type="submit" class="px-3 bg-white hover:bg-gray-50 border-l border-gray-300">
               <img src="{{ asset('images/icons/search.png') }}" alt="Hladat" class="w-4 h-4" />
             </button>
-          </div>
+          </form>
         </div>
         <div class="flex-1 md:hidden"></div>
         <div class="flex items-center gap-4 flex-shrink-0">
@@ -48,12 +48,12 @@
       </div>
     </div>
     <div id="mob-search" class="md:hidden px-6 mt-3 hidden">
-       <div class="flex border border-gray-300 rounded-lg overflow-hidden">
-         <input type="text" placeholder="Sem napíšte hľadané slovo" class="flex-1 px-4 py-1.5 text-sm outline-none bg-white placeholder-gray-400" />
-         <button class="px-3 bg-white hover:bg-gray-50 border-l border-gray-300">
+       <form method="GET" action="{{ route('products') }}" class="flex border border-gray-300 rounded-lg overflow-hidden">
+         <input type="text" name="q" value="{{ request('q', '') }}" placeholder="Sem napíšte hľadané slovo" class="flex-1 px-4 py-1.5 text-sm outline-none bg-white placeholder-gray-400" />
+         <button type="submit" class="px-3 bg-white hover:bg-gray-50 border-l border-gray-300">
            <img src="{{ asset('images/icons/search.png') }}" alt="Hladat" class="w-4 h-4" />
          </button>
-       </div>
+       </form>
     </div>
     <nav class="max-w-6xl mx-auto px-6 mt-4 hidden lg:block">
       <div class="bg-primary rounded-xl overflow-hidden shadow-sm">

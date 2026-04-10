@@ -29,6 +29,9 @@
     @if (filled($currentCat) && $currentCat !== 'all')
       <input type="hidden" name="cat" value="{{ $currentCat }}" />
     @endif
+    @if (filled($search ?? null))
+      <input type="hidden" name="q" value="{{ $search }}" />
+    @endif
 
     <div class="flex flex-col lg:flex-row gap-8">
       <button type="button" onclick="document.getElementById('mobile-filters').classList.toggle('hidden')" class="w-full mb-6 lg:hidden bg-white border border-gray-300 text-gray-800 font-bold py-2.5 rounded flex items-center justify-center gap-2 shadow-sm">
@@ -200,6 +203,18 @@
             <img src="{{ asset('images/icons/chevron-down.png') }}" alt="Šípka dole" class="absolute right-2 top-1/2 -translate-y-1/2 w-3 h-3 pointer-events-none opacity-50" />
           </div>
         </div>
+
+        @if (filled($search ?? null))
+          <div class="mb-6 flex items-center justify-between bg-blue-50 border border-blue-200 rounded-lg px-4 py-3">
+            <span class="text-sm text-gray-700">
+              <span class="font-bold">Výsledky vyhľadávania pre:</span>
+              <span class="text-primary font-semibold">„{{ $search }}"</span>
+            </span>
+            <a href="{{ route('products', array_diff_key(request()->query(), ['q' => null])) }}" class="text-xs px-3 py-1.5 bg-white border border-gray-300 text-gray-700 rounded hover:bg-gray-50 transition-colors font-medium">
+              Vymazať hľadanie
+            </a>
+          </div>
+        @endif
 
         <div class="grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-6">
           @forelse ($products as $product)

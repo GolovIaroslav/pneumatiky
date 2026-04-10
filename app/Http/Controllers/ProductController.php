@@ -99,10 +99,21 @@ class ProductController extends Controller
 
         $search = trim((string) $request->query('q', ''));
         if ($search !== '') {
-            $baseQuery->where(function (Builder $q) use ($search) {
-                $q->where('name', 'like', '%' . $search . '%')
-                    ->orWhere('brand', 'like', '%' . $search . '%')
-                    ->orWhere('description', 'like', '%' . $search . '%');
+            $terms = array_values(array_filter(preg_split('/\s+/u', $search) ?: []));
+
+            $baseQuery->where(function (Builder $q) use ($terms) {
+                foreach ($terms as $term) {
+                    $q->where(function (Builder $subQuery) use ($term) {
+                        $like = '%' . $term . '%';
+                        if (config('database.default') === 'pgsql') {
+                            $subQuery->where('name', 'ilike', $like)
+                                ->orWhere('brand', 'ilike', $like);
+                        } else {
+                            $subQuery->where('name', 'like', $like)
+                                ->orWhere('brand', 'like', $like);
+                        }
+                    });
+                }
             });
         }
 
