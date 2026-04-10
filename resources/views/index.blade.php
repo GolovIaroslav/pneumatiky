@@ -24,34 +24,20 @@
     </div>
 
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-      <a href="{{ route('product.detail') }}" class="group block text-center">
+      @foreach($carouselProducts as $prod)
+      @php
+          $prodMain = $prod->images->firstWhere('is_main', true) ?? $prod->images->first();
+          $prodImg = $prodMain ? asset($prodMain->image_path) : asset('images/products/letne1.jpg');
+          $prodName = trim(($prod->brand ? $prod->brand . ' ' : '') . $prod->name);
+      @endphp
+      <a href="{{ route('product.show', $prod->id) }}" class="group block text-center">
         <div class="w-full aspect-square mb-2.5 relative rounded border border-gray-200">
-           <img src="{{ asset('images/products/letne1.jpg') }}" alt="Matador MP47" class="w-full h-full object-cover" />
+           <img src="{{ $prodImg }}" alt="{{ $prodName }}" class="w-full h-full object-cover" />
         </div>
-        <p class="font-bold text-sm mb-3 group-hover:text-primary transition-colors">Matador MP47 Hectorra 3</p>
-        <div class="inline-block bg-gray-100 text-primary font-bold text-sm px-4 py-1.5 rounded-md border border-gray-200">54.90 €</div>
+        <p class="font-bold text-sm mb-3 group-hover:text-primary transition-colors">{{ $prodName }}</p>
+        <div class="inline-block bg-gray-100 text-primary font-bold text-sm px-4 py-1.5 rounded-md border border-gray-200">{{ number_format((float) $prod->price, 2, ',', ' ') }} €</div>
       </a>
-      <a href="{{ route('product.detail') }}" class="group block text-center">
-        <div class="w-full aspect-square mb-2.5 relative rounded border border-gray-200">
-           <img src="{{ asset('images/products/letne2.jpg') }}" alt="Continental PremiumContact" class="w-full h-full object-cover" />
-        </div>
-        <p class="font-bold text-sm mb-3 group-hover:text-primary transition-colors">Continental PremiumContact 6</p>
-        <div class="inline-block bg-gray-100 text-primary font-bold text-sm px-4 py-1.5 rounded-md border border-gray-200">112.50 €</div>
-      </a>
-      <a href="{{ route('product.detail') }}" class="group block text-center">
-        <div class="w-full aspect-square mb-2.5 relative rounded border border-gray-200">
-           <img src="{{ asset('images/products/zimne1.jpg') }}" alt="Michelin Alpin 6" class="w-full h-full object-cover" />
-        </div>
-        <p class="font-bold text-sm mb-3 group-hover:text-primary transition-colors">Michelin Alpin 6 (Zimné)</p>
-        <div class="inline-block bg-gray-100 text-primary font-bold text-sm px-4 py-1.5 rounded-md border border-gray-200">135.00 €</div>
-      </a>
-      <a href="{{ route('product.detail') }}" class="group block text-center">
-        <div class="w-full aspect-square mb-2.5 relative rounded border border-gray-200">
-           <img src="{{ asset('images/products/letne3.jpg') }}" alt="Hankook Ventus" class="w-full h-full object-cover" />
-        </div>
-        <p class="font-bold text-sm mb-3 group-hover:text-primary transition-colors">Hankook Ventus Prime 4</p>
-        <div class="inline-block bg-gray-100 text-primary font-bold text-sm px-4 py-1.5 rounded-md border border-gray-200">72.30 €</div>
-      </a>
+      @endforeach
     </div>
   </section>
 
@@ -116,34 +102,20 @@
     </div>
 
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-      <a href="{{ route('product.detail') }}" class="group block text-center">
+      @foreach($carouselProducts as $prod)
+      @php
+          $prodMain = $prod->images->firstWhere('is_main', true) ?? $prod->images->first();
+          $prodImg = $prodMain ? asset($prodMain->image_path) : asset('images/products/letne1.jpg');
+          $prodName = trim(($prod->brand ? $prod->brand . ' ' : '') . $prod->name);
+      @endphp
+      <a href="{{ route('product.show', $prod->id) }}" class="group block text-center">
         <div class="w-full aspect-square mb-2.5 relative rounded border border-gray-200">
-           <img src="{{ asset('images/products/letne1.jpg') }}" alt="Matador MP47" class="w-full h-full object-cover" />
+           <img src="{{ $prodImg }}" alt="{{ $prodName }}" class="w-full h-full object-cover" />
         </div>
-        <p class="font-bold text-sm mb-3 group-hover:text-primary transition-colors">Matador MP47 Hectorra 3</p>
-        <div class="inline-block bg-gray-100 text-primary font-bold text-sm px-4 py-1.5 rounded-md border border-gray-200">54.90 €</div>
+        <p class="font-bold text-sm mb-3 group-hover:text-primary transition-colors">{{ $prodName }}</p>
+        <div class="inline-block bg-gray-100 text-primary font-bold text-sm px-4 py-1.5 rounded-md border border-gray-200">{{ number_format((float) $prod->price, 2, ',', ' ') }} €</div>
       </a>
-      <a href="{{ route('product.detail') }}" class="group block text-center">
-        <div class="w-full aspect-square mb-2.5 relative rounded border border-gray-200">
-           <img src="{{ asset('images/products/letne2.jpg') }}" alt="Continental PremiumContact" class="w-full h-full object-cover" />
-        </div>
-        <p class="font-bold text-sm mb-3 group-hover:text-primary transition-colors">Continental PremiumContact 6</p>
-        <div class="inline-block bg-gray-100 text-primary font-bold text-sm px-4 py-1.5 rounded-md border border-gray-200">112.50 €</div>
-      </a>
-      <a href="{{ route('product.detail') }}" class="group block text-center">
-        <div class="w-full aspect-square mb-2.5 relative rounded border border-gray-200">
-           <img src="{{ asset('images/products/zimne1.jpg') }}" alt="Michelin Alpin 6" class="w-full h-full object-cover" />
-        </div>
-        <p class="font-bold text-sm mb-3 group-hover:text-primary transition-colors">Michelin Alpin 6 (Zimné)</p>
-        <div class="inline-block bg-gray-100 text-primary font-bold text-sm px-4 py-1.5 rounded-md border border-gray-200">135.00 €</div>
-      </a>
-      <a href="{{ route('product.detail') }}" class="group block text-center">
-        <div class="w-full aspect-square mb-2.5 relative rounded border border-gray-200">
-           <img src="{{ asset('images/products/letne3.jpg') }}" alt="Hankook Ventus" class="w-full h-full object-cover" />
-        </div>
-        <p class="font-bold text-sm mb-3 group-hover:text-primary transition-colors">Hankook Ventus Prime 4</p>
-        <div class="inline-block bg-gray-100 text-primary font-bold text-sm px-4 py-1.5 rounded-md border border-gray-200">72.30 €</div>
-      </a>
+      @endforeach
     </div>
   </section>
 
