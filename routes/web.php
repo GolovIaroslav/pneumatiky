@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProductController;
 
 Route::get('/', function () {
     return view('index');
@@ -15,9 +16,7 @@ Route::get('/register', function () {
     return view('register');
 })->name('register');
 
-Route::get('/products', function () {
-    return view('products');
-})->name('products');
+Route::get('/products', [ProductController::class, 'index'])->name('products');
 
 Route::get('/product-detail', function () {
     return view('product-detail');
