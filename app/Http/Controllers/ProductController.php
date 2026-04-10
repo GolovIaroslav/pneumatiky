@@ -47,7 +47,14 @@ class ProductController extends Controller
 
         $filterScope = (clone $baseQuery);
 
+        // Parse all filter inputs as arrays
         $brands = array_values(array_filter((array) $request->query('brand', [])));
+        $seasons = array_values(array_filter((array) $request->query('season', [])));
+        $widths = array_values(array_filter(array_map('intval', (array) $request->query('width', []))));
+        $profiles = array_values(array_filter(array_map('intval', (array) $request->query('profile', []))));
+        $diameters = array_values(array_filter((array) $request->query('diameter', [])));
+        $hasSpikes = (array) $request->query('has_spikes', []);
+
         if (! empty($brands)) {
             $baseQuery->whereIn('brand', $brands);
         }
@@ -63,34 +70,31 @@ class ProductController extends Controller
         }
 
         if (($categoryKey === 'auto' || $categoryKey === 'all') && $forcedSeason === null) {
-            $season = $request->query('season');
-            if (filled($season)) {
-                $baseQuery->where('season', $season);
+            if (! empty($seasons)) {
+                $baseQuery->whereIn('season', $seasons);
             }
         }
 
         if (in_array($categoryKey, ['auto', 'bicycle', 'all'], true)) {
-            $hasSpikes = $request->query('has_spikes');
-            if ($hasSpikes === '1' || $hasSpikes === '0') {
-                $baseQuery->where('has_spikes', $hasSpikes === '1');
+            if (! empty($hasSpikes)) {
+                if (count($hasSpikes) === 1) {
+                    $baseQuery->where('has_spikes', $hasSpikes[0] === '1');
+                }
             }
         }
 
-        $width = $request->query('width');
-        if (is_numeric($width)) {
-            $baseQuery->where('width', (int) $width);
+        if (! empty($widths)) {
+            $baseQuery->whereIn('width', $widths);
         }
 
         if (in_array($categoryKey, ['auto', 'moto', 'tractor', 'all'], true)) {
-            $profile = $request->query('profile');
-            if (is_numeric($profile)) {
-                $baseQuery->where('profile', (int) $profile);
+            if (! empty($profiles)) {
+                $baseQuery->whereIn('profile', $profiles);
             }
         }
 
-        $diameter = $request->query('diameter');
-        if (filled($diameter)) {
-            $baseQuery->where('diameter', $diameter);
+        if (! empty($diameters)) {
+            $baseQuery->whereIn('diameter', $diameters);
         }
 
         $search = trim((string) $request->query('q', ''));
@@ -106,19 +110,35 @@ class ProductController extends Controller
         match ($sort) {
             'price_asc' => $baseQuery->orderBy('price'),
             'price_desc' => $baseQuery->orderByDesc('price'),
-            'name_asc' => $baseQuery->orderBy('name'),
-            'name_desc' => $baseQuery->orderByDesc('name'),
+            'name_asc' => $baseQuery->orderBy('brand')->orderBy('name'),
+            'name_desc' => $baseQuery->orderByDesc('brand')->orderByDesc('name'),
             default => $baseQuery->orderByDesc('id'),
         };
 
         $products = $baseQuery->paginate(9)->withQueryString();
 
+        // Get min/max prices for this category
+        $minPrice = (clone $filterScope)->min('price') ?? 22;
+        $maxPrice = (clone $filterScope)->max('price') ?? 270;
+
+        // Get current price filters or defaults
+        $currentPriceFrom = filled($priceFrom) ? (float) $priceFrom : $minPrice;
+        $currentPriceTo = filled($priceTo) ? (float) $priceTo : $maxPrice;
+
+        // Get all available options
         $availableBrands = (clone $filterScope)
             ->whereNotNull('brand')
             ->select('brand')
             ->distinct()
             ->orderBy('brand')
             ->pluck('brand');
+
+        $availableSeasons = (clone $filterScope)
+            ->whereNotNull('season')
+            ->select('season')
+            ->distinct()
+            ->orderBy('season')
+            ->pluck('season');
 
         $availableWidths = (clone $filterScope)
             ->whereNotNull('width')
@@ -141,12 +161,13 @@ class ProductController extends Controller
             ->orderBy('diameter')
             ->pluck('diameter');
 
-        $availableSeasons = (clone $filterScope)
-            ->whereNotNull('season')
-            ->select('season')
-            ->distinct()
-            ->orderBy('season')
-            ->pluck('season');
+        // Calculate which filter options are available with current selections
+        $disabledFilterOptions = $this->calculateDisabledOptions(
+            $request,
+            $categoryKey,
+            $forcedSeason,
+            $filterScope
+        );
 
         $categoryLabel = match ($categoryKey) {
             'moto' => 'Moto pneumatiky',
@@ -156,19 +177,124 @@ class ProductController extends Controller
             default => 'Auto pneumatiky',
         };
 
+        // Calculate pagination window (show 5 pages around current page)
+        $currentPage = $products->currentPage();
+        $lastPage = $products->lastPage();
+        $paginationStart = max(1, $currentPage - 2);
+        $paginationEnd = min($lastPage, $paginationStart + 4);
+        $paginationStart = max(1, $paginationEnd - 4);
+
         return view('products', [
             'products' => $products,
             'categoryKey' => $categoryKey,
             'categoryLabel' => $categoryLabel,
             'seasonLocked' => $forcedSeason !== null,
             'selectedBrands' => $brands,
+            'selectedSeasons' => $seasons,
+            'selectedWidths' => $widths,
+            'selectedProfiles' => $profiles,
+            'selectedDiameters' => $diameters,
+            'selectedHasSpikes' => $hasSpikes,
             'availableBrands' => $availableBrands,
+            'availableSeasons' => $availableSeasons,
             'availableWidths' => $availableWidths,
             'availableProfiles' => $availableProfiles,
             'availableDiameters' => $availableDiameters,
-            'availableSeasons' => $availableSeasons,
+            'disabledFilterOptions' => $disabledFilterOptions,
+            'minPrice' => $minPrice,
+            'maxPrice' => $maxPrice,
+            'currentPriceFrom' => $currentPriceFrom,
+            'currentPriceTo' => $currentPriceTo,
             'sort' => $sort,
             'search' => $search,
+            'paginationStart' => $paginationStart,
+            'paginationEnd' => $paginationEnd,
         ]);
+    }
+
+    private function calculateDisabledOptions($request, $categoryKey, $forcedSeason, $filterScope)
+    {
+        $disabled = [
+            'brands' => [],
+            'seasons' => [],
+            'widths' => [],
+            'profiles' => [],
+            'diameters' => [],
+            'hasSpikes' => [],
+        ];
+
+        // For each potential filter value, check if it has any products
+        $baseQuery = clone $filterScope;
+
+        // Parse current selections
+        $brands = array_values(array_filter((array) $request->query('brand', [])));
+        $seasons = array_values(array_filter((array) $request->query('season', [])));
+        $widths = array_values(array_filter(array_map('intval', (array) $request->query('width', []))));
+        $profiles = array_values(array_filter(array_map('intval', (array) $request->query('profile', []))));
+        $diameters = array_values(array_filter((array) $request->query('diameter', [])));
+        $hasSpikes = (array) $request->query('has_spikes', []);
+
+        // Check brand availability
+        $availableBrands = $baseQuery
+            ->when(! empty($seasons), fn ($q) => $q->whereIn('season', $seasons))
+            ->when(! empty($widths), fn ($q) => $q->whereIn('width', $widths))
+            ->when(! empty($profiles), fn ($q) => $q->whereIn('profile', $profiles))
+            ->when(! empty($diameters), fn ($q) => $q->whereIn('diameter', $diameters))
+            ->select('brand')
+            ->distinct()
+            ->pluck('brand')
+            ->all();
+
+        // Check season availability
+        $availableSeasons = (clone $filterScope)
+            ->when(! empty($brands), fn ($q) => $q->whereIn('brand', $brands))
+            ->when(! empty($widths), fn ($q) => $q->whereIn('width', $widths))
+            ->when(! empty($profiles), fn ($q) => $q->whereIn('profile', $profiles))
+            ->when(! empty($diameters), fn ($q) => $q->whereIn('diameter', $diameters))
+            ->select('season')
+            ->distinct()
+            ->pluck('season')
+            ->all();
+
+        // Check width availability
+        $availableWidths = (clone $filterScope)
+            ->when(! empty($brands), fn ($q) => $q->whereIn('brand', $brands))
+            ->when(! empty($seasons), fn ($q) => $q->whereIn('season', $seasons))
+            ->when(! empty($profiles), fn ($q) => $q->whereIn('profile', $profiles))
+            ->when(! empty($diameters), fn ($q) => $q->whereIn('diameter', $diameters))
+            ->select('width')
+            ->distinct()
+            ->pluck('width')
+            ->all();
+
+        // Check profile availability
+        $availableProfiles = (clone $filterScope)
+            ->when(! empty($brands), fn ($q) => $q->whereIn('brand', $brands))
+            ->when(! empty($seasons), fn ($q) => $q->whereIn('season', $seasons))
+            ->when(! empty($widths), fn ($q) => $q->whereIn('width', $widths))
+            ->when(! empty($diameters), fn ($q) => $q->whereIn('diameter', $diameters))
+            ->select('profile')
+            ->distinct()
+            ->pluck('profile')
+            ->all();
+
+        // Check diameter availability
+        $availableDiameters = (clone $filterScope)
+            ->when(! empty($brands), fn ($q) => $q->whereIn('brand', $brands))
+            ->when(! empty($seasons), fn ($q) => $q->whereIn('season', $seasons))
+            ->when(! empty($widths), fn ($q) => $q->whereIn('width', $widths))
+            ->when(! empty($profiles), fn ($q) => $q->whereIn('profile', $profiles))
+            ->select('diameter')
+            ->distinct()
+            ->pluck('diameter')
+            ->all();
+
+        return [
+            'brands' => $availableBrands,
+            'seasons' => $availableSeasons,
+            'widths' => $availableWidths,
+            'profiles' => $availableProfiles,
+            'diameters' => $availableDiameters,
+        ];
     }
 }

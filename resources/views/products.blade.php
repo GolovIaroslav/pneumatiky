@@ -3,14 +3,19 @@
 @section('content')
 @php
   $activeBrands = collect($selectedBrands ?? request()->query('brand', []))->map(fn ($value) => (string) $value)->all();
-  $currentSeason = request()->query('season');
-  $currentWidth = request()->query('width');
-  $currentProfile = request()->query('profile');
-  $currentDiameter = request()->query('diameter');
-  $currentPriceFrom = request()->query('price_from', 22);
-  $currentPriceTo = request()->query('price_to', 270);
+  $activeSeasons = collect($selectedSeasons ?? request()->query('season', []))->map(fn ($value) => (string) $value)->all();
+  $activeWidths = collect($selectedWidths ?? request()->query('width', []))->map(fn ($value) => (int) $value)->all();
+  $activeProfiles = collect($selectedProfiles ?? request()->query('profile', []))->map(fn ($value) => (int) $value)->all();
+  $activeDiameters = collect($selectedDiameters ?? request()->query('diameter', []))->map(fn ($value) => (string) $value)->all();
+  $activeHasSpikes = collect($selectedHasSpikes ?? request()->query('has_spikes', []))->map(fn ($value) => (string) $value)->all();
   $currentSort = request()->query('sort', $sort ?? 'default');
   $currentCat = request()->query('cat', 'all');
+
+  $availableBrandsList = $disabledFilterOptions['brands'] ?? [];
+  $availableSeasonsList = $disabledFilterOptions['seasons'] ?? [];
+  $availableWidthsList = $disabledFilterOptions['widths'] ?? [];
+  $availableProfilesList = $disabledFilterOptions['profiles'] ?? [];
+  $availableDiametersList = $disabledFilterOptions['diameters'] ?? [];
 
   $paginationStart = max(1, $products->currentPage() - 1);
   $paginationEnd = min($products->lastPage(), $paginationStart + 3);
@@ -37,11 +42,13 @@
           <div class="flex items-center gap-6">
             <div class="flex-1 border-b border-gray-400 flex items-baseline pb-1">
               <span class="font-bold text-gray-900 mr-2">od</span>
-              <input type="number" name="price_from" value="{{ $currentPriceFrom }}" class="w-full text-gray-500 outline-none bg-transparent" />
+              <input type="number" name="price_from" value="{{ floor($currentPriceFrom) }}" min="{{ floor($minPrice) }}" max="{{ ceil($maxPrice) }}" step="0.01" class="w-full text-gray-500 outline-none bg-transparent" />
+              <span class="font-bold text-gray-900 ml-1">€</span>
             </div>
             <div class="flex-1 border-b border-gray-400 flex items-baseline pb-1">
               <span class="font-bold text-gray-900 mr-2">do</span>
-              <input type="number" name="price_to" value="{{ $currentPriceTo }}" class="w-full text-gray-500 outline-none bg-transparent" />
+              <input type="number" name="price_to" value="{{ ceil($currentPriceTo) }}" min="{{ floor($minPrice) }}" max="{{ ceil($maxPrice) }}" step="0.01" class="w-full text-gray-500 outline-none bg-transparent" />
+              <span class="font-bold text-gray-900 ml-1">€</span>
             </div>
           </div>
         </div>
@@ -50,9 +57,13 @@
           <p class="font-bold text-gray-900 mb-3 text-base">Značka</p>
           <div class="space-y-2 max-h-44 overflow-auto pr-1">
             @forelse ($availableBrands as $brand)
-              <label class="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" name="brand[]" value="{{ $brand }}" @checked(in_array($brand, $activeBrands, true)) class="w-4 h-4 rounded border-gray-300" />
-                <span class="text-gray-700 font-medium">{{ $brand }}</span>
+              @php
+                $isDisabled = ! in_array((string) $brand, $availableBrandsList, true);
+                $isChecked = in_array((string) $brand, $activeBrands, true);
+              @endphp
+              <label class="flex items-center gap-2 cursor-pointer" style="{{ $isDisabled ? 'opacity: 0.5; pointer-events: none;' : '' }}">
+                <input type="checkbox" name="brand[]" value="{{ $brand }}" @checked($isChecked) {{ $isDisabled ? 'disabled' : '' }} onchange="this.form.submit()" class="w-4 h-4 rounded border-gray-300" />
+                <span class="text-gray-700 font-medium" style="{{ $isDisabled ? 'text-decoration: line-through;' : '' }}">{{ $brand }}</span>
               </label>
             @empty
               <p class="text-gray-500 text-xs">Zatiaľ nie sú dostupné žiadne značky.</p>
@@ -72,11 +83,28 @@
                   'celorocne' => 'celoročné',
                   default => ucfirst($seasonValue),
                 };
+                $isDisabledSeason = ! in_array($seasonValue, $availableSeasonsList, true);
+                $isCheckedSeason = in_array($seasonValue, $activeSeasons, true);
               @endphp
-              <label class="flex items-center gap-2 cursor-pointer">
-                <input type="radio" name="season" value="{{ $seasonValue }}" @checked($currentSeason === $seasonValue) class="w-4 h-4 rounded border-gray-300" />
-                <span class="text-gray-700 font-medium">{{ $seasonLabel }}</span>
-              </label>
+              <div>
+                <label class="flex items-center gap-2 cursor-pointer" style="{{ $isDisabledSeason ? 'opacity: 0.5; pointer-events: none;' : '' }}">
+                  <input type="checkbox" name="season[]" value="{{ $seasonValue }}" @checked($isCheckedSeason) {{ $isDisabledSeason ? 'disabled' : '' }} onchange="this.form.submit()" class="w-4 h-4 rounded border-gray-300" />
+                  <span class="text-gray-700 font-medium" style="{{ $isDisabledSeason ? 'text-decoration: line-through;' : '' }}">{{ $seasonLabel }}</span>
+                </label>
+
+                @if ($seasonValue === 'zimne' && ($isCheckedSeason || ! $isDisabledSeason))
+                  <div class="pl-6 mt-1 space-y-1 border-l-2 border-gray-200 ml-2 pt-1">
+                    <label class="flex items-center gap-2 cursor-pointer">
+                      <input type="checkbox" name="has_spikes[]" value="1" @checked(in_array('1', $activeHasSpikes, true)) onchange="this.form.submit()" class="w-4 h-4 rounded border-gray-300" />
+                      <span class="text-gray-600 text-sm">s hrotmi</span>
+                    </label>
+                    <label class="flex items-center gap-2 cursor-pointer">
+                      <input type="checkbox" name="has_spikes[]" value="0" @checked(in_array('0', $activeHasSpikes, true)) onchange="this.form.submit()" class="w-4 h-4 rounded border-gray-300" />
+                      <span class="text-gray-600 text-sm">bez hrotov</span>
+                    </label>
+                  </div>
+                @endif
+              </div>
             @endforeach
           </div>
         </div>
@@ -85,9 +113,13 @@
           <p class="font-bold text-gray-900 mb-3 text-base">Šírka (mm)</p>
           <div class="grid grid-cols-3 gap-y-2">
             @foreach ($availableWidths as $width)
-              <label class="flex items-center gap-2 cursor-pointer">
-                <input type="radio" name="width" value="{{ $width }}" @checked((string) $currentWidth === (string) $width) class="w-4 h-4 rounded border-gray-300" />
-                <span class="text-gray-700 font-medium">{{ $width }}</span>
+              @php
+                $isDisabledWidth = ! in_array((int) $width, $availableWidthsList, true);
+                $isCheckedWidth = in_array((int) $width, $activeWidths, true);
+              @endphp
+              <label class="flex items-center gap-2 cursor-pointer" style="{{ $isDisabledWidth ? 'opacity: 0.5; pointer-events: none;' : '' }}">
+                <input type="checkbox" name="width[]" value="{{ $width }}" @checked($isCheckedWidth) {{ $isDisabledWidth ? 'disabled' : '' }} onchange="this.form.submit()" class="w-4 h-4 rounded border-gray-300" />
+                <span class="text-gray-700 font-medium" style="{{ $isDisabledWidth ? 'text-decoration: line-through;' : '' }}">{{ $width }}</span>
               </label>
             @endforeach
           </div>
@@ -97,9 +129,13 @@
           <p class="font-bold text-gray-900 mb-3 text-base">Profil (%)</p>
           <div class="grid grid-cols-3 gap-y-2">
             @foreach ($availableProfiles as $profile)
-              <label class="flex items-center gap-2 cursor-pointer">
-                <input type="radio" name="profile" value="{{ $profile }}" @checked((string) $currentProfile === (string) $profile) class="w-4 h-4 rounded border-gray-300" />
-                <span class="text-gray-700 font-medium">{{ $profile }}</span>
+              @php
+                $isDisabledProfile = ! in_array((int) $profile, $availableProfilesList, true);
+                $isCheckedProfile = in_array((int) $profile, $activeProfiles, true);
+              @endphp
+              <label class="flex items-center gap-2 cursor-pointer" style="{{ $isDisabledProfile ? 'opacity: 0.5; pointer-events: none;' : '' }}">
+                <input type="checkbox" name="profile[]" value="{{ $profile }}" @checked($isCheckedProfile) {{ $isDisabledProfile ? 'disabled' : '' }} onchange="this.form.submit()" class="w-4 h-4 rounded border-gray-300" />
+                <span class="text-gray-700 font-medium" style="{{ $isDisabledProfile ? 'text-decoration: line-through;' : '' }}">{{ $profile }}</span>
               </label>
             @endforeach
           </div>
@@ -109,19 +145,20 @@
           <p class="font-bold text-gray-900 mb-3 text-base">Priemer (")</p>
           <div class="grid grid-cols-3 gap-y-2">
             @foreach ($availableDiameters as $diameter)
-              <label class="flex items-center gap-2 cursor-pointer">
-                <input type="radio" name="diameter" value="{{ $diameter }}" @checked((string) $currentDiameter === (string) $diameter) class="w-4 h-4 rounded border-gray-300" />
-                <span class="text-gray-700 font-medium">{{ $diameter }}</span>
+              @php
+                $isDisabledDiameter = ! in_array((string) $diameter, $availableDiametersList, true);
+                $isCheckedDiameter = in_array((string) $diameter, $activeDiameters, true);
+              @endphp
+              <label class="flex items-center gap-2 cursor-pointer" style="{{ $isDisabledDiameter ? 'opacity: 0.5; pointer-events: none;' : '' }}">
+                <input type="checkbox" name="diameter[]" value="{{ $diameter }}" @checked($isCheckedDiameter) {{ $isDisabledDiameter ? 'disabled' : '' }} onchange="this.form.submit()" class="w-4 h-4 rounded border-gray-300" />
+                <span class="text-gray-700 font-medium" style="{{ $isDisabledDiameter ? 'text-decoration: line-through;' : '' }}">{{ $diameter }}</span>
               </label>
             @endforeach
           </div>
         </div>
 
-        <button type="submit" onclick="document.getElementById('mobile-filters').classList.add('hidden')" class="lg:hidden w-full bg-primary text-white font-bold py-3 rounded-lg mt-4">
+        <button type="button" onclick="document.getElementById('mobile-filters').classList.add('hidden')" class="lg:hidden w-full bg-primary text-white font-bold py-3 rounded-lg mt-4">
           Zobraziť výsledky
-        </button>
-        <button type="submit" class="hidden lg:block w-full bg-primary hover:bg-primary-dark text-white font-bold py-3 rounded-lg transition-colors">
-          Filtrovať
         </button>
       </aside>
 
@@ -132,7 +169,7 @@
               <button type="button" class="w-8 h-8 flex items-center justify-center border border-gray-200 bg-white text-gray-300 rounded text-sm font-medium">&laquo;</button>
               <button type="button" class="w-8 h-8 flex items-center justify-center border border-gray-200 bg-white text-gray-300 rounded text-sm font-medium">&lsaquo;</button>
             @else
-              <a href="{{ $products->previousPageUrl() }}" class="w-8 h-8 flex items-center justify-center border border-gray-200 bg-white text-gray-300 rounded text-sm font-medium hover:bg-gray-50">&laquo;</a>
+              <a href="{{ $products->url(1) }}" class="w-8 h-8 flex items-center justify-center border border-gray-200 bg-white text-gray-300 rounded text-sm font-medium hover:bg-gray-50">&laquo;</a>
               <a href="{{ $products->previousPageUrl() }}" class="w-8 h-8 flex items-center justify-center border border-gray-200 bg-white text-gray-300 rounded text-sm font-medium hover:bg-gray-50">&lsaquo;</a>
             @endif
 
@@ -155,7 +192,7 @@
 
           <div class="relative">
             <select name="sort" onchange="this.form.submit()" class="appearance-none border border-gray-200 rounded px-4 py-1.5 text-xs font-medium text-gray-800 pr-8 outline-none focus:border-primary bg-white cursor-pointer">
-              <option value="default" @selected($currentSort === 'default')>Predvolené</option>
+              <option value="default" @selected($currentSort === 'default')>Odporúčané</option>
               <option value="price_asc" @selected($currentSort === 'price_asc')>Cena: od najnižšej</option>
               <option value="price_desc" @selected($currentSort === 'price_desc')>Cena: od najvyššej</option>
               <option value="name_asc" @selected($currentSort === 'name_asc')>Názov: A-Z</option>
@@ -169,7 +206,11 @@
             @php
               $mainImage = $product->images->firstWhere('is_main', true) ?? $product->images->first();
               $imagePath = $mainImage ? asset($mainImage->image_path) : asset('images/products/letne1.jpg');
-              $seasonIcon = $product->season === 'zimne' ? '❄' : '☀';
+              $seasonIcon = match ($product->season) {
+                'zimne' => '❄',
+                'celorocne' => '☀❄',
+                default => '☀',
+              };
               $seasonIconClass = $product->season === 'zimne' ? 'text-5xl' : 'text-6xl';
               $displayName = trim(($product->brand ? $product->brand . ' ' : '') . $product->name);
             @endphp
@@ -181,13 +222,14 @@
               </div>
               <div class="p-4 flex flex-col flex-1 text-left">
                 <p class="font-bold text-sm mb-2 text-gray-900 group-hover:text-primary transition-colors">{{ $displayName }}</p>
-                <div class="flex items-center gap-1 mb-4">
-                  <span class="text-yellow-400 text-xl tracking-widest">★★★★★</span>
-                  <span class="text-sm text-primary font-medium ml-1">0 recenzií</span>
+                <div class="flex flex-col gap-1 mb-4">
+                  <span class="text-gray-300 text-xl tracking-widest">☆☆☆☆☆</span>
+                  <span class="text-sm text-primary font-medium">0 recenzií</span>
                 </div>
                 <div class="mt-auto mb-4 flex items-baseline gap-1">
-                  <span class="text-gray-500 font-bold text-xs">od</span>
-                  <span class="font-bold text-base text-gray-900">{{ number_format((float) $product->price, 0, ',', ' ') }} €</span>
+                  <span class="text-gray-700 font-bold text-xs">Cena:</span>
+                  <span class="font-bold text-base text-gray-900">{{ number_format((float) $product->price, 2, ',', ' ') }}€</span>
+                  <span class="text-gray-500 font-bold text-xs">/ ks</span>
                 </div>
                 <a href="{{ route('product.detail') }}" class="block w-full text-center bg-primary hover:bg-primary-dark text-white font-medium text-xs py-2.5 rounded transition-colors">
                   Viac informácií
@@ -206,7 +248,7 @@
             <button type="button" class="w-8 h-8 flex items-center justify-center border border-gray-200 bg-white text-gray-300 rounded text-sm font-medium">&laquo;</button>
             <button type="button" class="w-8 h-8 flex items-center justify-center border border-gray-200 bg-white text-gray-300 rounded text-sm font-medium">&lsaquo;</button>
           @else
-            <a href="{{ $products->previousPageUrl() }}" class="w-8 h-8 flex items-center justify-center border border-gray-200 bg-white text-gray-300 rounded text-sm font-medium hover:bg-gray-50">&laquo;</a>
+            <a href="{{ $products->url(1) }}" class="w-8 h-8 flex items-center justify-center border border-gray-200 bg-white text-gray-300 rounded text-sm font-medium hover:bg-gray-50">&laquo;</a>
             <a href="{{ $products->previousPageUrl() }}" class="w-8 h-8 flex items-center justify-center border border-gray-200 bg-white text-gray-300 rounded text-sm font-medium hover:bg-gray-50">&lsaquo;</a>
           @endif
 
