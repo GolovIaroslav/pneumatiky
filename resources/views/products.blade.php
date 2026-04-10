@@ -246,7 +246,7 @@
                   <span class="font-bold text-base text-gray-900">{{ number_format((float) $product->price, 2, ',', ' ') }}€</span>
                   <span class="text-gray-500 font-bold text-xs">/ ks</span>
                 </div>
-                <a href="{{ route('product.detail') }}" class="block w-full text-center bg-primary hover:bg-primary-dark text-white font-medium text-xs py-2.5 rounded transition-colors">
+                <a href="{{ route('product.show', $product->id) }}" class="block w-full text-center bg-primary hover:bg-primary-dark text-white font-medium text-xs py-2.5 rounded transition-colors">
                   Viac informácií
                 </a>
               </div>
