@@ -20,7 +20,8 @@
 		<div class="max-w-3xl mx-auto">
 			<h1 class="text-2xl font-bold mb-8 text-left">Dodacie údaje</h1>
 
-			<form action="#" method="post" class="space-y-8">
+			<form action="{{ route('delivery.post') }}" method="post" class="space-y-8">
+				@csrf
 				<section>
 					<h2 class="text-lg font-semibold text-left mb-4">Osobné údaje</h2>
 					<div class="space-y-4">
@@ -71,7 +72,7 @@
 
 				<div class="pt-2 flex items-center justify-between gap-4">
 					<a href="{{ route('transport') }}" class="px-8 py-3 bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium rounded-full transition-colors">Späť</a>
-					<a href="{{ route('summary') }}" class="px-8 py-3 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-full transition-colors">Pokračovať na súhrn</a>
+					<button type="submit" class="px-8 py-3 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-full transition-colors">Pokračovať na súhrn</button>
 				</div>
 			</form>
 		</div>

@@ -6,7 +6,10 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 
 Route::get('/', function () {
-    return view('index');
+    $carouselProducts = \App\Models\Product::with(['images' => fn ($q) => $q->orderByDesc('is_main')])
+        ->limit(4)
+        ->get();
+    return view('index', compact('carouselProducts'));
 })->name('home');
 
 Route::get('/login', function () {
@@ -35,9 +38,9 @@ Route::get('/transport', function () {
     return view('transport');
 })->name('transport');
 
-Route::get('/delivery', function () {
-    return view('delivery');
-})->name('delivery');
+Route::get('/delivery', [CartController::class, 'delivery'])->name('delivery');
+Route::post('/delivery', [CartController::class, 'saveDelivery'])->name('delivery.post');
+Route::get('/summary', [CartController::class, 'summary'])->name('summary');
 
 Route::get('/confirmation', function () {
     return view('confirmation');
@@ -50,10 +53,6 @@ Route::get('/admin-form', function () {
 Route::get('/admin-products', function () {
     return view('admin-products');
 })->name('admin.products');
-
-Route::get('/summary', function () {
-    return view('summary');
-})->name('summary');
 
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 Route::post('/register', [AuthController::class, 'register'])->name('register.post');

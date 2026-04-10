@@ -5,15 +5,8 @@
     <div class="max-w-3xl mx-auto text-left">
       <h1 class="text-2xl font-bold mb-6 text-center">Vašu objednávku sme úspešne zaznamenali.</h1>
 
-      <div class="space-y-2 mb-10 text-base text-center">
-        <p>
-          <span class="font-medium">Sledujte stav objednávky:</span>
-          <a href="#" class="text-gray-500 hover:text-gray-700 underline">tracker.io/654563</a>
-        </p>
-        <p>
-          <span class="font-medium">Sumár objednávky:</span>
-          <a href="#" class="text-gray-500 hover:text-gray-700 underline">order06166_summary.pdf</a>
-        </p>
+      <div class="space-y-4 mb-10 text-base text-center">
+        <p>Ďakujeme Vám za nákup. Na zadaný e-mail sme Vám odoslali potvrdenie.</p>
       </div>
 
       <div class="text-center">
