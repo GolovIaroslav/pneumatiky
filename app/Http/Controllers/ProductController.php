@@ -8,6 +8,23 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
+    public function show(int $id)
+    {
+        $product = Product::with([
+            'images'   => fn ($q) => $q->orderByDesc('is_main')->orderBy('id'),
+            'category',
+        ])->findOrFail($id);
+
+        $related = Product::with(['images' => fn ($q) => $q->orderByDesc('is_main')])
+            ->where('category_id', $product->category_id)
+            ->where('id', '!=', $product->id)
+            ->inRandomOrder()
+            ->limit(4)
+            ->get();
+
+        return view('product-detail', compact('product', 'related'));
+    }
+
     public function index(Request $request)
     {
         $rawCat = strtolower((string) $request->query('cat', 'all'));
