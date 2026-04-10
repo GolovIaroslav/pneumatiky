@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CartController;
 
 Route::get('/', function () {
     return view('index');
@@ -18,13 +19,17 @@ Route::get('/register', function () {
 
 Route::get('/products', [ProductController::class, 'index'])->name('products');
 
+Route::get('/product/{id}', [ProductController::class, 'show'])->name('product.show');
+
+// Keep old route for backward compat (redirect to products listing)
 Route::get('/product-detail', function () {
-    return view('product-detail');
+    return redirect()->route('products');
 })->name('product.detail');
 
-Route::get('/cart', function () {
-    return view('cart');
-})->name('cart');
+Route::get('/cart', [CartController::class, 'index'])->name('cart');
+Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
+Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
+Route::post('/cart/remove', [CartController::class, 'remove'])->name('cart.remove');
 
 Route::get('/transport', function () {
     return view('transport');
@@ -53,4 +58,3 @@ Route::get('/summary', function () {
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 Route::post('/register', [AuthController::class, 'register'])->name('register.post');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-
