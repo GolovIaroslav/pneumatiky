@@ -64,9 +64,16 @@
             pridať do košíka
           </button>
 
-          <div class="flex w-16 border border-gray-300 rounded-md overflow-hidden bg-white">
-            <input type="hidden" name="qty" id="qty-val" value="1" />
-            <div id="qty-display" class="flex-1 flex items-center justify-center font-bold text-black text-base">1</div>
+          <div class="flex w-20 border border-gray-300 rounded-md overflow-hidden bg-white">
+            <input
+              type="number"
+              name="qty"
+              id="qty-input"
+              value="1"
+              min="1"
+              step="1"
+              class="flex-1 min-w-0 text-center font-bold text-black text-base outline-none bg-transparent [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+            />
             <div class="flex flex-col border-l border-gray-300 w-6">
               <button type="button" onclick="changeQty(1)" class="flex-1 flex items-center justify-center hover:bg-gray-100 text-primary border-b border-gray-300">
                 <img src="{{ asset('images/icons/caret-up.png') }}" alt="Pridať" class="w-2.5 h-2.5 opacity-70" />
@@ -164,13 +171,29 @@
 @push('scripts')
 <script>
   let qty = 1;
+
+  function syncQtyInput(value) {
+    const nextQty = Math.max(1, parseInt(value, 10) || 1);
+    qty = nextQty;
+    const qtyInput = document.getElementById('qty-input');
+    if (qtyInput) {
+      qtyInput.value = qty;
+    }
+  }
+
   function changeQty(d) {
-    qty = Math.max(1, qty + d);
-    document.getElementById('qty-display').textContent = qty;
-    document.getElementById('qty-val').value = qty;
+    syncQtyInput(qty + d);
   }
 
   document.addEventListener('DOMContentLoaded', () => {
+    const qtyInput = document.getElementById('qty-input');
+
+    if (qtyInput) {
+      qtyInput.addEventListener('input', (event) => syncQtyInput(event.target.value));
+      qtyInput.addEventListener('change', (event) => syncQtyInput(event.target.value));
+      syncQtyInput(qtyInput.value);
+    }
+
     const mainImage = document.getElementById('main-img');
     const gallery = document.getElementById('product-gallery');
 
