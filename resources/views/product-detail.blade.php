@@ -8,7 +8,11 @@
       <div class="lg:w-96 flex-shrink-0">
         @php
           $mainImage = $product->images->firstWhere('is_main', true) ?? $product->images->first();
-          $thumbs    = $product->images->where('is_main', false)->values();
+          $galleryImages = collect([$mainImage])
+            ->merge($product->images->where('is_main', false)->values())
+            ->filter()
+            ->unique('id')
+            ->values();
         @endphp
 
         <img
@@ -18,15 +22,21 @@
           id="main-img"
         />
 
-        @if ($thumbs->count() > 0)
-        <div class="grid grid-cols-4 gap-2">
-          @foreach ($thumbs->take(4) as $thumb)
-            <img
-              src="{{ asset($thumb->image_path) }}"
-              alt="{{ $product->name }}"
-              class="w-full aspect-square object-cover rounded cursor-pointer hover:ring-2 hover:ring-primary transition"
-              onclick="document.getElementById('main-img').src = this.src"
-            />
+        @if ($galleryImages->count() > 0)
+        <div class="grid grid-cols-4 gap-2" id="product-gallery">
+          @foreach ($galleryImages->take(4) as $index => $galleryImage)
+            <button
+              type="button"
+              class="group relative overflow-hidden rounded focus:outline-none focus:ring-2 focus:ring-primary {{ $index === 0 ? 'ring-2 ring-primary' : '' }}"
+              data-gallery-thumb="{{ asset($galleryImage->image_path) }}"
+              data-gallery-active="{{ $index === 0 ? 'true' : 'false' }}"
+            >
+              <img
+                src="{{ asset($galleryImage->image_path) }}"
+                alt="{{ $product->name }}"
+                class="w-full aspect-square object-cover transition group-hover:scale-[1.02]"
+              />
+            </button>
           @endforeach
         </div>
         @endif
@@ -159,5 +169,33 @@
     document.getElementById('qty-display').textContent = qty;
     document.getElementById('qty-val').value = qty;
   }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const mainImage = document.getElementById('main-img');
+    const gallery = document.getElementById('product-gallery');
+
+    if (!mainImage || !gallery) {
+      return;
+    }
+
+    gallery.querySelectorAll('[data-gallery-thumb]').forEach((thumb) => {
+      thumb.addEventListener('click', () => {
+        const imageSrc = thumb.getAttribute('data-gallery-thumb');
+        if (!imageSrc) {
+          return;
+        }
+
+        mainImage.src = imageSrc;
+
+        gallery.querySelectorAll('[data-gallery-active="true"]').forEach((activeThumb) => {
+          activeThumb.setAttribute('data-gallery-active', 'false');
+          activeThumb.classList.remove('ring-2', 'ring-primary');
+        });
+
+        thumb.setAttribute('data-gallery-active', 'true');
+        thumb.classList.add('ring-2', 'ring-primary');
+      });
+    });
+  });
 </script>
 @endpush
