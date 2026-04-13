@@ -43,6 +43,8 @@ class ProductController extends Controller
             $forcedSeason = 'letne';
         }
 
+        $filterCapabilities = $this->getFilterCapabilities($categoryKey, $forcedSeason);
+
         $parentCategoryName = match ($categoryKey) {
             'moto' => 'Moto',
             'bicycle' => 'Cyklo',
@@ -66,11 +68,15 @@ class ProductController extends Controller
 
         // Parse all filter inputs as arrays
         $brands = array_values(array_filter((array) $request->query('brand', [])));
-        $seasons = array_values(array_filter((array) $request->query('season', [])));
+        $seasons = $filterCapabilities['seasons']
+            ? array_values(array_filter((array) $request->query('season', [])))
+            : [];
         $widths = array_values(array_filter(array_map('intval', (array) $request->query('width', []))));
-        $profiles = array_values(array_filter(array_map('intval', (array) $request->query('profile', []))));
+        $profiles = $filterCapabilities['profiles']
+            ? array_values(array_filter(array_map('intval', (array) $request->query('profile', []))))
+            : [];
         $diameters = array_values(array_filter((array) $request->query('diameter', [])));
-        $hasSpikes = (array) $request->query('has_spikes', []);
+        $hasSpikes = $filterCapabilities['hasSpikes'] ? (array) $request->query('has_spikes', []) : [];
 
         if (! empty($brands)) {
             $baseQuery->whereIn('brand', $brands);
@@ -86,13 +92,13 @@ class ProductController extends Controller
             $baseQuery->where('price', '<=', (float) $priceTo);
         }
 
-        if (($categoryKey === 'auto' || $categoryKey === 'all') && $forcedSeason === null) {
+        if ($filterCapabilities['seasons'] && $forcedSeason === null) {
             if (! empty($seasons)) {
                 $baseQuery->whereIn('season', $seasons);
             }
         }
 
-        if (in_array($categoryKey, ['auto', 'bicycle', 'all'], true)) {
+        if ($filterCapabilities['hasSpikes']) {
             if (! empty($hasSpikes)) {
                 if (count($hasSpikes) === 1) {
                     $baseQuery->where('has_spikes', $hasSpikes[0] === '1');
@@ -104,7 +110,7 @@ class ProductController extends Controller
             $baseQuery->whereIn('width', $widths);
         }
 
-        if (in_array($categoryKey, ['auto', 'moto', 'tractor', 'all'], true)) {
+        if ($filterCapabilities['profiles']) {
             if (! empty($profiles)) {
                 $baseQuery->whereIn('profile', $profiles);
             }
@@ -191,10 +197,16 @@ class ProductController extends Controller
 
         // Calculate which filter options are available with current selections
         $disabledFilterOptions = $this->calculateDisabledOptions(
-            $request,
-            $categoryKey,
-            $forcedSeason,
-            $filterScope
+            $filterScope,
+            [
+                'brands' => $brands,
+                'seasons' => $seasons,
+                'widths' => $widths,
+                'profiles' => $profiles,
+                'diameters' => $diameters,
+                'hasSpikes' => $hasSpikes,
+            ],
+            $filterCapabilities
         );
 
         $categoryLabel = match ($categoryKey) {
@@ -217,6 +229,7 @@ class ProductController extends Controller
             'categoryKey' => $categoryKey,
             'categoryLabel' => $categoryLabel,
             'seasonLocked' => $forcedSeason !== null,
+            'filterCapabilities' => $filterCapabilities,
             'selectedBrands' => $brands,
             'selectedSeasons' => $seasons,
             'selectedWidths' => $widths,
@@ -240,7 +253,7 @@ class ProductController extends Controller
         ]);
     }
 
-    private function calculateDisabledOptions($request, $categoryKey, $forcedSeason, $filterScope)
+    private function calculateDisabledOptions($filterScope, array $selectedFilters, array $filterCapabilities)
     {
         $disabled = [
             'brands' => [],
@@ -254,13 +267,12 @@ class ProductController extends Controller
         // For each potential filter value, check if it has any products
         $baseQuery = clone $filterScope;
 
-        // Parse current selections
-        $brands = array_values(array_filter((array) $request->query('brand', [])));
-        $seasons = array_values(array_filter((array) $request->query('season', [])));
-        $widths = array_values(array_filter(array_map('intval', (array) $request->query('width', []))));
-        $profiles = array_values(array_filter(array_map('intval', (array) $request->query('profile', []))));
-        $diameters = array_values(array_filter((array) $request->query('diameter', [])));
-        $hasSpikes = (array) $request->query('has_spikes', []);
+    $brands = $selectedFilters['brands'] ?? [];
+    $seasons = $filterCapabilities['seasons'] ? ($selectedFilters['seasons'] ?? []) : [];
+    $widths = $selectedFilters['widths'] ?? [];
+    $profiles = $filterCapabilities['profiles'] ? ($selectedFilters['profiles'] ?? []) : [];
+    $diameters = $selectedFilters['diameters'] ?? [];
+    $hasSpikes = $filterCapabilities['hasSpikes'] ? ($selectedFilters['hasSpikes'] ?? []) : [];
 
         // Check brand availability
         $availableBrands = $baseQuery
@@ -323,6 +335,15 @@ class ProductController extends Controller
             'widths' => $availableWidths,
             'profiles' => $availableProfiles,
             'diameters' => $availableDiameters,
+        ];
+    }
+
+    private function getFilterCapabilities(string $categoryKey, ?string $forcedSeason): array
+    {
+        return [
+            'seasons' => $forcedSeason === null,
+            'hasSpikes' => in_array($categoryKey, ['auto', 'bicycle', 'all'], true),
+            'profiles' => in_array($categoryKey, ['auto', 'moto', 'tractor', 'all'], true),
         ];
     }
 }

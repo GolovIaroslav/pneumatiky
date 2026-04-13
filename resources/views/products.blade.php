@@ -16,6 +16,9 @@
   $availableWidthsList = $disabledFilterOptions['widths'] ?? [];
   $availableProfilesList = $disabledFilterOptions['profiles'] ?? [];
   $availableDiametersList = $disabledFilterOptions['diameters'] ?? [];
+  $showSeasonFilters = $filterCapabilities['seasons'] ?? true;
+  $showSpikeFilters = $filterCapabilities['hasSpikes'] ?? true;
+  $showProfileFilters = $filterCapabilities['profiles'] ?? true;
 
   $paginationStart = max(1, $products->currentPage() - 1);
   $paginationEnd = min($products->lastPage(), $paginationStart + 3);
@@ -74,43 +77,45 @@
           </div>
         </div>
 
-        <div class="mb-8">
-          <p class="font-bold text-gray-900 mb-3 text-base">Sezónnosť</p>
-          @php $availableSeasonValues = $availableSeasons->all(); @endphp
-          <div class="space-y-2">
-            @foreach ($availableSeasonValues as $seasonValue)
-              @php
-                $seasonLabel = match ($seasonValue) {
-                  'zimne' => 'zimné',
-                  'letne' => 'letné',
-                  'celorocne' => 'celoročné',
-                  default => ucfirst($seasonValue),
-                };
-                $isDisabledSeason = ! in_array($seasonValue, $availableSeasonsList, true);
-                $isCheckedSeason = in_array($seasonValue, $activeSeasons, true);
-              @endphp
-              <div>
-                <label class="flex items-center gap-2 cursor-pointer" style="{{ $isDisabledSeason ? 'opacity: 0.5; pointer-events: none;' : '' }}">
-                  <input type="checkbox" name="season[]" value="{{ $seasonValue }}" @checked($isCheckedSeason) {{ $isDisabledSeason ? 'disabled' : '' }} onchange="this.form.submit()" class="w-4 h-4 rounded border-gray-300" />
-                  <span class="text-gray-700 font-medium" style="{{ $isDisabledSeason ? 'text-decoration: line-through;' : '' }}">{{ $seasonLabel }}</span>
-                </label>
+        @if ($showSeasonFilters)
+          <div class="mb-8">
+            <p class="font-bold text-gray-900 mb-3 text-base">Sezónnosť</p>
+            @php $availableSeasonValues = $availableSeasons->all(); @endphp
+            <div class="space-y-2">
+              @foreach ($availableSeasonValues as $seasonValue)
+                @php
+                  $seasonLabel = match ($seasonValue) {
+                    'zimne' => 'zimné',
+                    'letne' => 'letné',
+                    'celorocne' => 'celoročné',
+                    default => ucfirst($seasonValue),
+                  };
+                  $isDisabledSeason = ! in_array($seasonValue, $availableSeasonsList, true);
+                  $isCheckedSeason = in_array($seasonValue, $activeSeasons, true);
+                @endphp
+                <div>
+                  <label class="flex items-center gap-2 cursor-pointer" style="{{ $isDisabledSeason ? 'opacity: 0.5; pointer-events: none;' : '' }}">
+                    <input type="checkbox" name="season[]" value="{{ $seasonValue }}" @checked($isCheckedSeason) {{ $isDisabledSeason ? 'disabled' : '' }} onchange="this.form.submit()" class="w-4 h-4 rounded border-gray-300" />
+                    <span class="text-gray-700 font-medium" style="{{ $isDisabledSeason ? 'text-decoration: line-through;' : '' }}">{{ $seasonLabel }}</span>
+                  </label>
 
-                @if ($seasonValue === 'zimne' && ($isCheckedSeason || ! $isDisabledSeason))
-                  <div class="pl-6 mt-1 space-y-1 border-l-2 border-gray-200 ml-2 pt-1">
-                    <label class="flex items-center gap-2 cursor-pointer">
-                      <input type="checkbox" name="has_spikes[]" value="1" @checked(in_array('1', $activeHasSpikes, true)) onchange="this.form.submit()" class="w-4 h-4 rounded border-gray-300" />
-                      <span class="text-gray-600 text-sm">s hrotmi</span>
-                    </label>
-                    <label class="flex items-center gap-2 cursor-pointer">
-                      <input type="checkbox" name="has_spikes[]" value="0" @checked(in_array('0', $activeHasSpikes, true)) onchange="this.form.submit()" class="w-4 h-4 rounded border-gray-300" />
-                      <span class="text-gray-600 text-sm">bez hrotov</span>
-                    </label>
-                  </div>
-                @endif
-              </div>
-            @endforeach
+                  @if ($showSpikeFilters && $seasonValue === 'zimne' && ($isCheckedSeason || ! $isDisabledSeason))
+                    <div class="pl-6 mt-1 space-y-1 border-l-2 border-gray-200 ml-2 pt-1">
+                      <label class="flex items-center gap-2 cursor-pointer">
+                        <input type="checkbox" name="has_spikes[]" value="1" @checked(in_array('1', $activeHasSpikes, true)) onchange="this.form.submit()" class="w-4 h-4 rounded border-gray-300" />
+                        <span class="text-gray-600 text-sm">s hrotmi</span>
+                      </label>
+                      <label class="flex items-center gap-2 cursor-pointer">
+                        <input type="checkbox" name="has_spikes[]" value="0" @checked(in_array('0', $activeHasSpikes, true)) onchange="this.form.submit()" class="w-4 h-4 rounded border-gray-300" />
+                        <span class="text-gray-600 text-sm">bez hrotov</span>
+                      </label>
+                    </div>
+                  @endif
+                </div>
+              @endforeach
+            </div>
           </div>
-        </div>
+        @endif
 
         <div class="mb-8">
           <p class="font-bold text-gray-900 mb-3 text-base">Šírka (mm)</p>
@@ -128,21 +133,23 @@
           </div>
         </div>
 
-        <div class="mb-8">
-          <p class="font-bold text-gray-900 mb-3 text-base">Profil (%)</p>
-          <div class="grid grid-cols-3 gap-y-2">
-            @foreach ($availableProfiles as $profile)
-              @php
-                $isDisabledProfile = ! in_array((int) $profile, $availableProfilesList, true);
-                $isCheckedProfile = in_array((int) $profile, $activeProfiles, true);
-              @endphp
-              <label class="flex items-center gap-2 cursor-pointer" style="{{ $isDisabledProfile ? 'opacity: 0.5; pointer-events: none;' : '' }}">
-                <input type="checkbox" name="profile[]" value="{{ $profile }}" @checked($isCheckedProfile) {{ $isDisabledProfile ? 'disabled' : '' }} onchange="this.form.submit()" class="w-4 h-4 rounded border-gray-300" />
-                <span class="text-gray-700 font-medium" style="{{ $isDisabledProfile ? 'text-decoration: line-through;' : '' }}">{{ $profile }}</span>
-              </label>
-            @endforeach
+        @if ($showProfileFilters)
+          <div class="mb-8">
+            <p class="font-bold text-gray-900 mb-3 text-base">Profil (%)</p>
+            <div class="grid grid-cols-3 gap-y-2">
+              @foreach ($availableProfiles as $profile)
+                @php
+                  $isDisabledProfile = ! in_array((int) $profile, $availableProfilesList, true);
+                  $isCheckedProfile = in_array((int) $profile, $activeProfiles, true);
+                @endphp
+                <label class="flex items-center gap-2 cursor-pointer" style="{{ $isDisabledProfile ? 'opacity: 0.5; pointer-events: none;' : '' }}">
+                  <input type="checkbox" name="profile[]" value="{{ $profile }}" @checked($isCheckedProfile) {{ $isDisabledProfile ? 'disabled' : '' }} onchange="this.form.submit()" class="w-4 h-4 rounded border-gray-300" />
+                  <span class="text-gray-700 font-medium" style="{{ $isDisabledProfile ? 'text-decoration: line-through;' : '' }}">{{ $profile }}</span>
+                </label>
+              @endforeach
+            </div>
           </div>
-        </div>
+        @endif
 
         <div class="mb-8">
           <p class="font-bold text-gray-900 mb-3 text-base">Priemer (")</p>
