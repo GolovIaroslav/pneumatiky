@@ -50,12 +50,13 @@ class CartController extends Controller
                 ->get()
                 ->keyBy('id');
 
-            foreach ($cartData as $productId => $qty) {
+            foreach ($cartData as $productId => $item) {
                 if (!isset($products[$productId])) {
                     continue;
                 }
                 $product = $products[$productId];
-                $qty = max(1, (int) $qty);
+                $rawQty = is_array($item) ? ($item['qty'] ?? 1) : $item;
+                $qty = max(1, (int) $rawQty);
                 $subtotal = $product->price * $qty;
                 $total += $subtotal;
                 $cartItems[] = [
@@ -333,13 +334,14 @@ class CartController extends Controller
                 ->get()
                 ->keyBy('id');
 
-            foreach ($cartData as $productId => $qty) {
+            foreach ($cartData as $productId => $item) {
                 if (! isset($products[$productId])) {
                     continue;
                 }
 
                 $product = $products[$productId];
-                $qty = max(1, (int) $qty);
+                $rawQty = is_array($item) ? ($item['qty'] ?? 1) : $item;
+                $qty = max(1, (int) $rawQty);
                 $subtotal = $product->price * $qty;
                 $total += $subtotal;
                 $cartItems[] = [
