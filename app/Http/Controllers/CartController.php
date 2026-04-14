@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
+use App\Models\CartItem;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class CartController extends Controller
@@ -25,7 +28,18 @@ class CartController extends Controller
 
     public function index()
     {
-        $cartData = session('cart', []);
+        if (Auth::check()) {
+            $cart = Auth::user()->cart;
+            if ($cart && $cart->isExpired()) {
+                $cart->items()->delete();
+                $cart->delete();
+                $cart = null;
+            }
+            $cartData = $cart ? $cart->items()->pluck('qty', 'product_id')->toArray() : [];
+        } else {
+            $cartData = session('cart', []);
+        }
+
         $cartItems = [];
         $total = 0;
 
@@ -36,12 +50,12 @@ class CartController extends Controller
                 ->get()
                 ->keyBy('id');
 
-            foreach ($cartData as $productId => $item) {
+            foreach ($cartData as $productId => $qty) {
                 if (!isset($products[$productId])) {
                     continue;
                 }
                 $product = $products[$productId];
-                $qty = max(1, (int) $item['qty']);
+                $qty = max(1, (int) $qty);
                 $subtotal = $product->price * $qty;
                 $total += $subtotal;
                 $cartItems[] = [
@@ -66,21 +80,45 @@ class CartController extends Controller
         $qty       = max(1, (int) $request->input('qty'));
 
         $product = Product::findOrFail($productId);
-        $cart = session('cart', []);
-        
-        $currentInCart = isset($cart[$productId]) ? $cart[$productId]['qty'] : 0;
-        
-        if (($currentInCart + $qty) > $product->stock) {
-            return redirect()->back()->with('error', "Nie je možné pridať viac kusov. Na sklade je celkovo len {$product->stock} ks.");
-        }
 
-        if (isset($cart[$productId])) {
-            $cart[$productId]['qty'] += $qty;
+        if (Auth::check()) {
+            $cart = Auth::user()->cart;
+            if (!$cart) {
+                $cart = Cart::create(['user_id' => Auth::id(), 'expires_at' => now()->addDays(30)]);
+            } elseif ($cart->isExpired()) {
+                $cart->items()->delete();
+                $cart->update(['expires_at' => now()->addDays(30)]);
+            } else {
+                $cart->refreshExpiration();
+            }
+
+            $cartItem = $cart->items()->firstOrCreate(
+                ['product_id' => $productId],
+                ['qty' => 0]
+            );
+            
+            $currentQty = $cartItem->qty;
+            if (($currentQty + $qty) > $product->stock) {
+                return redirect()->back()->with('error', "Nie je možné pridať viac kusov. Na sklade je celkovo len {$product->stock} ks.");
+            }
+            
+            $cartItem->increment('qty', $qty);
         } else {
-            $cart[$productId] = ['product_id' => $productId, 'qty' => $qty];
-        }
+            $cart = session('cart', []);
+            $currentInCart = isset($cart[$productId]) ? $cart[$productId]['qty'] : 0;
+            
+            if (($currentInCart + $qty) > $product->stock) {
+                return redirect()->back()->with('error', "Nie je možné pridať viac kusov. Na sklade je celkovo len {$product->stock} ks.");
+            }
 
-        session(['cart' => $cart]);
+            if (isset($cart[$productId])) {
+                $cart[$productId]['qty'] += $qty;
+            } else {
+                $cart[$productId] = ['product_id' => $productId, 'qty' => $qty];
+            }
+
+            session(['cart' => $cart]);
+        }
 
         return redirect()->route('cart')->with('success', 'Produkt bol pridaný do košíka.');
     }
@@ -100,14 +138,21 @@ class CartController extends Controller
             return redirect()->back()->with('error', "Nie je možné nastaviť viac kusov. Na sklade je len {$product->stock} ks.");
         }
 
-        $cart = session('cart', []);
-
-        if (isset($cart[$productId])) {
-            $cart[$productId]['qty'] = $qty;
-            session(['cart' => $cart]);
+        if (Auth::check()) {
+            $cart = Auth::user()->cart;
+            if ($cart && $cartItem = $cart->items()->where('product_id', $productId)->first()) {
+                $cartItem->update(['qty' => $qty]);
+                $cart->refreshExpiration();
+            }
+        } else {
+            $cart = session('cart', []);
+            if (isset($cart[$productId])) {
+                $cart[$productId]['qty'] = $qty;
+                session(['cart' => $cart]);
+            }
         }
 
-        return redirect()->route('cart');
+        return redirect()->back();
     }
 
     public function remove(Request $request)
@@ -118,9 +163,19 @@ class CartController extends Controller
 
         $productId = (int) $request->input('product_id');
 
-        $cart = session('cart', []);
-        unset($cart[$productId]);
-        session(['cart' => $cart]);
+        if (Auth::check()) {
+            $cart = Auth::user()->cart;
+            if ($cart) {
+                $cart->items()->where('product_id', $productId)->delete();
+                if ($cart->items()->count() === 0) {
+                    $cart->delete();
+                }
+            }
+        } else {
+            $cart = session('cart', []);
+            unset($cart[$productId]);
+            session(['cart' => $cart]);
+        }
 
         return redirect()->route('cart');
     }
@@ -256,7 +311,18 @@ class CartController extends Controller
 
     private function buildCartItemsAndTotal(): array
     {
-        $cartData = session('cart', []);
+        if (Auth::check()) {
+            $cart = Auth::user()->cart;
+            if ($cart && $cart->isExpired()) {
+                $cart->items()->delete();
+                $cart->delete();
+                $cart = null;
+            }
+            $cartData = $cart ? $cart->items()->pluck('qty', 'product_id')->toArray() : [];
+        } else {
+            $cartData = session('cart', []);
+        }
+
         $cartItems = [];
         $total = 0;
 
@@ -267,13 +333,13 @@ class CartController extends Controller
                 ->get()
                 ->keyBy('id');
 
-            foreach ($cartData as $productId => $item) {
+            foreach ($cartData as $productId => $qty) {
                 if (! isset($products[$productId])) {
                     continue;
                 }
 
                 $product = $products[$productId];
-                $qty = max(1, (int) $item['qty']);
+                $qty = max(1, (int) $qty);
                 $subtotal = $product->price * $qty;
                 $total += $subtotal;
                 $cartItems[] = [
@@ -285,5 +351,64 @@ class CartController extends Controller
         }
 
         return [$cartItems, $total];
+    }
+
+    /**
+     * Zlúči hosťov košík s DB košíkom pri prihlásení.
+     * Ak sa zhodujú produkty, sčítame množstvá. Ak je na sklade nedostatočne, berieme max.
+     */
+    public static function mergeGuestCartToDB(): void
+    {
+        if (!Auth::check()) {
+            return;
+        }
+
+        $guestCart = session('cart', []);
+        if (empty($guestCart)) {
+            session()->forget('cart');
+            return;
+        }
+
+        $user = Auth::user();
+        $userCart = $user->cart;
+
+        // Ak user nemá košík, vytvor nový
+        if (!$userCart) {
+            $userCart = Cart::create([
+                'user_id' => $user->id,
+                'expires_at' => now()->addDays(30),
+            ]);
+        } else {
+            // Osvež expirácaju existujúceho košíka
+            $userCart->refreshExpiration();
+        }
+
+        // Zlúč položky
+        foreach ($guestCart as $productId => $item) {
+            $product = Product::find($productId);
+            if (!$product) {
+                continue; // Produkt už nie je k dispozícii
+            }
+
+            $qty = max(1, (int) $item['qty']);
+            $existingItem = $userCart->items()->where('product_id', $productId)->first();
+
+            if ($existingItem) {
+                // Produkt je už v DB košíku - sčítaj množství
+                $newQty = $existingItem->qty + $qty;
+                $newQty = min($newQty, $product->stock); // Respektuj stock
+                $existingItem->update(['qty' => $newQty]);
+            } else {
+                // Nový produkt - pridaj do DB
+                $qty = min($qty, $product->stock);
+                $userCart->items()->create([
+                    'product_id' => $productId,
+                    'qty' => $qty,
+                ]);
+            }
+        }
+
+        // Zmaž hosťov košík zo session
+        session()->forget('cart');
     }
 }

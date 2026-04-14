@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\CartController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -32,6 +33,9 @@ class AuthController extends Controller
         ]);
 
         Auth::login($user);
+        
+        // Zlúč hosťov košík s účtom novoprihláseneho usera
+        CartController::mergeGuestCartToDB();
 
         return redirect()->route('home')->with('success', 'Úspešne ste sa zaregistrovali.');
     }
@@ -48,6 +52,9 @@ class AuthController extends Controller
 
         if (Auth::attempt([$loginField => $loginValue, 'password' => $credentials['password']])) {
             $request->session()->regenerate();
+            
+            // Zlúč hosťov košík s prihlásením
+            CartController::mergeGuestCartToDB();
 
             return redirect()->intended('/')->with('success', 'Boli ste úspešne prihlásený.');
         }
