@@ -22,6 +22,16 @@
   <style>
     #mob-menu { display: none; }
     #mob-menu.open { display: block; }
+
+    /* Hide number input spinners (arrows) */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    input[type=number] {
+      -moz-appearance: textfield;
+    }
   </style>
 </head>
 <body class="font-sans bg-white text-gray-900 text-sm">

@@ -48,12 +48,12 @@
           <div class="flex items-center gap-6">
             <div class="flex-1 border-b border-gray-400 flex items-baseline pb-1">
               <span class="font-bold text-gray-900 mr-2">od</span>
-              <input type="number" name="price_from" value="{{ floor($currentPriceFrom) }}" min="{{ floor($minPrice) }}" max="{{ ceil($maxPrice) }}" step="0.01" class="w-full text-gray-500 outline-none bg-transparent" />
+              <input type="number" name="price_from" value="{{ floor($currentPriceFrom) }}" min="{{ floor($minPrice) }}" max="{{ ceil($maxPrice) }}" step="0.01" onchange="this.form.submit()" onkeydown="if(event.key==='Enter'){event.preventDefault(); this.form.submit();}" class="w-full text-gray-500 outline-none bg-transparent" />
               <span class="font-bold text-gray-900 ml-1">€</span>
             </div>
             <div class="flex-1 border-b border-gray-400 flex items-baseline pb-1">
               <span class="font-bold text-gray-900 mr-2">do</span>
-              <input type="number" name="price_to" value="{{ ceil($currentPriceTo) }}" min="{{ floor($minPrice) }}" max="{{ ceil($maxPrice) }}" step="0.01" class="w-full text-gray-500 outline-none bg-transparent" />
+              <input type="number" name="price_to" value="{{ ceil($currentPriceTo) }}" min="{{ floor($minPrice) }}" max="{{ ceil($maxPrice) }}" step="0.01" onchange="this.form.submit()" onkeydown="if(event.key==='Enter'){event.preventDefault(); this.form.submit();}" class="w-full text-gray-500 outline-none bg-transparent" />
               <span class="font-bold text-gray-900 ml-1">€</span>
             </div>
           </div>
