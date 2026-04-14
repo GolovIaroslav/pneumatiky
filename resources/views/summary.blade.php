@@ -81,12 +81,12 @@
         </div>
         <div class="px-5 py-4 space-y-2">
           <div class="flex items-center justify-between">
-            <span class="text-gray-700">Doprava: Packeta</span>
-            <span class="font-medium">+ {{ number_format($dopravaCena, 2, ',', ' ') }} €</span>
+            <span class="text-gray-700">Doprava: {{ $shippingLabel }}</span>
+            <span class="font-medium">{{ $shippingPrice > 0 ? '+ ' . number_format($shippingPrice, 2, ',', ' ') . ' €' : 'zadarmo' }}</span>
           </div>
           <div class="flex items-center justify-between">
-            <span class="text-gray-700">Platba: Kartou online</span>
-            <span class="font-medium">zadarmo</span>
+            <span class="text-gray-700">Platba: {{ $paymentLabel }}</span>
+            <span class="font-medium">{{ $paymentPrice > 0 ? '+ ' . number_format($paymentPrice, 2, ',', ' ') . ' €' : 'zadarmo' }}</span>
           </div>
         </div>
       </section>
@@ -94,7 +94,7 @@
       <section class="border border-gray-300 rounded-lg p-5 bg-gray-50">
         <div class="space-y-2 text-right">
           <p class="text-gray-700">Cena produktov: <span class="font-medium">{{ number_format($total, 2, ',', ' ') }} €</span></p>
-          <p class="text-gray-700">Doprava a platba: <span class="font-medium">{{ number_format($dopravaCena, 2, ',', ' ') }} €</span></p>
+          <p class="text-gray-700">Doprava a platba: <span class="font-medium">{{ number_format($extraTotal, 2, ',', ' ') }} €</span></p>
           <p class="text-2xl font-bold">Celkom na úhradu: {{ number_format($totalSUpravou, 2, ',', ' ') }} €</p>
         </div>
       </section>

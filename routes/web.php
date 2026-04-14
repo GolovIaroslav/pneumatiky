@@ -34,9 +34,8 @@ Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
 Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
 Route::post('/cart/remove', [CartController::class, 'remove'])->name('cart.remove');
 
-Route::get('/transport', function () {
-    return view('transport');
-})->name('transport');
+Route::get('/transport', [CartController::class, 'transport'])->name('transport');
+Route::post('/transport', [CartController::class, 'saveTransport'])->name('transport.post');
 
 Route::get('/delivery', [CartController::class, 'delivery'])->name('delivery');
 Route::post('/delivery', [CartController::class, 'saveDelivery'])->name('delivery.post');
