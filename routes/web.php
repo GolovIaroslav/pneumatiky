@@ -40,6 +40,7 @@ Route::post('/transport', [CartController::class, 'saveTransport'])->name('trans
 Route::get('/delivery', [CartController::class, 'delivery'])->name('delivery');
 Route::post('/delivery', [CartController::class, 'saveDelivery'])->name('delivery.post');
 Route::get('/summary', [CartController::class, 'summary'])->name('summary');
+Route::post('/confirmation', [CartController::class, 'confirmOrder'])->name('confirmation.post');
 
 Route::get('/confirmation', function () {
     return view('confirmation');

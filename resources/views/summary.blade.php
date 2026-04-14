@@ -101,7 +101,10 @@
 
       <div class="flex items-center justify-between gap-4 pt-2">
         <a href="{{ route('delivery') }}" class="px-8 py-3 bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium rounded-full transition-colors">Späť</a>
-        <a href="{{ route('confirmation') }}" class="px-8 py-3 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-full transition-colors">Potvrdiť objednávku</a>
+        <form method="POST" action="{{ route('confirmation.post') }}">
+          @csrf
+          <button type="submit" class="px-8 py-3 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-full transition-colors">Potvrdiť objednávku</button>
+        </form>
       </div>
     </div>
 

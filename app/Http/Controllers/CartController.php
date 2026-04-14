@@ -242,6 +242,18 @@ class CartController extends Controller
         ));
     }
 
+    public function confirmOrder()
+    {
+        session()->forget([
+            'cart',
+            'checkout.shipping',
+            'checkout.payment',
+            'delivery_info',
+        ]);
+
+        return redirect()->route('confirmation');
+    }
+
     private function buildCartItemsAndTotal(): array
     {
         $cartData = session('cart', []);
