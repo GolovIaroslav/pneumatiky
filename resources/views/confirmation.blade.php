@@ -2,15 +2,18 @@
 
 @section('content')
 <main class="max-w-6xl mx-auto px-6 py-16 min-h-[60vh]">
-    <div class="max-w-3xl mx-auto text-left">
-      <h1 class="text-2xl font-bold mb-6 text-center">Vašu objednávku sme úspešne zaznamenali.</h1>
+    <div class="max-w-3xl mx-auto">
+      <h1 class="text-3xl font-extrabold mb-8 text-center text-gray-900">Vašu objednávku sme úspešne zaznamenali.</h1>
 
-      <div class="space-y-4 mb-10 text-base text-center">
-        <p>Ďakujeme Vám za nákup. Na zadaný e-mail sme Vám odoslali potvrdenie.</p>
+      <div class="space-y-2 mb-12 text-lg text-center font-medium text-gray-800">
+        <p>Sledujte stav objednávky: <a href="#" class="underline text-gray-500 hover:text-gray-700">tracker.io/654563</a></p>
+        <p>Sumár objednávky: <a href="#" class="underline text-gray-500 hover:text-gray-700">order06166_summary.pdf</a></p>
       </div>
 
       <div class="text-center">
-        <a href="{{ route('products') }}" class="inline-flex px-8 py-3 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-full transition-colors">Návrat do obchodu</a>
+        <a href="{{ route('products') }}" class="inline-flex px-14 py-4 bg-[#4b5563] hover:bg-[#374151] text-white font-bold rounded-full transition-colors">
+          Návrat do obchodu
+        </a>
       </div>
     </div>
   </main>
