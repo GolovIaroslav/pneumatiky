@@ -49,7 +49,14 @@ class CartController extends Controller
         $productId = (int) $request->input('product_id');
         $qty       = max(1, (int) $request->input('qty'));
 
+        $product = Product::findOrFail($productId);
         $cart = session('cart', []);
+        
+        $currentInCart = isset($cart[$productId]) ? $cart[$productId]['qty'] : 0;
+        
+        if (($currentInCart + $qty) > $product->stock) {
+            return redirect()->back()->with('error', "Nie je možné pridať viac kusov. Na sklade je celkovo len {$product->stock} ks.");
+        }
 
         if (isset($cart[$productId])) {
             $cart[$productId]['qty'] += $qty;
@@ -71,6 +78,11 @@ class CartController extends Controller
 
         $productId = (int) $request->input('product_id');
         $qty       = max(1, (int) $request->input('qty'));
+
+        $product = Product::findOrFail($productId);
+        if ($qty > $product->stock) {
+            return redirect()->back()->with('error', "Nie je možné nastaviť viac kusov. Na sklade je len {$product->stock} ks.");
+        }
 
         $cart = session('cart', []);
 

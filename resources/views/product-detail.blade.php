@@ -60,20 +60,27 @@
           @csrf
           <input type="hidden" name="product_id" value="{{ $product->id }}" />
 
+          @if (session('error'))
+            <div class="absolute -top-12 left-0 right-0 bg-red-50 border border-red-200 text-red-700 text-xs px-3 py-2 rounded shadow-sm">
+              {{ session('error') }}
+            </div>
+          @endif
+
           <button type="submit" class="w-72 bg-primary hover:bg-primary-dark text-white font-bold py-3.5 px-6 rounded-md transition-colors text-base text-center">
             pridať do košíka
           </button>
 
           <div class="flex w-20 border border-gray-300 rounded-md overflow-hidden bg-white">
-            <input
-              type="number"
-              name="qty"
-              id="qty-input"
-              value="1"
-              min="1"
-              step="1"
-              class="flex-1 min-w-0 text-center font-bold text-black text-base outline-none bg-transparent [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-            />
+              <input
+                type="number"
+                name="qty"
+                id="qty-input"
+                value="1"
+                min="1"
+                max="{{ $product->stock }}"
+                step="1"
+                class="flex-1 min-w-0 text-center font-bold text-black text-base outline-none bg-transparent [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+              />
             <div class="flex flex-col border-l border-gray-300 w-6">
               <button type="button" onclick="changeQty(1)" class="flex-1 flex items-center justify-center hover:bg-gray-100 text-primary border-b border-gray-300">
                 <img src="{{ asset('images/icons/caret-up.png') }}" alt="Pridať" class="w-2.5 h-2.5 opacity-70" />
@@ -173,7 +180,10 @@
   let qty = 1;
 
   function syncQtyInput(value) {
-    const nextQty = Math.max(1, parseInt(value, 10) || 1);
+    const maxStock = {{ $product->stock }};
+    let nextQty = parseInt(value, 10) || 1;
+    nextQty = Math.max(1, Math.min(nextQty, maxStock));
+    
     qty = nextQty;
     const qtyInput = document.getElementById('qty-input');
     if (qtyInput) {

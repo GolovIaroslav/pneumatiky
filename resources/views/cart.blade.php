@@ -19,6 +19,12 @@
       </div>
     @endif
 
+    @if (session('error'))
+      <div class="mb-4 bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 rounded">
+        {{ session('error') }}
+      </div>
+    @endif
+
     @if (count($cartItems) > 0)
 
       <div class="border border-gray-400 rounded-lg divide-y divide-gray-400 mb-6">
@@ -60,13 +66,14 @@
                   name="qty"
                   value="{{ $item['qty'] }}"
                   min="1"
+                  max="{{ $p->stock }}"
                   onchange="this.form.submit()"
                   class="w-14 text-center border border-gray-300 rounded px-1 py-0.5 text-sm"
                 />
                 <div class="flex gap-1">
                   <button
                     type="button"
-                    onclick="let i=this.closest('form').querySelector('[name=qty]'); i.value=Math.max(1,parseInt(i.value)+1); i.form.submit();"
+                    onclick="let i=this.closest('form').querySelector('[name=qty]'); if(parseInt(i.value) < {{ $p->stock }}){ i.value=parseInt(i.value)+1; i.form.submit(); }"
                     class="w-6 h-6 border border-gray-300 rounded text-gray-600 text-sm leading-none hover:bg-gray-100"
                   >+</button>
                   <button
