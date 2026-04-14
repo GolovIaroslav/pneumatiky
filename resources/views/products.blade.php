@@ -237,7 +237,7 @@
               $displayName = trim(($product->brand ? $product->brand . ' ' : '') . $product->name);
             @endphp
 
-            <div class="border border-gray-200 rounded flex flex-col bg-white overflow-hidden group">
+            <a href="{{ route('product.show', $product->id) }}" class="border border-gray-200 rounded flex flex-col bg-white overflow-hidden group hover:border-primary transition-all shadow-sm hover:shadow-md">
               <div class="w-full aspect-square relative border-b border-gray-200">
                 <img src="{{ $imagePath }}" alt="{{ $product->name }}" class="absolute inset-0 w-full h-full object-cover" />
                 <span class="absolute top-1 right-1 z-10 text-yellow-500 {{ $seasonIconClass }} leading-none">{{ $seasonIcon }}</span>
@@ -253,11 +253,11 @@
                   <span class="font-bold text-base text-gray-900">{{ number_format((float) $product->price, 2, ',', ' ') }}€</span>
                   <span class="text-gray-500 font-bold text-xs">/ ks</span>
                 </div>
-                <a href="{{ route('product.show', $product->id) }}" class="block w-full text-center bg-primary hover:bg-primary-dark text-white font-medium text-xs py-2.5 rounded transition-colors">
+                <div class="block w-full text-center bg-primary group-hover:bg-primary-dark text-white font-medium text-xs py-2.5 rounded transition-colors">
                   Viac informácií
-                </a>
+                </div>
               </div>
-            </div>
+            </a>
           @empty
             <div class="col-span-full border border-dashed border-gray-300 rounded p-8 text-center text-gray-500">
               Pre zvolené filtre sa nenašli žiadne produkty.
