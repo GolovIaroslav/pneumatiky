@@ -140,15 +140,23 @@
       <div class="flex items-center gap-3 mb-6">
         <span class="text-primary font-bold text-lg whitespace-nowrap">Odporúčané</span>
         <div class="flex-1 h-px bg-gray-200"></div>
+        <div class="flex gap-1.5">
+          <button onclick="scrollCarousel('carousel-related', -1)" class="w-7 h-7 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-50">
+            <img src="{{ asset('images/icons/arrow-left.png') }}" alt="Späť" class="w-3 h-3 opacity-60" />
+          </button>
+          <button onclick="scrollCarousel('carousel-related', 1)" class="w-7 h-7 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-50">
+            <img src="{{ asset('images/icons/arrow-right.png') }}" alt="Ďalej" class="w-3 h-3 opacity-60" />
+          </button>
+        </div>
       </div>
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+      <div id="carousel-related" class="flex gap-6 overflow-x-auto snap-x snap-mandatory pb-4" style="scrollbar-width: none; -ms-overflow-style: none;">
         @foreach ($related as $rel)
           @php
             $relMain = $rel->images->firstWhere('is_main', true) ?? $rel->images->first();
             $relImg  = $relMain ? asset($relMain->image_path) : asset('images/products/letne1.jpg');
             $relName = trim(($rel->brand ? $rel->brand . ' ' : '') . $rel->name);
           @endphp
-          <a href="{{ route('product.show', $rel->id) }}" class="group block text-center">
+          <a href="{{ route('product.show', $rel->id) }}" class="group block text-center min-w-[45%] md:min-w-[23%] flex-shrink-0 snap-start">
             <div class="w-full aspect-square mb-2.5 relative rounded border border-gray-200">
               <img src="{{ $relImg }}" alt="{{ $relName }}" class="w-full h-full object-cover" />
             </div>
@@ -159,6 +167,9 @@
           </a>
         @endforeach
       </div>
+      <style>
+        #carousel-related::-webkit-scrollbar { display: none; }
+      </style>
     </section>
     @endif
 
@@ -177,6 +188,13 @@
 
 @push('scripts')
 <script>
+  function scrollCarousel(id, direction) {
+    const container = document.getElementById(id);
+    if (!container) return;
+    const scrollAmount = container.clientWidth * 0.5 * direction;
+    container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+  }
+
   let qty = 1;
 
   function syncQtyInput(value) {

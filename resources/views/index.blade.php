@@ -14,23 +14,23 @@
       <span class="text-primary font-semibold text-base whitespace-nowrap">Najnovšie produkty</span>
       <div class="flex-1 h-px bg-gray-200"></div>
       <div class="flex gap-1.5">
-        <button class="w-7 h-7 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-50">
+        <button onclick="scrollCarousel('carousel-newest', -1)" class="w-7 h-7 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-50">
           <img src="{{ asset('images/icons/arrow-left.png') }}" alt="Späť" class="w-3 h-3 opacity-60" />
         </button>
-        <button class="w-7 h-7 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-50">
+        <button onclick="scrollCarousel('carousel-newest', 1)" class="w-7 h-7 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-50">
           <img src="{{ asset('images/icons/arrow-right.png') }}" alt="Ďalej" class="w-3 h-3 opacity-60" />
         </button>
       </div>
     </div>
 
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+    <div id="carousel-newest" class="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4" style="scrollbar-width: none; -ms-overflow-style: none;">
       @foreach($carouselProducts as $prod)
       @php
           $prodMain = $prod->images->firstWhere('is_main', true) ?? $prod->images->first();
           $prodImg = $prodMain ? asset($prodMain->image_path) : asset('images/products/letne1.jpg');
           $prodName = trim(($prod->brand ? $prod->brand . ' ' : '') . $prod->name);
       @endphp
-      <a href="{{ route('product.show', $prod->id) }}" class="group block text-center">
+      <a href="{{ route('product.show', $prod->id) }}" class="group block text-center min-w-[45%] md:min-w-[23%] flex-shrink-0 snap-start">
         <div class="w-full aspect-square mb-2.5 relative rounded border border-gray-200">
            <img src="{{ $prodImg }}" alt="{{ $prodName }}" class="w-full h-full object-cover" />
         </div>
@@ -39,6 +39,9 @@
       </a>
       @endforeach
     </div>
+    <style>
+      #carousel-newest::-webkit-scrollbar { display: none; }
+    </style>
   </section>
 
   <section class="bg-primary text-white py-8 my-4">
@@ -92,23 +95,23 @@
       <span class="text-primary font-semibold text-base whitespace-nowrap">Odporúčané</span>
       <div class="flex-1 h-px bg-gray-200"></div>
       <div class="flex gap-1.5">
-        <button class="w-7 h-7 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-50">
+        <button onclick="scrollCarousel('carousel-recommended', -1)" class="w-7 h-7 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-50">
           <img src="{{ asset('images/icons/arrow-left.png') }}" alt="Späť" class="w-3 h-3 opacity-60" />
         </button>
-        <button class="w-7 h-7 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-50">
+        <button onclick="scrollCarousel('carousel-recommended', 1)" class="w-7 h-7 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-50">
           <img src="{{ asset('images/icons/arrow-right.png') }}" alt="Ďalej" class="w-3 h-3 opacity-60" />
         </button>
       </div>
     </div>
 
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+    <div id="carousel-recommended" class="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4" style="scrollbar-width: none; -ms-overflow-style: none;">
       @foreach($carouselProducts as $prod)
       @php
           $prodMain = $prod->images->firstWhere('is_main', true) ?? $prod->images->first();
           $prodImg = $prodMain ? asset($prodMain->image_path) : asset('images/products/letne1.jpg');
           $prodName = trim(($prod->brand ? $prod->brand . ' ' : '') . $prod->name);
       @endphp
-      <a href="{{ route('product.show', $prod->id) }}" class="group block text-center">
+      <a href="{{ route('product.show', $prod->id) }}" class="group block text-center min-w-[45%] md:min-w-[23%] flex-shrink-0 snap-start">
         <div class="w-full aspect-square mb-2.5 relative rounded border border-gray-200">
            <img src="{{ $prodImg }}" alt="{{ $prodName }}" class="w-full h-full object-cover" />
         </div>
@@ -117,6 +120,9 @@
       </a>
       @endforeach
     </div>
+    <style>
+      #carousel-recommended::-webkit-scrollbar { display: none; }
+    </style>
   </section>
 
   <div class="py-10"></div>
@@ -124,6 +130,13 @@
 
 @push('scripts')
 <script>
+  function scrollCarousel(id, direction) {
+    const container = document.getElementById(id);
+    if (!container) return;
+    const scrollAmount = container.clientWidth * 0.5 * direction;
+    container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+  }
+
   function toggleHeaderLoginMenu(button) {
     const menu = button.nextElementSibling;
     if (!menu) return;
