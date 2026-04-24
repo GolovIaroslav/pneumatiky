@@ -56,6 +56,10 @@ class AuthController extends Controller
             // Zlúč hosťov košík s prihlásením
             CartController::mergeGuestCartToDB();
 
+            if (Auth::user()->is_admin) {
+                return redirect()->route('admin.products');
+            }
+
             return redirect()->intended('/')->with('success', 'Boli ste úspešne prihlásený.');
         }
 
