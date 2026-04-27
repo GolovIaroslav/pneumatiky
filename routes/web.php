@@ -7,7 +7,7 @@ use App\Http\Controllers\CartController;
 
 Route::get('/', function () {
     $carouselProducts = \App\Models\Product::with(['images' => fn ($q) => $q->orderByDesc('is_main')])
-        ->limit(4)
+        ->limit(10)
         ->get();
     return view('index', compact('carouselProducts'));
 })->name('home');
@@ -42,17 +42,47 @@ Route::post('/delivery', [CartController::class, 'saveDelivery'])->name('deliver
 Route::get('/summary', [CartController::class, 'summary'])->name('summary');
 Route::post('/confirmation', [CartController::class, 'confirmOrder'])->name('confirmation.post');
 
+use App\Http\Controllers\AdminProductController;
 Route::get('/confirmation', function () {
     return view('confirmation');
 })->name('confirmation');
 
-Route::get('/admin-form', function () {
-    return view('admin-form');
-})->name('admin.form');
+Route::prefix('admin')->group(function () {
+    Route::get('/products', function () {
+        if (!auth()->check() || !auth()->user()->is_admin) {
+            return redirect()->route('login')->with('error', 'Prístup zamietnutý. Prihláste sa ako administrátor.');
+        }
+        return app(AdminProductController::class)->index();
+    })->name('admin.products');
 
-Route::get('/admin-products', function () {
-    return view('admin-products');
-})->name('admin.products');
+    Route::get('/form/{id?}', function ($id = null) {
+        if (!auth()->check() || !auth()->user()->is_admin) {
+            return redirect()->route('login')->with('error', 'Prístup zamietnutý. Prihláste sa ako administrátor.');
+        }
+        return app(AdminProductController::class)->form($id);
+    })->name('admin.form');
+
+    Route::post('/form/save/{id?}', function (\Illuminate\Http\Request $request, $id = null) {
+        if (!auth()->check() || !auth()->user()->is_admin) {
+            return redirect()->route('login')->with('error', 'Prístup zamietnutý. Prihláste sa ako administrátor.');
+        }
+        return app(AdminProductController::class)->save($request, $id);
+    })->name('admin.save');
+
+    Route::post('/products/delete/{id}', function ($id) {
+        if (!auth()->check() || !auth()->user()->is_admin) {
+            return redirect()->route('login')->with('error', 'Prístup zamietnutý. Prihláste sa ako administrátor.');
+        }
+        return app(AdminProductController::class)->delete($id);
+    })->name('admin.delete');
+
+    Route::post('/image/delete/{id}', function ($id) {
+        if (!auth()->check() || !auth()->user()->is_admin) {
+            return redirect()->route('login')->with('error', 'Prístup zamietnutý. Prihláste sa ako administrátor.');
+        }
+        return app(AdminProductController::class)->deleteImage($id);
+    })->name('admin.image.delete');
+});
 
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 Route::post('/register', [AuthController::class, 'register'])->name('register.post');
