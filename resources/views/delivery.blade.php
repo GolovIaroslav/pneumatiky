@@ -20,6 +20,22 @@
 		<div class="max-w-3xl mx-auto">
 			<h1 class="text-2xl font-bold mb-8 text-left">Dodacie údaje</h1>
 
+			@if ($errors->any())
+			<div class="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md text-sm">
+				<ul class="list-disc pl-4 space-y-1">
+					@foreach ($errors->all() as $error)
+						<li>{{ $error }}</li>
+					@endforeach
+				</ul>
+			</div>
+			@endif
+
+			@if (session('error'))
+			<div class="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md text-sm">
+				{{ session('error') }}
+			</div>
+			@endif
+
 			<form action="{{ route('delivery.post') }}" method="post" class="space-y-8">
 				@csrf
 				<section>

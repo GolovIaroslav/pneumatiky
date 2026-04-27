@@ -311,11 +311,10 @@ class CartController extends Controller
     public function confirmOrder()
     {
         if (Auth::check()) {
-            $cart = Auth::user()->cart;
-
-            if ($cart) {
-                $cart->items()->delete();
-                $cart->delete();
+            $userCart = Auth::user()->cart;
+            if ($userCart) {
+                $userCart->items()->delete();
+                $userCart->delete();
             }
         }
 
