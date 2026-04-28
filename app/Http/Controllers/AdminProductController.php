@@ -31,16 +31,17 @@ class AdminProductController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'brand' => 'nullable|string|max:255',
-            'price' => 'required|numeric',
-            'stock' => 'required|integer',
+            'price' => 'required|numeric|min:0',
+            'stock' => 'required|integer|min:0',
             'description' => 'required|string',
-            'category_id' => 'required|integer',
+            'category_id' => 'required|integer|exists:categories,id',
             'season' => 'nullable|string',
             'width' => 'nullable|integer',
             'profile' => 'nullable|integer',
             'diameter' => 'nullable|string',
             'has_spikes' => 'nullable',
-            'images.*' => 'nullable|image',
+            'images' => $id ? 'nullable|array' : 'required|array|min:2',
+            'images.*' => 'image',
         ]);
 
         $validated['has_spikes'] = $request->has('has_spikes');
@@ -78,6 +79,12 @@ class AdminProductController extends Controller
     public function delete($id)
     {
         $product = Product::findOrFail($id);
+
+        if ($product->orderItems()->count() > 0) {
+            return redirect()->route('admin.products')
+                   ->with('error', 'Tento produkt nie je možné vymazať, pretože je súčasťou histórie objednávok.');
+        }
+
         foreach ($product->images as $image) {
             if (file_exists(public_path($image->image_path))) {
                 unlink(public_path($image->image_path));

@@ -19,7 +19,7 @@ class ProductController extends Controller
             ->where('category_id', $product->category_id)
             ->where('id', '!=', $product->id)
             ->inRandomOrder()
-            ->limit(4)
+            ->limit(10)
             ->get();
 
         return view('product-detail', compact('product', 'related'));

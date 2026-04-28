@@ -7,6 +7,7 @@ use App\Models\CartItem;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
 class CartController extends Controller
@@ -310,13 +311,65 @@ class CartController extends Controller
 
     public function confirmOrder()
     {
-        if (Auth::check()) {
-            $userCart = Auth::user()->cart;
-            if ($userCart) {
-                $userCart->items()->delete();
-                $userCart->delete();
-            }
+        [$cartItems, $total] = $this->buildCartItemsAndTotal();
+        $deliveryInfo = session('delivery_info');
+        
+        if (empty($cartItems) || empty($deliveryInfo)) {
+            return redirect()->route('cart')->with('error', 'Chyba objednávky. Košík je prázdny.');
         }
+
+        $shippingOptions = self::SHIPPING_OPTIONS;
+        $paymentOptions = self::PAYMENT_OPTIONS;
+
+        $selectedShipping = (string) session('checkout.shipping', array_key_first($shippingOptions));
+        if (! array_key_exists($selectedShipping, $shippingOptions)) {
+            $selectedShipping = array_key_first($shippingOptions);
+        }
+
+        $selectedPayment = (string) session('checkout.payment', array_key_first($paymentOptions));
+        if (! array_key_exists($selectedPayment, $paymentOptions)) {
+            $selectedPayment = array_key_first($paymentOptions);
+        }
+
+        $shippingPrice = (float) $shippingOptions[$selectedShipping]['price'];
+        $paymentPrice = (float) $paymentOptions[$selectedPayment]['price'];
+        $grandTotal = $total + $shippingPrice + $paymentPrice;
+
+        DB::transaction(function () use ($cartItems, $grandTotal, $selectedShipping, $selectedPayment, $deliveryInfo) {
+            $order = new \App\Models\Order();
+            $order->user_id = Auth::id();
+            $order->total_price = $grandTotal;
+            $order->status = 'pending';
+            $order->shipping_method = $selectedShipping;
+            $order->payment_method = $selectedPayment;
+            $order->delivery_name = $deliveryInfo['meno'] . ' ' . $deliveryInfo['priezvisko'];
+            $order->delivery_address = $deliveryInfo['ulica'] . ', ' . $deliveryInfo['mesto'] . ', ' . $deliveryInfo['psc'];
+            $order->save();
+
+            foreach ($cartItems as $item) {
+                $product = Product::lockForUpdate()->find($item['product']->id);
+                if (!$product || $product->stock < $item['qty']) {
+                    throw new \Exception("Produkt '{$item['product']->name}' nie je dostupný v požadovanom množstve.");
+                }
+
+                $orderItem = new \App\Models\OrderItem();
+                $orderItem->order_id = $order->id;
+                $orderItem->product_id = $product->id;
+                $orderItem->quantity = $item['qty'];
+                $orderItem->unit_price = $product->price;
+                $orderItem->save();
+
+                $product->decrement('stock', $item['qty']);
+            }
+
+            if (Auth::check()) {
+                $userCart = Auth::user()->cart;
+                if ($userCart) {
+                    $userCart->items()->delete();
+                    $userCart->delete();
+                }
+            }
+        });
 
         session()->forget([
             'cart',
