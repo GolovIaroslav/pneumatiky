@@ -44,6 +44,9 @@ Route::post('/confirmation', [CartController::class, 'confirmOrder'])->name('con
 
 use App\Http\Controllers\AdminProductController;
 Route::get('/confirmation', function () {
+    if (! session()->pull('order_completed')) {
+        return redirect()->route('home');
+    }
     return view('confirmation');
 })->name('confirmation');
 

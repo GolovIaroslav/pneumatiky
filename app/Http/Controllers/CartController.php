@@ -276,6 +276,14 @@ class CartController extends Controller
     {
         [$cartItems, $total] = $this->buildCartItemsAndTotal();
 
+        if (empty($cartItems)) {
+            return redirect()->route('cart')->with('error', 'Košík je prázdny.');
+        }
+
+        if (! session()->has('delivery_info')) {
+            return redirect()->route('delivery')->with('error', 'Najprv vyplňte dodacie údaje.');
+        }
+
         $deliveryInfo = session('delivery_info', []);
 
         $selectedShipping = (string) session('checkout.shipping', array_key_first(self::SHIPPING_OPTIONS));
@@ -377,6 +385,8 @@ class CartController extends Controller
             'checkout.payment',
             'delivery_info',
         ]);
+
+        session(['order_completed' => true]);
 
         return redirect()->route('confirmation');
     }
