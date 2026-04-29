@@ -18,6 +18,8 @@ class Order extends Model
         'shipping_method',
         'payment_method',
         'delivery_name',
+        'delivery_email',
+        'delivery_phone',
         'delivery_address',
     ];
 

@@ -351,6 +351,8 @@ class CartController extends Controller
             $order->shipping_method = $selectedShipping;
             $order->payment_method = $selectedPayment;
             $order->delivery_name = $deliveryInfo['meno'] . ' ' . $deliveryInfo['priezvisko'];
+            $order->delivery_email = $deliveryInfo['email'];
+            $order->delivery_phone = $deliveryInfo['telefon'];
             $order->delivery_address = $deliveryInfo['ulica'] . ', ' . $deliveryInfo['mesto'] . ', ' . $deliveryInfo['psc'];
             $order->save();
 

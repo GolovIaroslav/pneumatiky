@@ -12,7 +12,7 @@ class AdminProductController extends Controller
 {
     public function index()
     {
-        $products = Product::with('images', 'category')->orderByDesc('id')->get();
+        $products = Product::with('images', 'category.parent')->orderByDesc('id')->get();
         return view('admin-products', compact('products'));
     }
 
@@ -22,7 +22,7 @@ class AdminProductController extends Controller
         if ($id) {
             $product = Product::with('images')->findOrFail($id);
         }
-        $categories = Category::all();
+        $categories = Category::with('parent')->get();
         return view('admin-form', compact('product', 'categories'));
     }
 
@@ -69,10 +69,21 @@ class AdminProductController extends Controller
     public function deleteImage($imageId)
     {
         $image = ProductImage::findOrFail($imageId);
+        $wasMain = $image->is_main;
+        $productId = $image->product_id;
+
         if (file_exists(public_path($image->image_path))) {
             unlink(public_path($image->image_path));
         }
         $image->delete();
+
+        if ($wasMain) {
+            $next = ProductImage::where('product_id', $productId)->first();
+            if ($next) {
+                $next->update(['is_main' => true]);
+            }
+        }
+
         return back()->with('success', 'Fotografia bola vymazaná.');
     }
 
