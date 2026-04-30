@@ -310,6 +310,15 @@ class CartController extends Controller
 
     public function confirmOrder()
     {
+        if (Auth::check()) {
+            $cart = Auth::user()->cart;
+
+            if ($cart) {
+                $cart->items()->delete();
+                $cart->delete();
+            }
+        }
+
         session()->forget([
             'cart',
             'checkout.shipping',
