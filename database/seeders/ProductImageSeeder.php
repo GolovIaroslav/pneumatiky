@@ -13,77 +13,81 @@ class ProductImageSeeder extends Seeder
      */
     public function run(): void
     {
-        $bikeMain = [
-            'bike1.jpg', 'bike2.jpg', 'bike3.jpg', 'bike4.jpg', 'bike5.jpg', 'bike6.jpg', 'bike7.jpg',
-        ];
-        $letneMain = [
-            'letne1.jpg', 'letne2.jpg', 'letne3.jpg', 'letne4.jpg', 'letne5.jpg', 'letne6.jpg', 'letne7.jpg',
-            'letne8.jpg', 'letne9.jpg', 'letne10.jpg', 'letne11.jpg', 'letne12.jpg', 'letne13.jpg', 'letne14.jpg',
-            'letne15.jpg', 'letne16.jpg', 'letne17.jpg',
-        ];
-        $zimneMain = [
-            'zimne1.jpg', 'zimne2.jpg', 'zimne3.jpg', 'zimne4.jpg', 'zimne5.jpg', 'zimne6.jpg', 'zimne7.jpg', 'zimne8.jpg', 'zimne9.jpg', 'zimne10.jpg',
-        ];
-        $motoMain = ['moto1.jpg'];
-        $traktorMain = ['traktor1.jpg', 'traktor2.jpg', 'traktor3.jpg', 'traktor4.jpg'];
+        $letneAuto = array_map(fn ($i) => 'letne' . $i . '.jpg', range(1, 12));
+        $zimneAuto = array_map(fn ($i) => 'zimne' . $i . '.jpg', range(1, 12));
+        $celorocneAuto = array_map(fn ($i) => 'letne' . $i . '.jpg', range(13, 17));
+        $bikeMain = array_map(fn ($i) => 'bike' . $i . '.jpg', range(1, 11));
+        $motoMain = array_map(fn ($i) => 'moto' . $i . '.jpg', range(1, 11));
+        $traktorMain = array_map(fn ($i) => 'traktor' . $i . '.jpg', range(1, 10));
 
         $bikeOrMotoDetail = ['bike_detail1.jpg', 'bike_detail2.jpg', 'bike_detail3.jpg', 'bike_detail4.jpg'];
         $autoOrTractorDetail = ['letne_detail1.jpg', 'letne_detail2.jpg', 'letne_detail3.jpg', 'letne_detail4.jpg'];
 
-        $poolIndices = [
-            'bike' => 0,
-            'letne' => 0,
-            'zimne' => 0,
-            'moto' => 0,
-            'traktor' => 0,
-        ];
+        ProductImage::query()->delete();
 
         $products = Product::with('category.parent')->orderBy('id')->get();
 
+        $autoLetne = [];
+        $autoZimne = [];
+        $autoCelorocne = [];
+        $bikeProducts = [];
+        $motoProducts = [];
+        $traktorProducts = [];
+
         foreach ($products as $product) {
             $parentName = strtolower((string) optional($product->category->parent)->name);
+            $season = strtolower((string) $product->season);
 
             if ($parentName === 'auto') {
-                $season = strtolower((string) $product->season);
                 if ($season === 'zimne') {
-                    $mainImage = $zimneMain[$poolIndices['zimne'] % count($zimneMain)];
-                    $poolIndices['zimne']++;
+                    $autoZimne[] = $product;
+                } elseif ($season === 'celorocne') {
+                    $autoCelorocne[] = $product;
                 } else {
-                    $mainImage = $letneMain[$poolIndices['letne'] % count($letneMain)];
-                    $poolIndices['letne']++;
+                    $autoLetne[] = $product;
                 }
-                $detailImages = $autoOrTractorDetail;
-            } elseif ($parentName === 'moto') {
-                $mainImage = $motoMain[$poolIndices['moto'] % count($motoMain)];
-                $poolIndices['moto']++;
-                $detailImages = $bikeOrMotoDetail;
             } elseif ($parentName === 'cyklo') {
-                $mainImage = $bikeMain[$poolIndices['bike'] % count($bikeMain)];
-                $poolIndices['bike']++;
-                $detailImages = $bikeOrMotoDetail;
+                $bikeProducts[] = $product;
+            } elseif ($parentName === 'moto') {
+                $motoProducts[] = $product;
             } elseif ($parentName === 'traktorove') {
-                $mainImage = $traktorMain[$poolIndices['traktor'] % count($traktorMain)];
-                $poolIndices['traktor']++;
-                $detailImages = $autoOrTractorDetail;
-            } else {
-                $mainImage = $letneMain[$poolIndices['letne'] % count($letneMain)];
-                $poolIndices['letne']++;
-                $detailImages = $autoOrTractorDetail;
-            }
-
-            ProductImage::create([
-                'product_id' => $product->id,
-                'image_path' => 'images/products/' . $mainImage,
-                'is_main' => true,
-            ]);
-
-            foreach ($detailImages as $detailImage) {
-                ProductImage::create([
-                    'product_id' => $product->id,
-                    'image_path' => 'images/products/' . $detailImage,
-                    'is_main' => false,
-                ]);
+                $traktorProducts[] = $product;
             }
         }
+
+        // Use the newest seeded products per group so mapping remains stable after reseeds.
+        $autoLetne = collect($autoLetne)->sortByDesc('id')->take(12)->sortBy('id')->values()->all();
+        $autoZimne = collect($autoZimne)->sortByDesc('id')->take(12)->sortBy('id')->values()->all();
+        $autoCelorocne = collect($autoCelorocne)->sortByDesc('id')->take(5)->sortBy('id')->values()->all();
+        $bikeProducts = collect($bikeProducts)->sortByDesc('id')->take(11)->sortBy('id')->values()->all();
+        $motoProducts = collect($motoProducts)->sortByDesc('id')->take(11)->sortBy('id')->values()->all();
+        $traktorProducts = collect($traktorProducts)->sortByDesc('id')->take(10)->sortBy('id')->values()->all();
+
+        $assignMainImages = function (array $items, array $images, array $detailImages): void {
+            $limit = min(count($items), count($images));
+
+            for ($i = 0; $i < $limit; $i++) {
+                ProductImage::create([
+                    'product_id' => $items[$i]->id,
+                    'image_path' => 'images/products/' . $images[$i],
+                    'is_main' => true,
+                ]);
+
+                foreach ($detailImages as $detailImage) {
+                    ProductImage::create([
+                        'product_id' => $items[$i]->id,
+                        'image_path' => 'images/products/' . $detailImage,
+                        'is_main' => false,
+                    ]);
+                }
+            }
+        };
+
+        $assignMainImages($autoLetne, $letneAuto, $autoOrTractorDetail);
+        $assignMainImages($autoZimne, $zimneAuto, $autoOrTractorDetail);
+        $assignMainImages($autoCelorocne, $celorocneAuto, $autoOrTractorDetail);
+        $assignMainImages($bikeProducts, $bikeMain, $bikeOrMotoDetail);
+        $assignMainImages($motoProducts, $motoMain, $bikeOrMotoDetail);
+        $assignMainImages($traktorProducts, $traktorMain, $autoOrTractorDetail);
     }
 }

@@ -79,7 +79,7 @@
 
         @if ($showSeasonFilters)
           <div class="mb-8">
-            <p class="font-bold text-gray-900 mb-3 text-base">Sezónnosť</p>
+            <p class="font-bold text-gray-900 mb-3 text-base">Sezóna</p>
             @php $availableSeasonValues = $availableSeasons->all(); @endphp
             <div class="space-y-2">
               @foreach ($availableSeasonValues as $seasonValue)
