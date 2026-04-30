@@ -46,9 +46,11 @@
         <h1 class="text-3xl font-bold mb-2 text-black">
           {{ trim(($product->brand ? $product->brand . ' ' : '') . $product->name) }}
         </h1>
+        @if ($product->width || $product->diameter)
         <p class="text-black font-bold text-sm mb-6">
-          {{ $product->width }}/{{ $product->profile }}R{{ $product->diameter }}
+          {{ $product->width && $product->profile ? $product->width . '/' . $product->profile : '' }}{{ $product->diameter ? 'R' . str_replace('r', '', strtolower($product->diameter)) : '' }}
         </p>
+        @endif
 
         <div class="flex items-baseline gap-3 mb-6">
           <span class="text-gray-500 font-bold text-xl">cena</span>

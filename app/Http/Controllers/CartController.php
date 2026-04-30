@@ -344,43 +344,47 @@ class CartController extends Controller
         $grandTotal = $total + $shippingPrice + $paymentPrice;
 
         $order = null;
-        DB::transaction(function () use ($cartItems, $grandTotal, $selectedShipping, $selectedPayment, $deliveryInfo, &$order) {
-            $order = new \App\Models\Order();
-            $order->user_id = Auth::id();
-            $order->total_price = $grandTotal;
-            $order->status = 'pending';
-            $order->shipping_method = $selectedShipping;
-            $order->payment_method = $selectedPayment;
-            $order->delivery_name = $deliveryInfo['meno'] . ' ' . $deliveryInfo['priezvisko'];
-            $order->delivery_email = $deliveryInfo['email'];
-            $order->delivery_phone = $deliveryInfo['telefon'];
-            $order->delivery_address = $deliveryInfo['ulica'] . ', ' . $deliveryInfo['mesto'] . ', ' . $deliveryInfo['psc'];
-            $order->save();
+        try {
+            DB::transaction(function () use ($cartItems, $grandTotal, $selectedShipping, $selectedPayment, $deliveryInfo, &$order) {
+                $order = new \App\Models\Order();
+                $order->user_id = Auth::id();
+                $order->total_price = $grandTotal;
+                $order->status = 'pending';
+                $order->shipping_method = $selectedShipping;
+                $order->payment_method = $selectedPayment;
+                $order->delivery_name = $deliveryInfo['meno'] . ' ' . $deliveryInfo['priezvisko'];
+                $order->delivery_email = $deliveryInfo['email'];
+                $order->delivery_phone = $deliveryInfo['telefon'];
+                $order->delivery_address = $deliveryInfo['ulica'] . ', ' . $deliveryInfo['mesto'] . ', ' . $deliveryInfo['psc'];
+                $order->save();
 
-            foreach ($cartItems as $item) {
-                $product = Product::lockForUpdate()->find($item['product']->id);
-                if (!$product || $product->stock < $item['qty']) {
-                    throw new \Exception("Produkt '{$item['product']->name}' nie je dostupný v požadovanom množstve.");
+                foreach ($cartItems as $item) {
+                    $product = Product::lockForUpdate()->find($item['product']->id);
+                    if (!$product || $product->stock < $item['qty']) {
+                        throw new \Exception("Produkt '{$item['product']->name}' nie je dostupný v požadovanom množstve.");
+                    }
+
+                    $orderItem = new \App\Models\OrderItem();
+                    $orderItem->order_id = $order->id;
+                    $orderItem->product_id = $product->id;
+                    $orderItem->quantity = $item['qty'];
+                    $orderItem->unit_price = $product->price;
+                    $orderItem->save();
+
+                    $product->decrement('stock', $item['qty']);
                 }
 
-                $orderItem = new \App\Models\OrderItem();
-                $orderItem->order_id = $order->id;
-                $orderItem->product_id = $product->id;
-                $orderItem->quantity = $item['qty'];
-                $orderItem->unit_price = $product->price;
-                $orderItem->save();
-
-                $product->decrement('stock', $item['qty']);
-            }
-
-            if (Auth::check()) {
-                $userCart = Auth::user()->cart;
-                if ($userCart) {
-                    $userCart->items()->delete();
-                    $userCart->delete();
+                if (Auth::check()) {
+                    $userCart = Auth::user()->cart;
+                    if ($userCart) {
+                        $userCart->items()->delete();
+                        $userCart->delete();
+                    }
                 }
-            }
-        });
+            });
+        } catch (\Exception $e) {
+            return redirect()->route('cart')->with('error', $e->getMessage());
+        }
 
         session()->forget([
             'cart',

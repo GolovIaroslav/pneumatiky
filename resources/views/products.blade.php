@@ -298,22 +298,3 @@
 <div class="py-10"></div>
 @endsection
 
-@push('scripts')
-<script>
-  function toggleHeaderLoginMenu(button) {
-    const menu = button.nextElementSibling;
-    if (!menu) return;
-
-    menu.classList.toggle('hidden');
-  }
-
-  document.addEventListener('click', function (event) {
-    document.querySelectorAll('.header-login-menu').forEach(function (menu) {
-      const toggle = menu.previousElementSibling;
-      if (!menu.contains(event.target) && (!toggle || !toggle.contains(event.target))) {
-        menu.classList.add('hidden');
-      }
-    });
-  });
-</script>
-@endpush

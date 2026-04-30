@@ -46,9 +46,9 @@
                     <td class="p-4 text-gray-500">
                         {{ $product->category->parent->name ?? 'N/A' }} > {{ $product->category->name ?? 'N/A' }}<br>
                         <span class="text-xs text-primary">
-                            {{ ucfirst($product->season) }} • 
+                            {{ $product->season ? ucfirst($product->season) : '—' }} •
                             @if($product->width){{ $product->width }}/{{ $product->profile }} @endif
-                            R{{ str_replace('r', '', strtolower($product->diameter)) }}
+                            {{ $product->diameter ? 'R' . str_replace('r', '', strtolower($product->diameter)) : '' }}
                         </span>
                     </td>
                     <td class="p-4 font-bold">{{ number_format((float) $product->price, 2, '.', '') }} €</td>

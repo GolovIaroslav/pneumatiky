@@ -17,12 +17,12 @@
 
         <div>
           <label for="email" class="block text-center text-sm font-medium text-gray-700 mb-2">E-mail</label>
-          <input type="email" id="email" name="email" class="w-full border border-gray-400 rounded-md px-4 py-2.5 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary" />
+          <input type="email" id="email" name="email" value="{{ old('email') }}" class="w-full border border-gray-400 rounded-md px-4 py-2.5 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary" />
         </div>
 
         <div>
           <label for="username" class="block text-center text-sm font-medium text-gray-700 mb-2">Prihlasovacie meno</label>
-          <input type="text" id="username" name="username" class="w-full border border-gray-400 rounded-md px-4 py-2.5 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary" />
+          <input type="text" id="username" name="username" value="{{ old('username') }}" class="w-full border border-gray-400 rounded-md px-4 py-2.5 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary" />
         </div>
 
         <div>
