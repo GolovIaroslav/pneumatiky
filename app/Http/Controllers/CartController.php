@@ -247,14 +247,24 @@ class CartController extends Controller
     public function saveDelivery(Request $request)
     {
         $data = $request->validate([
-            'meno' => 'required',
-            'priezvisko' => 'required',
-            'email' => 'required|email',
-            'telefon' => 'required',
-            'ulica' => 'required',
-            'mesto' => 'required',
-            'psc' => 'required',
-            'poznamka' => 'nullable',
+            'meno' => ['required', 'string', 'max:100'],
+            'priezvisko' => ['required', 'string', 'max:100'],
+            'email' => ['required', 'string', 'email', 'max:100'],
+            'telefon' => ['required', 'string', 'regex:/^\+421\d{8,}$/'],
+            'ulica' => ['required', 'string', 'max:100'],
+            'mesto' => ['required', 'string', 'max:100'],
+            'psc' => ['required', 'regex:/^\d{5}$/'],
+            'poznamka' => ['nullable', 'string', 'max:1000'],
+        ], [
+            'meno.max' => 'Meno môže mať najviac 100 znakov.',
+            'priezvisko.max' => 'Priezvisko môže mať najviac 100 znakov.',
+            'email.email' => 'Zadajte platný e-mail.',
+            'email.max' => 'E-mail môže mať najviac 100 znakov.',
+            'telefon.regex' => 'Telefónne číslo musí byť valídne v tvare +421...',
+            'ulica.max' => 'Ulica a číslo môžu mať najviac 100 znakov.',
+            'mesto.max' => 'Mesto môže mať najviac 100 znakov.',
+            'psc.regex' => 'PSČ musí mať presne 5 číslic.',
+            'poznamka.max' => 'Poznámka môže mať najviac 1000 znakov.',
         ]);
 
         session(['delivery_info' => $data]);

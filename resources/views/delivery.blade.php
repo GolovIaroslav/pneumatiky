@@ -27,19 +27,23 @@
 					<div class="space-y-4">
 						<div>
 							<label for="meno" class="block text-left text-sm font-medium text-gray-700 mb-2">Meno</label>
-							<input type="text" id="meno" name="meno" class="w-full md:w-64 border border-gray-400 rounded-md px-4 py-2.5 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary" />
+							<input type="text" id="meno" name="meno" value="{{ old('meno', session('delivery_info.meno')) }}" class="w-full md:w-64 border border-gray-400 rounded-md px-4 py-2.5 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary" />
+							@error('meno')<p class="mt-1 text-xs text-red-600">{{ $message }}</p>@enderror
 						</div>
 						<div>
 							<label for="priezvisko" class="block text-left text-sm font-medium text-gray-700 mb-2">Priezvisko</label>
-							<input type="text" id="priezvisko" name="priezvisko" class="w-full md:w-64 border border-gray-400 rounded-md px-4 py-2.5 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary" />
+							<input type="text" id="priezvisko" name="priezvisko" value="{{ old('priezvisko', session('delivery_info.priezvisko')) }}" class="w-full md:w-64 border border-gray-400 rounded-md px-4 py-2.5 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary" />
+							@error('priezvisko')<p class="mt-1 text-xs text-red-600">{{ $message }}</p>@enderror
 						</div>
 						<div>
 							<label for="email" class="block text-left text-sm font-medium text-gray-700 mb-2">E-mail</label>
-							<input type="email" id="email" name="email" class="w-full md:w-96 border border-gray-400 rounded-md px-4 py-2.5 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary" />
+							<input type="email" id="email" name="email" value="{{ old('email', auth()->user()->email ?? session('delivery_info.email')) }}" class="w-full md:w-96 border border-gray-400 rounded-md px-4 py-2.5 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary" />
+							@error('email')<p class="mt-1 text-xs text-red-600">{{ $message }}</p>@enderror
 						</div>
 						<div>
 							<label for="telefon" class="block text-left text-sm font-medium text-gray-700 mb-2">Telefón</label>
-							<input type="tel" id="telefon" name="telefon" class="w-full md:w-64 border border-gray-400 rounded-md px-4 py-2.5 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary" />
+							<input type="tel" id="telefon" name="telefon" value="{{ old('telefon', session('delivery_info.telefon')) }}" placeholder="v tvare +421..." class="w-full md:w-64 border border-gray-400 rounded-md px-4 py-2.5 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary" />
+							@error('telefon')<p class="mt-1 text-xs text-red-600">{{ $message }}</p>@enderror
 						</div>
 					</div>
 				</section>
@@ -49,15 +53,18 @@
 					<div class="space-y-4">
 						<div>
 							<label for="ulica" class="block text-left text-sm font-medium text-gray-700 mb-2">Ulica a číslo</label>
-							<input type="text" id="ulica" name="ulica" class="w-full border border-gray-400 rounded-md px-4 py-2.5 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary" />
+							<input type="text" id="ulica" name="ulica" value="{{ old('ulica', session('delivery_info.ulica')) }}" class="w-full border border-gray-400 rounded-md px-4 py-2.5 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary" />
+							@error('ulica')<p class="mt-1 text-xs text-red-600">{{ $message }}</p>@enderror
 						</div>
 						<div>
 							<label for="mesto" class="block text-left text-sm font-medium text-gray-700 mb-2">Mesto</label>
-							<input type="text" id="mesto" name="mesto" class="w-full md:w-96 border border-gray-400 rounded-md px-4 py-2.5 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary" />
+							<input type="text" id="mesto" name="mesto" value="{{ old('mesto', session('delivery_info.mesto')) }}" class="w-full md:w-96 border border-gray-400 rounded-md px-4 py-2.5 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary" />
+							@error('mesto')<p class="mt-1 text-xs text-red-600">{{ $message }}</p>@enderror
 						</div>
 						<div>
 							<label for="psc" class="block text-left text-sm font-medium text-gray-700 mb-2">PSČ</label>
-							<input type="text" id="psc" name="psc" class="w-full md:w-32 border border-gray-400 rounded-md px-4 py-2.5 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary" />
+							<input type="text" id="psc" name="psc" value="{{ old('psc', session('delivery_info.psc')) }}" inputmode="numeric" maxlength="5" placeholder="12345" class="w-full md:w-32 border border-gray-400 rounded-md px-4 py-2.5 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary" />
+							@error('psc')<p class="mt-1 text-xs text-red-600">{{ $message }}</p>@enderror
 						</div>
 					</div>
 				</section>
@@ -66,7 +73,8 @@
 					<h2 class="text-lg font-semibold text-left mb-4">Poznámka pre odosielateľa</h2>
 					<div>
 						<label for="poznamka" class="block text-left text-sm font-medium text-gray-700 mb-2">Poznámka</label>
-						<textarea id="poznamka" name="poznamka" rows="5" class="w-full border border-gray-400 rounded-md px-4 py-2.5 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary"></textarea>
+							<textarea id="poznamka" name="poznamka" rows="5" class="w-full border border-gray-400 rounded-md px-4 py-2.5 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary">{{ old('poznamka', session('delivery_info.poznamka')) }}</textarea>
+							@error('poznamka')<p class="mt-1 text-xs text-red-600">{{ $message }}</p>@enderror
 					</div>
 				</section>
 
