@@ -47,7 +47,8 @@ Route::get('/confirmation', function () {
     if (! session()->pull('order_completed')) {
         return redirect()->route('home');
     }
-    return view('confirmation');
+    $orderId = session()->pull('last_order_id');
+    return view('confirmation', compact('orderId'));
 })->name('confirmation');
 
 Route::prefix('admin')->group(function () {

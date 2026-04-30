@@ -28,9 +28,6 @@
               <img src="{{ asset('images/icons/eye.png') }}" alt="Zobraziť heslo" class="w-5 h-5 opacity-50 hover:opacity-80 transition-opacity" />
             </button>
           </div>
-          <div class="text-right mt-2">
-            <a href="#" class="text-sm text-gray-400 hover:text-primary transition-colors">Zabudol som heslo</a>
-          </div>
         </div>
 
         <div class="pt-1">

@@ -66,11 +66,13 @@
             </div>
           @endif
 
-          <button type="submit" class="w-72 bg-primary hover:bg-primary-dark text-white font-bold py-3.5 px-6 rounded-md transition-colors text-base text-center">
-            pridať do košíka
+          <button type="submit" @disabled($product->stock === 0)
+            class="w-72 font-bold py-3.5 px-6 rounded-md transition-colors text-base text-center
+              {{ $product->stock === 0 ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-primary hover:bg-primary-dark text-white' }}">
+            {{ $product->stock === 0 ? 'Vypredané' : 'pridať do košíka' }}
           </button>
 
-          <div class="flex w-20 border border-gray-300 rounded-md overflow-hidden bg-white">
+          <div class="flex w-20 border border-gray-300 rounded-md overflow-hidden bg-white {{ $product->stock === 0 ? 'opacity-40 pointer-events-none' : '' }}">
               <input
                 type="number"
                 name="qty"

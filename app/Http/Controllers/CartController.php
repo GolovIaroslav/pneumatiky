@@ -343,7 +343,8 @@ class CartController extends Controller
         $paymentPrice = (float) $paymentOptions[$selectedPayment]['price'];
         $grandTotal = $total + $shippingPrice + $paymentPrice;
 
-        DB::transaction(function () use ($cartItems, $grandTotal, $selectedShipping, $selectedPayment, $deliveryInfo) {
+        $order = null;
+        DB::transaction(function () use ($cartItems, $grandTotal, $selectedShipping, $selectedPayment, $deliveryInfo, &$order) {
             $order = new \App\Models\Order();
             $order->user_id = Auth::id();
             $order->total_price = $grandTotal;
@@ -388,7 +389,7 @@ class CartController extends Controller
             'delivery_info',
         ]);
 
-        session(['order_completed' => true]);
+        session(['order_completed' => true, 'last_order_id' => $order?->id]);
 
         return redirect()->route('confirmation');
     }
