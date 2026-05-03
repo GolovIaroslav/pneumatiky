@@ -160,8 +160,8 @@
             $relImg  = $relMain ? asset($relMain->image_path) : asset('images/products/letne1.jpg');
             $relName = trim(($rel->brand ? $rel->brand . ' ' : '') . $rel->name);
           @endphp
-          <a href="{{ route('product.show', $rel->id) }}" class="group block text-center min-w-[45%] md:min-w-[23%] flex-shrink-0 snap-start">
-            <div class="w-full aspect-square mb-2.5 relative rounded border border-gray-200">
+          <a href="{{ route('product.show', $rel->id) }}" class="group block text-center w-full sm:w-[calc((100%-1.5rem)/2)] md:w-[calc((100%-3rem)/3)] lg:w-[calc((100%-4.5rem)/4)] flex-shrink-0 snap-start">
+            <div class="w-full aspect-square mb-2.5 relative rounded overflow-hidden border border-gray-200">
               <img src="{{ $relImg }}" alt="{{ $relName }}" class="w-full h-full object-cover" />
             </div>
             <p class="font-bold text-sm mb-3 group-hover:text-primary transition-colors">{{ $relName }}</p>

@@ -30,8 +30,8 @@
           $prodImg = $prodMain ? asset($prodMain->image_path) : asset('images/products/letne1.jpg');
           $prodName = trim(($prod->brand ? $prod->brand . ' ' : '') . $prod->name);
       @endphp
-      <a href="{{ route('product.show', $prod->id) }}" class="group block text-center min-w-[45%] md:min-w-[23%] flex-shrink-0 snap-start">
-        <div class="w-full aspect-square mb-2.5 relative rounded border border-gray-200">
+      <a href="{{ route('product.show', $prod->id) }}" class="group block text-center w-full sm:w-[calc((100%-1rem)/2)] md:w-[calc((100%-2rem)/3)] lg:w-[calc((100%-3rem)/4)] flex-shrink-0 snap-start">
+        <div class="w-full aspect-square mb-2.5 relative rounded overflow-hidden border border-gray-200">
            <img src="{{ $prodImg }}" alt="{{ $prodName }}" class="w-full h-full object-cover" />
         </div>
         <p class="font-bold text-sm mb-3 group-hover:text-primary transition-colors">{{ $prodName }}</p>
@@ -111,8 +111,8 @@
           $prodImg = $prodMain ? asset($prodMain->image_path) : asset('images/products/letne1.jpg');
           $prodName = trim(($prod->brand ? $prod->brand . ' ' : '') . $prod->name);
       @endphp
-      <a href="{{ route('product.show', $prod->id) }}" class="group block text-center min-w-[45%] md:min-w-[23%] flex-shrink-0 snap-start">
-        <div class="w-full aspect-square mb-2.5 relative rounded border border-gray-200">
+      <a href="{{ route('product.show', $prod->id) }}" class="group block text-center w-full sm:w-[calc((100%-1rem)/2)] md:w-[calc((100%-2rem)/3)] lg:w-[calc((100%-3rem)/4)] flex-shrink-0 snap-start">
+        <div class="w-full aspect-square mb-2.5 relative rounded overflow-hidden border border-gray-200">
            <img src="{{ $prodImg }}" alt="{{ $prodName }}" class="w-full h-full object-cover" />
         </div>
         <p class="font-bold text-sm mb-3 group-hover:text-primary transition-colors">{{ $prodName }}</p>
