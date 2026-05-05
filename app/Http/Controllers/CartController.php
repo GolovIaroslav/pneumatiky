@@ -248,22 +248,25 @@ class CartController extends Controller
     public function saveDelivery(Request $request)
     {
         $data = $request->validate([
-            'meno' => ['required', 'string', 'max:100'],
-            'priezvisko' => ['required', 'string', 'max:100'],
-            'email' => ['required', 'string', 'email', 'max:100'],
+            'meno' => ['required', 'string', 'max:100', 'regex:/^\p{L}+(?:[ -]\p{L}+)*$/u'],
+            'priezvisko' => ['required', 'string', 'max:100', 'regex:/^\p{L}+(?:[ -]\p{L}+)*$/u'],
+            'email' => ['required', 'string', 'email:rfc,dns', 'max:100'],
             'telefon' => ['required', 'string', 'regex:/^\+421\d{8,}$/'],
             'ulica' => ['required', 'string', 'max:100'],
-            'mesto' => ['required', 'string', 'max:100'],
+            'mesto' => ['required', 'string', 'max:100', 'regex:/^\p{L}+$/u'],
             'psc' => ['required', 'regex:/^\d{5}$/'],
             'poznamka' => ['nullable', 'string', 'max:1000'],
         ], [
             'meno.max' => 'Meno môže mať najviac 100 znakov.',
+            'meno.regex' => 'Meno môže obsahovať iba písmená, medzery a pomlčky.',
             'priezvisko.max' => 'Priezvisko môže mať najviac 100 znakov.',
-            'email.email' => 'Zadajte platný e-mail.',
+            'priezvisko.regex' => 'Priezvisko môže obsahovať iba písmená, medzery a pomlčky.',
+            'email.email' => 'Zadajte platný e-mail (existujúca doména je povinná).',
             'email.max' => 'E-mail môže mať najviac 100 znakov.',
             'telefon.regex' => 'Telefónne číslo musí byť valídne v tvare +421...',
             'ulica.max' => 'Ulica a číslo môžu mať najviac 100 znakov.',
             'mesto.max' => 'Mesto môže mať najviac 100 znakov.',
+            'mesto.regex' => 'Mesto môže obsahovať iba písmená.',
             'psc.regex' => 'PSČ musí mať presne 5 číslic.',
             'poznamka.max' => 'Poznámka môže mať najviac 1000 znakov.',
         ]);
