@@ -130,10 +130,18 @@ class ProductController extends Controller
                         $like = '%' . $term . '%';
                         if (config('database.default') === 'pgsql') {
                             $subQuery->where('name', 'ilike', $like)
-                                ->orWhere('brand', 'ilike', $like);
+                                ->orWhere('brand', 'ilike', $like)
+                                ->orWhere('description', 'ilike', $like)
+                                ->orWhere('season', 'ilike', $like)
+                                ->orWhereHas('category', fn ($catQ) => $catQ->where('name', 'ilike', $like))
+                                ->orWhereHas('category.parent', fn ($parentQ) => $parentQ->where('name', 'ilike', $like));
                         } else {
                             $subQuery->where('name', 'like', $like)
-                                ->orWhere('brand', 'like', $like);
+                                ->orWhere('brand', 'like', $like)
+                                ->orWhere('description', 'like', $like)
+                                ->orWhere('season', 'like', $like)
+                                ->orWhereHas('category', fn ($catQ) => $catQ->where('name', 'like', $like))
+                                ->orWhereHas('category.parent', fn ($parentQ) => $parentQ->where('name', 'like', $like));
                         }
                     });
                 }
