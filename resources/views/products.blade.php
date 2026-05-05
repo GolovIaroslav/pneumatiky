@@ -2,12 +2,12 @@
 
 @section('content')
 @php
-  $activeBrands = collect($selectedBrands ?? request()->query('brand', []))->map(fn ($value) => (string) $value)->all();
-  $activeSeasons = collect($selectedSeasons ?? request()->query('season', []))->map(fn ($value) => (string) $value)->all();
-  $activeWidths = collect($selectedWidths ?? request()->query('width', []))->map(fn ($value) => (int) $value)->all();
-  $activeProfiles = collect($selectedProfiles ?? request()->query('profile', []))->map(fn ($value) => (int) $value)->all();
-  $activeDiameters = collect($selectedDiameters ?? request()->query('diameter', []))->map(fn ($value) => (string) $value)->all();
-  $activeHasSpikes = collect($selectedHasSpikes ?? request()->query('has_spikes', []))->map(fn ($value) => (string) $value)->all();
+  $activeBrands = collect($selectedBrands ?? [])->map(fn ($value) => (string) $value)->all();
+  $activeSeasons = collect($selectedSeasons ?? [])->map(fn ($value) => (string) $value)->all();
+  $activeWidths = collect($selectedWidths ?? [])->map(fn ($value) => (int) $value)->all();
+  $activeProfiles = collect($selectedProfiles ?? [])->map(fn ($value) => (int) $value)->all();
+  $activeDiameters = collect($selectedDiameters ?? [])->map(fn ($value) => (string) $value)->all();
+  $activeHasSpikes = collect($selectedHasSpikes ?? [])->map(fn ($value) => (string) $value)->all();
   $currentSort = request()->query('sort', $sort ?? 'default');
   $currentCat = request()->query('cat', 'all');
 
@@ -28,7 +28,7 @@
 @endphp
 
 <div class="max-w-6xl mx-auto px-6 py-8">
-  <form method="GET" action="{{ route('products') }}">
+  <form id="products-filter-form" method="GET" action="{{ route('products') }}">
     @if (filled($currentCat) && $currentCat !== 'all')
       <input type="hidden" name="cat" value="{{ $currentCat }}" />
     @endif
@@ -294,6 +294,54 @@
     </div>
   </form>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const filterForm = document.getElementById('products-filter-form');
+  if (!filterForm) return;
+
+  function serializeFilterGroups() {
+    const groups = ['brand','season','width','profile','diameter','has_spikes'];
+    groups.forEach(name => {
+      const checkboxes = Array.from(filterForm.querySelectorAll(`input[name="${name}[]"]`));
+      if (checkboxes.length === 0) return;
+      const values = checkboxes.filter(cb => cb.checked).map(cb => cb.value);
+
+      let hidden = filterForm.querySelector(`input[type="hidden"][name="${name}"]`);
+      if (!hidden) {
+        hidden = document.createElement('input');
+        hidden.type = 'hidden';
+        hidden.name = name;
+        filterForm.appendChild(hidden);
+      }
+
+      if (values.length === 0) {
+        hidden.remove();
+      } else {
+        hidden.value = values.join(',');
+      }
+
+      // prevent array params from being sent by removing names
+      checkboxes.forEach(cb => cb.removeAttribute('name'));
+    });
+  }
+
+  filterForm.addEventListener('submit', function () {
+    serializeFilterGroups();
+  });
+
+  const nativeSubmit = filterForm.submit.bind(filterForm);
+  filterForm.submit = function () {
+    if (typeof filterForm.requestSubmit === 'function') {
+      filterForm.requestSubmit();
+      return;
+    }
+
+    serializeFilterGroups();
+    nativeSubmit();
+  };
+});
+</script>
 
 <div class="py-10"></div>
 @endsection

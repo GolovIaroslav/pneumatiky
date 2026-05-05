@@ -66,17 +66,17 @@ class ProductController extends Controller
 
         $filterScope = (clone $baseQuery);
 
-        // Parse all filter inputs as arrays
-        $brands = array_values(array_filter((array) $request->query('brand', [])));
+        // Parse all filter inputs from comma-separated query params
+        $brands = $this->parseCommaList($request->query('brand', []));
         $seasons = $filterCapabilities['seasons']
-            ? array_values(array_filter((array) $request->query('season', [])))
+            ? $this->parseCommaList($request->query('season', []))
             : [];
-        $widths = array_values(array_filter(array_map('intval', (array) $request->query('width', []))));
+        $widths = array_map('intval', $this->parseCommaList($request->query('width', [])));
         $profiles = $filterCapabilities['profiles']
-            ? array_values(array_filter(array_map('intval', (array) $request->query('profile', []))))
+            ? array_map('intval', $this->parseCommaList($request->query('profile', [])))
             : [];
-        $diameters = array_values(array_filter((array) $request->query('diameter', [])));
-        $hasSpikes = $filterCapabilities['hasSpikes'] ? (array) $request->query('has_spikes', []) : [];
+        $diameters = $this->parseCommaList($request->query('diameter', []));
+        $hasSpikes = $filterCapabilities['hasSpikes'] ? $this->parseCommaList($request->query('has_spikes', [])) : [];
 
         if (! empty($brands)) {
             $baseQuery->whereIn('brand', $brands);
@@ -251,6 +251,21 @@ class ProductController extends Controller
             'paginationStart' => $paginationStart,
             'paginationEnd' => $paginationEnd,
         ]);
+    }
+
+    private function parseCommaList(mixed $value): array
+    {
+        if (is_array($value)) {
+            return [];
+        }
+
+        $str = (string) $value;
+        if ($str === '') {
+            return [];
+        }
+
+        $parts = array_map('trim', explode(',', $str));
+        return array_values(array_filter($parts, fn($v) => $v !== null && $v !== ''));
     }
 
     private function calculateDisabledOptions($filterScope, array $selectedFilters, array $filterCapabilities)

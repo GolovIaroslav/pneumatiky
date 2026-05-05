@@ -120,7 +120,7 @@ class ProductSeeder extends Seeder
                     'category_id' => $categoryId,
                     'brand' => $row[0],
                     'name' => $row[1],
-                    'description' => 'Demo popis produktu pre katalog a detail produktu.',
+                    'description' => 'Demo popis produktu pre katalóg a detail produktu.',
                     'season' => $row[2],
                     'has_spikes' => $row[3],
                     'width' => $row[4],
