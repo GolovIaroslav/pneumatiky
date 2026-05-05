@@ -24,7 +24,7 @@
     </div>
 
     <div id="carousel-newest" class="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4" style="scrollbar-width: none; -ms-overflow-style: none;">
-      @foreach($carouselProducts as $prod)
+      @foreach($newestProducts as $prod)
       @php
           $prodMain = $prod->images->firstWhere('is_main', true) ?? $prod->images->first();
           $prodImg = $prodMain ? asset($prodMain->image_path) : asset('images/products/letne1.jpg');
@@ -105,7 +105,7 @@
     </div>
 
     <div id="carousel-recommended" class="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4" style="scrollbar-width: none; -ms-overflow-style: none;">
-      @foreach($carouselProducts as $prod)
+      @foreach($recommendedProducts as $prod)
       @php
           $prodMain = $prod->images->firstWhere('is_main', true) ?? $prod->images->first();
           $prodImg = $prodMain ? asset($prodMain->image_path) : asset('images/products/letne1.jpg');

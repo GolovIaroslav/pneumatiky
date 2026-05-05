@@ -6,10 +6,18 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 
 Route::get('/', function () {
-    $carouselProducts = \App\Models\Product::with(['images' => fn ($q) => $q->orderByDesc('is_main')])
+    $newestProducts = \App\Models\Product::with(['images' => fn ($q) => $q->orderByDesc('is_main')])
+        ->orderByDesc('id')
         ->limit(10)
         ->get();
-    return view('index', compact('carouselProducts'));
+
+    $recommendedProducts = \App\Models\Product::with(['images' => fn ($q) => $q->orderByDesc('is_main')])
+        ->whereNotIn('id', $newestProducts->pluck('id'))
+        ->inRandomOrder()
+        ->limit(10)
+        ->get();
+
+    return view('index', compact('newestProducts', 'recommendedProducts'));
 })->name('home');
 
 Route::get('/login', function () {
