@@ -17,6 +17,10 @@ Route::get('/', function () {
         ->limit(10)
         ->get();
 
+    if ($newestProducts->count() < 4) {
+        $recommendedProducts = $newestProducts;
+    }
+
     return view('index', compact('newestProducts', 'recommendedProducts'));
 })->name('home');
 
