@@ -73,14 +73,14 @@
                 <div class="flex gap-1">
                   <button
                     type="button"
-                    onclick="let i=this.closest('form').querySelector('[name=qty]'); if(parseInt(i.value) < {{ $p->stock }}){ i.value=parseInt(i.value)+1; i.form.submit(); }"
-                    class="w-6 h-6 border border-gray-300 rounded text-gray-600 text-sm leading-none hover:bg-gray-100"
-                  >+</button>
-                  <button
-                    type="button"
                     onclick="let i=this.closest('form').querySelector('[name=qty]'); if(parseInt(i.value)>1){i.value=parseInt(i.value)-1; i.form.submit();}"
                     class="w-6 h-6 border border-gray-300 rounded text-gray-600 text-sm leading-none hover:bg-gray-100"
                   >-</button>
+                  <button
+                    type="button"
+                    onclick="let i=this.closest('form').querySelector('[name=qty]'); if(parseInt(i.value) < {{ $p->stock }}){ i.value=parseInt(i.value)+1; i.form.submit(); }"
+                    class="w-6 h-6 border border-gray-300 rounded text-gray-600 text-sm leading-none hover:bg-gray-100"
+                  >+</button>
                 </div>
               </form>
             </div>
