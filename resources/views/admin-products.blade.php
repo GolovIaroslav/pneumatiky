@@ -47,8 +47,8 @@
                         {{ $product->category->parent->name ?? 'N/A' }} > {{ $product->category->name ?? 'N/A' }}<br>
                         <span class="text-xs text-primary">
                             {{ $product->season ? ucfirst($product->season) : '—' }} •
-                            @if($product->width){{ $product->width }}/{{ $product->profile }} @endif
-                            {{ $product->diameter ? 'R' . str_replace('r', '', strtolower($product->diameter)) : '' }}
+                            @if($product->width){{ $product->profile ? $product->width . '/' . $product->profile : $product->width }} @endif
+                            {{ $product->diameter ? str_replace('r', 'R', strtolower($product->diameter)) : '' }}
                         </span>
                     </td>
                     <td class="p-4 font-bold">{{ number_format((float) $product->price, 2, '.', '') }} €</td>
