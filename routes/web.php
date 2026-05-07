@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\AdminProductController;
 
 Route::get('/', function () {
     $newestProducts = \App\Models\Product::with(['images' => fn ($q) => $q->orderByDesc('is_main')])
@@ -54,7 +55,6 @@ Route::post('/delivery', [CartController::class, 'saveDelivery'])->name('deliver
 Route::get('/summary', [CartController::class, 'summary'])->name('summary');
 Route::post('/confirmation', [CartController::class, 'confirmOrder'])->name('confirmation.post');
 
-use App\Http\Controllers\AdminProductController;
 Route::get('/confirmation', function () {
     if (! session()->pull('order_completed')) {
         return redirect()->route('home');

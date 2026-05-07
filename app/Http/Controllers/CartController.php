@@ -250,10 +250,10 @@ class CartController extends Controller
         $data = $request->validate([
             'meno' => ['required', 'string', 'max:100', 'regex:/^\p{L}+(?:[ -]\p{L}+)*$/u'],
             'priezvisko' => ['required', 'string', 'max:100', 'regex:/^\p{L}+(?:[ -]\p{L}+)*$/u'],
-            'email' => ['required', 'string', 'email:rfc,dns', 'max:100'],
+            'email' => ['required', 'string', 'email', 'max:100'],
             'telefon' => ['required', 'string', 'regex:/^\+421\d{8,}$/'],
             'ulica' => ['required', 'string', 'max:100'],
-            'mesto' => ['required', 'string', 'max:100', 'regex:/^\p{L}+$/u'],
+            'mesto' => ['required', 'string', 'max:100', 'regex:/^\p{L}+(?:[ -]\p{L}+)*$/u'],
             'psc' => ['required', 'regex:/^\d{5}$/'],
             'poznamka' => ['nullable', 'string', 'max:1000'],
         ], [

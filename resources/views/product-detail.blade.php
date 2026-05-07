@@ -48,7 +48,10 @@
         </h1>
         @if ($product->width || $product->diameter)
         <p class="text-black font-bold text-sm mb-6">
-          {{ $product->width && $product->profile ? $product->width . '/' . $product->profile : '' }}{{ $product->diameter ? 'R' . str_replace('r', '', strtolower($product->diameter)) : '' }}
+          @if($product->width)
+            {{ $product->profile ? $product->width . '/' . $product->profile : $product->width }}
+          @endif
+          {{ $product->diameter ? str_replace('r', 'R', strtolower($product->diameter)) : '' }}
         </p>
         @endif
 
@@ -58,7 +61,7 @@
           <span class="text-sm text-primary font-bold ml-1">Ceny vrátane DPH</span>
         </div>
 
-        <form method="POST" action="{{ route('cart.add') }}" class="flex items-stretch gap-4 mb-8">
+        <form method="POST" action="{{ route('cart.add') }}" class="relative flex items-stretch gap-4 mb-8">
           @csrf
           <input type="hidden" name="product_id" value="{{ $product->id }}" />
 

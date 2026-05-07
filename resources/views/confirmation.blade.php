@@ -8,7 +8,7 @@
       @if($orderId)
       <div class="mb-12 text-center">
         <p class="text-lg font-medium text-gray-800">Číslo objednávky: <span class="font-bold text-gray-900">#{{ $orderId }}</span></p>
-        <p class="text-sm text-gray-500 mt-2">Potvrdzujúci e-mail bol odoslaný na vašu adresu.</p>
+        <p class="text-sm text-gray-500 mt-2">Ďakujeme za vašu objednávku!</p>
       </div>
       @endif
 
