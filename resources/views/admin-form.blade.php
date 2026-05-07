@@ -67,7 +67,7 @@
                         @foreach($categories as $category)
                             @if($category->parent_id !== null)
                                 <option value="{{ $category->id }}" @selected(old('category_id', $product->category_id ?? '') == $category->id)>
-                                    {{ $category->parent->name ?? '' }} > {{ $category->name }}
+                                    {{ $category->parent->name ?? $category->name }}
                                 </option>
                             @endif
                         @endforeach
@@ -83,11 +83,11 @@
                     </select>
                 </div>
                 <div>
-                    <label class="block text-sm font-bold mb-2 text-gray-700">Šírka (mm)</label>
-                    <select name="width" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 bg-white outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all">
-                        <option value="">-- Neuvedené --</option>
-                        @foreach([135,145,155,165,175,185,195,205,215,225,235,245,255,265,275,285,295,305,315,325] as $val)
-                            <option value="{{ $val }}" @selected(old('width', $product->width ?? '') == $val)>{{ $val }}</option>
+                    <label class="block text-sm font-bold mb-2 text-gray-700">Šírka (mm) *</label>
+                    <select name="width" required class="w-full border border-gray-300 rounded-lg px-4 py-2.5 bg-white outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all">
+                        <option value="">-- Vyberte --</option>
+                        @foreach([25,28,30,32,35,38,40,42,45,47,48,50,52,54,56,80,90,100,110,120,130,140,150,160,170,180,190,195,200,205,215,225,235,245,255,265,275,285,295,300,310,320,330,340,350,360,370,380] as $val)
+                            <option value="{{ $val }}" @selected((int)old('width', $product->width ?? '') === $val)>{{ $val }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -95,16 +95,16 @@
                     <label class="block text-sm font-bold mb-2 text-gray-700">Profil (%)</label>
                     <select name="profile" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 bg-white outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all">
                         <option value="">-- Neuvedené --</option>
-                        @foreach([25,30,35,40,45,50,55,60,65,70,75,80,85] as $val)
-                            <option value="{{ $val }}" @selected(old('profile', $product->profile ?? '') == $val)>{{ $val }}</option>
+                        @foreach([0,25,30,35,40,45,50,55,60,65,70,75,80,85,90] as $val)
+                            <option value="{{ $val }}" @selected(old('profile', $product->profile ?? '') !== '' && (int)old('profile', $product->profile ?? '') === $val)>{{ $val }}</option>
                         @endforeach
                     </select>
                 </div>
                 <div>
-                    <label class="block text-sm font-bold mb-2 text-gray-700">Priemer (")</label>
-                    <select name="diameter" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 bg-white outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all">
-                        <option value="">-- Neuvedené --</option>
-                        @foreach(['R12','R13','R14','R15','R16','R17','R18','R19','R20','R21','R22'] as $val)
+                    <label class="block text-sm font-bold mb-2 text-gray-700">Priemer (") *</label>
+                    <select name="diameter" required class="w-full border border-gray-300 rounded-lg px-4 py-2.5 bg-white outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all">
+                        <option value="">-- Vyberte --</option>
+                        @foreach(['R10','R12','R13','R14','R15','R16','R17','R18','R19','R20','R21','R22','R24','R26','R27.5','R28','R29','R30'] as $val)
                             <option value="{{ $val }}" @selected(strtoupper(old('diameter', $product->diameter ?? '')) == $val)>{{ $val }}</option>
                         @endforeach
                     </select>

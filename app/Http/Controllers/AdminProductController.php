@@ -36,9 +36,9 @@ class AdminProductController extends Controller
             'description' => 'required|string',
             'category_id' => 'required|integer|exists:categories,id',
             'season' => 'nullable|string',
-            'width' => 'nullable|integer',
+            'width' => 'required|integer',
             'profile' => 'nullable|integer',
-            'diameter' => 'nullable|string',
+            'diameter' => 'required|string',
             'has_spikes' => 'nullable',
             'images' => $id ? 'nullable|array' : 'required|array|min:2',
             'images.*' => 'image',
@@ -71,11 +71,15 @@ class AdminProductController extends Controller
         $image = ProductImage::findOrFail($imageId);
         $wasMain = $image->is_main;
         $productId = $image->product_id;
+        $imagePath = $image->image_path;
 
-        if (file_exists(public_path($image->image_path))) {
-            unlink(public_path($image->image_path));
-        }
         $image->delete();
+
+        // Only physically delete the file if no other product_images record references it
+        $stillReferenced = ProductImage::where('image_path', $imagePath)->exists();
+        if (!$stillReferenced && file_exists(public_path($imagePath))) {
+            unlink(public_path($imagePath));
+        }
 
         if ($wasMain) {
             $next = ProductImage::where('product_id', $productId)->first();
